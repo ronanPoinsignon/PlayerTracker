@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ControllerPagePrincipale">
+   <bottom>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" onAction="#onAjout" text="Ajouter" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+         </children>
+      </GridPane>
+   </bottom>
+   <center>
+      <TableView fx:id="table" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="colonneNom" prefWidth="75.0" text="Nom" />
+          <TableColumn fx:id="colonnePseudo" prefWidth="75.0" text="Pseudo" />
+          <TableColumn fx:id="colonneId" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="colonneInGame" prefWidth="75.0" text="Connecté" />
+        </columns>
+      </TableView>
+   </center>
+</BorderPane>
