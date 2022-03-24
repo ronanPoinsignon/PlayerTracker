@@ -19,7 +19,7 @@ public class Joueur {
 		isConnecte = new SimpleBooleanProperty();
 	}
 
-	public Joueur(String pseudo, String nom) {
+	public Joueur(String nom, String pseudo) {
 		id = new SimpleStringProperty();
 		this.nom = new SimpleStringProperty(nom);
 		this.pseudo = new SimpleStringProperty(pseudo);
