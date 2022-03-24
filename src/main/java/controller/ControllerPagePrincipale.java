@@ -21,6 +21,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
+import service.NotificationService;
+import service.Service;
 
 public class ControllerPagePrincipale implements Initializable {
 
@@ -47,9 +49,10 @@ public class ControllerPagePrincipale implements Initializable {
 
 	private SimpleObjectProperty<JoueurFx> joueurCourant = new SimpleObjectProperty<>();
 
+	private NotificationService notificationService = Service.getInstance(NotificationService.class);
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNom());
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
 		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudoProperty());
 		colonneId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
@@ -78,7 +81,9 @@ public class ControllerPagePrincipale implements Initializable {
 			MenuItem removeItem = new MenuItem("Supprimer");
 			rowMenu.getItems().addAll(editItem, removeItem);
 			removeItem.setOnAction(event -> {
-				table.getItems().remove(row.getItem());
+				JoueurFx joueur = row.getItem();
+				table.getItems().remove(joueur);
+				notificationService.unbind(joueur);
 				reset();
 			});
 			editItem.setOnAction(event -> onEdit(row.getItem()));
@@ -111,8 +116,8 @@ public class ControllerPagePrincipale implements Initializable {
 			return;
 		}
 		JoueurFx joueurFx = new JoueurFx(new Joueur(nom.getText(), pseudo.getText()));
-		table.getItems().add(new JoueurFx(joueur));
-		Thread t = new Thread(() -> setId(joueur));
+		table.getItems().add(joueurFx);
+		notificationService.bind(joueurFx);
 		Thread t = new Thread(() -> setId(joueurFx));
 		t.setDaemon(true);
 		t.start();
