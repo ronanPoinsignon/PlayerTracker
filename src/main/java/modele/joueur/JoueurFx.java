@@ -2,8 +2,12 @@ package modele.joueur;
 
 import java.io.IOException;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import modele.joueur.etat.Connecte;
 import modele.joueur.etat.IEtat;
@@ -11,23 +15,32 @@ import modele.joueur.etat.NonConnecte;
 
 public class JoueurFx extends Joueur {
 
+	private StringProperty idProperty;
+	private StringProperty nomProperty;
+	private StringProperty pseudoProperty;
+	private BooleanProperty isConnecteProperty;
+
 	private Joueur joueur;
 	private IEtat etat;
 	private ObjectProperty<Image> imageConnexion;
 
 	public JoueurFx(Joueur joueur) throws IOException {
 		this.joueur = joueur;
-		id.bind(joueur.id);
-		nom.bind(joueur.nom);
-		pseudo.bind(joueur.pseudo);
-		isConnecte.bind(joueur.isConnecte);
-		if(isConnecte.get()) {
+		id = joueur.id;
+		pseudo = joueur.pseudo;
+		nom = joueur.nom;
+		isConnecte = joueur.isConnecte;
+		idProperty = new SimpleStringProperty(joueur.getId());
+		nomProperty = new SimpleStringProperty(joueur.nom);
+		pseudoProperty = new SimpleStringProperty(joueur.pseudo);
+		isConnecteProperty = new SimpleBooleanProperty(joueur.isConnecte);
+		if(isConnecteProperty.get()) {
 			etat = new Connecte();
 		} else {
 			etat = new NonConnecte();
 		}
 		imageConnexion = new SimpleObjectProperty<>(etat.getImageEtat());
-		joueur.isConnected().addListener((obs, oldValue, newValue) -> {
+		isConnecteProperty.addListener((obs, oldValue, newValue) -> {
 			if(!oldValue.equals(newValue)) {
 				etat = etat.next();
 			}
@@ -44,23 +57,47 @@ public class JoueurFx extends Joueur {
 		return imageConnexion;
 	}
 
+	public StringProperty getIdProperty() {
+		return idProperty;
+	}
+
+	public StringProperty getNomProperty() {
+		return nomProperty;
+	}
+
+	public StringProperty getPseudoProperty() {
+		return pseudoProperty;
+	}
+
+	public BooleanProperty getIsConnecteProperty() {
+		return isConnecteProperty;
+	}
+
+	public Joueur getJoueur() {
+		return joueur;
+	}
+
 	@Override
 	public void setNom(String nom) {
-		joueur.setNom(nom);
+		super.setNom(nom);
+		nomProperty.set(nom);
 	}
 
 	@Override
 	public void setPseudo(String pseudo) {
-		joueur.setPseudo(pseudo);
+		super.setPseudo(pseudo);
+		pseudoProperty.set(pseudo);
 	}
 
 	@Override
 	public void setId(String id) {
-		joueur.setId(id);
+		super.setId(id);
+		idProperty.set(id);
 	}
 
 	@Override
 	public void setConnected(boolean connected) {
-		joueur.setConnected(connected);
+		super.setConnected(connected);
+		isConnecteProperty.set(connected);
 	}
 }

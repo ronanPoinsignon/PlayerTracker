@@ -1,61 +1,56 @@
 package modele.joueur;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 public class Joueur {
 
-	StringProperty id;
-	StringProperty nom;
-	StringProperty pseudo;
-	BooleanProperty isConnecte;
+	String id;
+	String nom;
+	String pseudo;
+	boolean isConnecte;
 
 	public Joueur() {
-		id = new SimpleStringProperty();
-		nom = new SimpleStringProperty();
-		pseudo = new SimpleStringProperty();
-		isConnecte = new SimpleBooleanProperty();
+		id = "";
+		nom = "";
+		pseudo = "";
+		isConnecte = false;
 	}
 
 	public Joueur(String nom, String pseudo) {
-		id = new SimpleStringProperty();
-		this.nom = new SimpleStringProperty(nom);
-		this.pseudo = new SimpleStringProperty(pseudo);
-		isConnecte = new SimpleBooleanProperty(false);
+		id = "";
+		this.nom = nom;
+		this.pseudo = pseudo;
+		isConnecte = false;
 	}
 
-	public StringProperty getId() {
+	public String getId() {
 		return id;
 	}
 
-	public StringProperty getNom() {
+	public String getNom() {
 		return nom;
 	}
 
-	public StringProperty getPseudo() {
+	public String getPseudo() {
 		return pseudo;
 	}
 
-	public BooleanProperty isConnected() {
+	public boolean isConnected() {
 		return isConnecte;
 	}
 
 	public void setNom(String nom) {
-		this.nom.set(nom);
+		this.nom = nom;
 	}
 
 	public void setPseudo(String pseudo) {
-		this.pseudo.set(pseudo);
+		this.pseudo = pseudo;
 	}
 
 	public void setId(String id) {
-		this.id.set(id);
+		this.id = id;
 	}
 
-	public void setConnected(boolean connected) {
-		isConnecte.set(connected);
+	public void setConnected(boolean isConnecte) {
+		this.isConnecte = isConnecte;
 	}
 
 }

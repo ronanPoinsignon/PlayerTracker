@@ -50,8 +50,9 @@ public class ControllerPagePrincipale implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNom());
-		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudo());
-		colonneId.setCellValueFactory(cellData -> cellData.getValue().getId());
+		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
+		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudoProperty());
+		colonneId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
 		colonneInGame.setCellValueFactory(cellData -> cellData.getValue().getImageConnexion());
 
 		// Wrap de l'image dans une cellule permettant son affichage
@@ -91,8 +92,8 @@ public class ControllerPagePrincipale implements Initializable {
 			if(newValue != null) {
 				modifier.setVisible(true);
 				ajouter.setVisible(false);
-				nom.setText(newValue.getNom().getValue());
-				pseudo.setText(newValue.getPseudo().getValue());
+				nom.setText(newValue.getNom());
+				pseudo.setText(newValue.getPseudo());
 				return;
 			}
 			modifier.setVisible(false);
@@ -109,9 +110,10 @@ public class ControllerPagePrincipale implements Initializable {
 		if(pseudoStr == null || pseudoStr.trim().isEmpty()) {
 			return;
 		}
-		Joueur joueur = new Joueur(nom.getText(), pseudo.getText());
+		JoueurFx joueurFx = new JoueurFx(new Joueur(nom.getText(), pseudo.getText()));
 		table.getItems().add(new JoueurFx(joueur));
 		Thread t = new Thread(() -> setId(joueur));
+		Thread t = new Thread(() -> setId(joueurFx));
 		t.setDaemon(true);
 		t.start();
 		reset();
