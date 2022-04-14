@@ -1,9 +1,10 @@
 package modele.joueur.etat;
 
-import utils.FileManager;
+import service.FileManager;
+import service.ServiceManager;
 
 public abstract class AEtat implements IEtat {
 
-	protected FileManager fm = FileManager.getInstance();
+	protected FileManager fm = ServiceManager.getInstance(FileManager.class);
 
 }
