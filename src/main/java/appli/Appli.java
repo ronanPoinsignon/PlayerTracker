@@ -7,11 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import utils.FileManager;
+import service.FileManager;
+import service.ServiceManager;
 
 public class Appli extends Application {
 
-	private FileManager fm = FileManager.getInstance();
+	private FileManager fm = ServiceManager.getInstance(FileManager.class);
 
 	public static void main(String[] args) {
 		Application.launch(args);

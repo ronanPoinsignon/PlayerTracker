@@ -49,7 +49,9 @@ public class ControllerPagePrincipale implements Initializable {
 
 	private SimpleObjectProperty<JoueurFx> joueurCourant = new SimpleObjectProperty<>();
 
-	private NotificationService notificationService = Service.getInstance(NotificationService.class);
+	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
+	private WebService webService = ServiceManager.getInstance(WebService.class);
+	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
