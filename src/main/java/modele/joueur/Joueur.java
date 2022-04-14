@@ -7,13 +7,6 @@ public class Joueur {
 	String pseudo;
 	boolean isConnecte;
 
-	public Joueur() {
-		id = "";
-		nom = "";
-		pseudo = "";
-		isConnecte = false;
-	}
-
 	public Joueur(String nom, String pseudo) {
 		id = "";
 		this.nom = nom;
@@ -53,4 +46,7 @@ public class Joueur {
 		this.isConnecte = isConnecte;
 	}
 
+	public String getAppellation() {
+		return nom == null || nom.trim().isEmpty() ? pseudo : nom;
+	}
 }

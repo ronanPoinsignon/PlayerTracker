@@ -25,10 +25,9 @@ public class JoueurFx extends Joueur {
 	private ObjectProperty<Image> imageConnexion;
 
 	public JoueurFx(Joueur joueur) throws IOException {
+		super(joueur.nom, joueur.pseudo);
 		this.joueur = joueur;
 		id = joueur.id;
-		pseudo = joueur.pseudo;
-		nom = joueur.nom;
 		isConnecte = joueur.isConnecte;
 		idProperty = new SimpleStringProperty(joueur.getId());
 		nomProperty = new SimpleStringProperty(joueur.nom);
