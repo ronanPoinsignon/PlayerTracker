@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -19,12 +18,24 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import modele.commande.CommandeSuppression;
+import modele.event.action.ActionEventSupprimer;
+import modele.event.clavier.ClavierEventHandler;
+import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
-import service.NotificationService;
-import service.Service;
+import service.GestionnaireCommandeService;
+import service.InterfaceManager;
+import service.NoPlayerFoundException;
+import service.ServiceManager;
+import service.WebService;
 
 public class ControllerPagePrincipale implements Initializable {
+
+	@FXML
+	private BorderPane borderPane;
 
 	@FXML
 	private TableView<JoueurFx> table;
@@ -46,6 +57,11 @@ public class ControllerPagePrincipale implements Initializable {
 	private Button ajouter;
 	@FXML
 	private Button modifier;
+
+	private MenuItem editItem = new MenuItem("Modifier le pseudo");
+	private MenuItem removeItem = new MenuItem("Supprimer");
+
+	final ContextMenu rowMenu = new ContextMenu();
 
 	private SimpleObjectProperty<JoueurFx> joueurCourant = new SimpleObjectProperty<>();
 
@@ -78,16 +94,6 @@ public class ControllerPagePrincipale implements Initializable {
 		// clic droit sur une ligne
 		table.setRowFactory(tableView -> {
 			final TableRow<JoueurFx> row = new TableRow<>();
-			final ContextMenu rowMenu = new ContextMenu();
-			MenuItem editItem = new MenuItem("Modifier le pseudo");
-			MenuItem removeItem = new MenuItem("Supprimer");
-			rowMenu.getItems().addAll(editItem, removeItem);
-			removeItem.setOnAction(event -> {
-				JoueurFx joueur = row.getItem();
-				table.getItems().remove(joueur);
-				notificationService.unbind(joueur);
-				reset();
-			});
 			editItem.setOnAction(event -> onEdit(row.getItem()));
 			row.contextMenuProperty().bind(Bindings.when(row.emptyProperty())
 					.then((ContextMenu) null)
@@ -109,25 +115,26 @@ public class ControllerPagePrincipale implements Initializable {
 
 		nom.setAlignment(Pos.CENTER_LEFT);
 		pseudo.setAlignment(Pos.CENTER_LEFT);
+
+		rowMenu.getItems().addAll(editItem, removeItem);
+	}
+
+	protected void addEvent() {
+		table.addEventHandler(KeyEvent.ANY, new ClavierEventHandler(table));
+		borderPane.addEventHandler(KeyEvent.ANY, new ClavierEventHandler(table));
+
+		ajouter.disableProperty().bind(interfaceManager.getDisableAjoutProperty());
+		modifier.disableProperty().bind(interfaceManager.getDisableModifierProperty());
+		table.disableProperty().bind(interfaceManager.getDisableTableProperty());
+
+		removeItem.setOnAction(new ActionEventSupprimer(table));
 	}
 
 	@FXML
-	public void onAjout() throws IOException {
-		String pseudoStr = pseudo.getText();
-		if(pseudoStr == null || pseudoStr.trim().isEmpty()) {
-			return;
-		}
-		JoueurFx joueurFx = new JoueurFx(new Joueur(nom.getText(), pseudo.getText()));
-		table.getItems().add(joueurFx);
-		notificationService.bind(joueurFx);
-		Thread t = new Thread(() -> setId(joueurFx));
+	public void onAjout() {
+		Thread t = new Thread(new AddEvent(table, nom.getText(), pseudo.getText()));
 		t.setDaemon(true);
 		t.start();
-		reset();
-	}
-
-	private void setId(Joueur joueur) {
-		joueur.setId("id test");
 	}
 
 	@FXML
@@ -150,11 +157,35 @@ public class ControllerPagePrincipale implements Initializable {
 		pseudo.setDisable(true);
 	}
 
+	public void removePLayerFromTable(JoueurFx joueur) {
+		gestionnaireCommandeService.addCommande(new CommandeSuppression(table, joueur)).executer();
+		reset();
+	}
+
 	private void reset() {
 		pseudo.setDisable(false);
 		nom.setDisable(false);
 		pseudo.setText("");
 		nom.setText("");
 		joueurCourant.set(null);
+	}
+
+	private void setId(JoueurFx joueur) throws NoPlayerFoundException {
+		joueur.setId(webService.getIdFromPseudo(joueur.getPseudo()));
+	}
+
+	private void bloquerInterface() {
+		ajouter.setDisable(true);
+		table.setDisable(true);
+	}
+
+	private void debloquerInterface() {
+		ajouter.setDisable(false);
+		table.setDisable(false);
+	}
+
+	@FXML
+	private void onBorderPaneKeyPressed() {
+		System.out.println("test");
 	}
 }
