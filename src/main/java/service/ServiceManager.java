@@ -9,20 +9,21 @@ import java.util.Map;
  * @author ronan
  *
  */
-public abstract class Service {
+public abstract class ServiceManager {
 
-	private static Map<Class<? extends Service>, Service> services = new HashMap<>();
+	private static Map<Class<? extends IService>, IService> services = new HashMap<>();
 
-	protected Service() {
+	protected ServiceManager() {
 
 	}
 
-	public static final <T extends Service> T getInstance(Class<T> clazz) {
-		T service = (T) Service.services.get(clazz);
+	public static final <T extends IService> T getInstance(Class<T> clazz) {
+		@SuppressWarnings("unchecked")
+		T service = (T) ServiceManager.services.get(clazz);
 		if(service == null) {
 			try {
 				service = clazz.newInstance();
-				Service.services.put(clazz, service);
+				ServiceManager.services.put(clazz, service);
 			} catch (InstantiationException | IllegalAccessException e) {
 				throw new ServiceCreationFailedException();
 			}

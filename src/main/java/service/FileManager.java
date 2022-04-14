@@ -1,4 +1,4 @@
-package utils;
+package service;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,24 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javafx.scene.image.Image;
+import utils.Utils;
 
-public class FileManager {
-
-	private static FileManager fileManager = null;
+public class FileManager implements IService {
 
 	private Map<String, File> fileMap = new HashMap<>();
 	private Map<String, Image> imageMap = new HashMap<>();
-
-	private FileManager() {
-
-	}
-
-	public static FileManager getInstance() {
-		if(FileManager.fileManager == null) {
-			FileManager.fileManager = new FileManager();
-		}
-		return FileManager.fileManager;
-	}
 
 	public File getFileFromResources(String fileName) throws IOException {
 		File file = fileMap.get(fileName);

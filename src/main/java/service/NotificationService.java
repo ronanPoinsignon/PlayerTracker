@@ -14,26 +14,25 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
-import utils.FileManager;
 
-public class NotificationService extends Service {
+public class NotificationService implements IService {
 
-	private FileManager fm = FileManager.getInstance();
+	private FileManager fm = ServiceManager.getInstance(FileManager.class);
+	private AlertFxService alertFxService = ServiceManager.getInstance(AlertFxService.class);
+
 	private HashMap<JoueurFx, BooleanProperty> binds = new HashMap<>();
 
 	public void bind(JoueurFx joueur) {
+		if(binds.containsKey(joueur)) {
+			return;
+		}
 		BooleanProperty property = new SimpleBooleanProperty();
 		property.bind(joueur.getIsConnecteProperty());
 		property.addListener((obs, oldValue, newValue) -> {
 			if(!newValue.booleanValue()) {
 				return;
 			}
-			try {
-				NotificationService.this.notifier(joueur);
-			} catch (AWTException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			NotificationService.this.notifier(joueur);
 		});
 		binds.put(joueur, property);
 	}
@@ -47,14 +46,22 @@ public class NotificationService extends Service {
 		binds.remove(joueur);
 	}
 
-	private void notifier(Joueur joueur) throws AWTException, IOException {
-		String nom = joueur.getNom() != null && !joueur.getNom().trim().isEmpty() ? joueur.getNom() : joueur.getPseudo();
-		SystemTray tray = SystemTray.getSystemTray();
-		Image image = Toolkit.getDefaultToolkit().createImage(Files.readAllBytes(fm.getFileFromResources("images/exclamation.png").toPath()));
-		TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
-		trayIcon.setImageAutoSize(true);
-		trayIcon.setToolTip("System tray icon demo");
-		tray.add(trayIcon);
-		trayIcon.displayMessage("Player tracker", nom + " est en jeu", MessageType.INFO);
+	private void notifier(Joueur joueur) {
+		Thread t = new Thread(() -> {
+			try {
+				String nom = joueur.getNom() != null && !joueur.getNom().trim().isEmpty() ? joueur.getNom() : joueur.getPseudo();
+				SystemTray tray = SystemTray.getSystemTray();
+				Image image = Toolkit.getDefaultToolkit().createImage(Files.readAllBytes(fm.getFileFromResources("images/exclamation.png").toPath()));
+				TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
+				trayIcon.setImageAutoSize(true);
+				tray.add(trayIcon);
+				trayIcon.displayMessage("Player tracker", nom + " est en jeu", MessageType.INFO);
+			}
+			catch(AWTException | IOException  e) {
+				alertFxService.alert(e);
+			}
+		});
+		t.setDaemon(true);
+		t.start();
 	}
 }
