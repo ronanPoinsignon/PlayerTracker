@@ -1,12 +1,13 @@
 package service;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 import javafx.scene.image.Image;
-import utils.Utils;
 
 public class FileManager implements IService {
 
@@ -18,7 +19,7 @@ public class FileManager implements IService {
 		if(file != null) {
 			return file;
 		}
-		file = Utils.getFileFromResource(fileName);
+		file = getFileFromResource(fileName);
 		fileMap.put(fileName, file);
 		return file;
 	}
@@ -28,8 +29,34 @@ public class FileManager implements IService {
 		if(image != null) {
 			return image;
 		}
-		image = new Image(Utils.getInputStreamFromResource(imageName));
+		image = new Image(getInputStreamFromResource(imageName));
 		imageMap.put(imageName, image);
 		return image;
+	}
+
+	private File getFileFromResource(String fileName) throws IOException {
+		File f = new File("file");
+		copyInputStreamToFile(getInputStreamFromResource(fileName), f);
+		return f;
+	}
+
+	private void copyInputStreamToFile(InputStream inputStream, File file) throws IOException {
+		try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+			byte[] bytes = new byte[2048];
+			int read;
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+		}
+	}
+
+	private InputStream getInputStreamFromResource(String fileName) throws IOException {
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		InputStream inputStream = classLoader.getResourceAsStream(fileName);
+		if (inputStream == null) {
+			throw new IllegalArgumentException("file not found! " + fileName);
+		} else {
+			return inputStream;
+		}
 	}
 }
