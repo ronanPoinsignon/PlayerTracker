@@ -32,7 +32,7 @@ import service.NoPlayerFoundException;
 import service.ServiceManager;
 import service.WebService;
 
-public class ControllerPagePrincipale implements Initializable {
+public class ControllerPagePrincipale implements Initializable, Observateur {
 
 	@FXML
 	private BorderPane borderPane;
@@ -177,9 +177,9 @@ public class ControllerPagePrincipale implements Initializable {
 		joueur.setId(webService.getIdFromPseudo(joueur.getPseudo()));
 	}
 
-	private void bloquerInterface() {
-		ajouter.setDisable(true);
-		table.setDisable(true);
+	@Override
+	public void notifyNewData(String data) {
+		System.out.println(data);
 	}
 
 	private void debloquerInterface() {
