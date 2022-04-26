@@ -32,8 +32,7 @@ public class AddEvent extends RunnableEvent {
 			JoueurFx joueur = tache.getValue();
 			//					labelIndicateur.textProperty().unbind();
 			//					labelIndicateur.setText(joueur.getAppellation() + " trouvé");
-			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur));
-			gestionnaireCommandeService.executer();
+			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur)).executer();
 			//					if(!tache.getListeUrlsMauvaisLien().isEmpty() || !tache.getListeUrlsErreur().isEmpty()) {
 			//						logger.showErrorAlertVideosNonChargees(tache.getListeUrlsMauvaisLien(), tache.getListeUrlsErreur());
 			//					}
