@@ -68,9 +68,12 @@ public class ControllerPagePrincipale implements Initializable {
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private WebService webService = ServiceManager.getInstance(WebService.class);
 	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
+	private SocketService socketService = ServiceManager.getInstance(SocketService.class);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		socketService.addObs(this);
+
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
 		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudoProperty());
 		colonneId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
