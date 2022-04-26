@@ -10,8 +10,11 @@ public class PushConnection extends ASocketStrategy {
 
 	@Override
 	public void listen() {
-		Thread t = new Thread(() -> {
+		var t = new Thread(() -> {
 			try {
+				if(clientSocket == null) {
+					connect();
+				}
 				var info = new byte[10000];
 				var input = clientSocket.getInputStream();
 				var reponsePrec = "";

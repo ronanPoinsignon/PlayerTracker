@@ -1,7 +1,5 @@
 package modele.web.socketstrategy;
 
-import java.io.IOException;
-
 public class KeepConnection extends ASocketStrategy {
 
 	private boolean isListening = false;
@@ -24,6 +22,9 @@ public class KeepConnection extends ASocketStrategy {
 				}
 				isListening = true;
 				try {
+					if(clientSocket == null) {
+						connect();
+					}
 					var info = new byte[10000];
 					var input = clientSocket.getInputStream();
 					var reponsePrec = "";
@@ -39,7 +40,7 @@ public class KeepConnection extends ASocketStrategy {
 							reponsePrec = resultat;
 						}
 					}
-				} catch (IOException e) {
+				} catch (Exception e) {
 					onError(e);
 				}
 			}
