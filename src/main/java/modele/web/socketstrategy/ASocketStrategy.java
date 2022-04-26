@@ -26,6 +26,6 @@ public abstract class ASocketStrategy implements ISocketStrategy, SocketEvent {
 
 	@Override
 	public void write(String msg) throws IOException {
-		os.writeBytes(msg);
+		os.write(msg.getBytes());
 	}
 }
