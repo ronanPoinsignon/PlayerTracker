@@ -17,7 +17,7 @@ public class SocketService implements IService {
 
 	public SocketService() throws IOException {
 		String address = propertiesService.get("url");
-		int port = Integer.parseInt(propertiesService.get("port"));
+		var port = Integer.parseInt(propertiesService.get("port"));
 		client = new SocketClient(address, port) {
 
 			@Override

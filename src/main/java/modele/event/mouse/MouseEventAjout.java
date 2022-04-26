@@ -23,7 +23,7 @@ public class MouseEventAjout extends MouseEventHandler {
 
 	@Override
 	public void handle(MouseEvent event) {
-		Thread th = new Thread(new AddEvent(table, nom, pseudo));
+		var th = new Thread(new AddEvent(table, nom, pseudo));
 		th.setDaemon(true);
 		th.start();
 	}

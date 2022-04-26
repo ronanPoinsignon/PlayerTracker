@@ -15,8 +15,8 @@ public class CopierEvent extends EventAction<Void> {
 
 	@Override
 	public Void execute() {
-		Clipboard clipboard = Clipboard.getSystemClipboard();
-		ClipboardContent content = new ClipboardContent();
+		var clipboard = Clipboard.getSystemClipboard();
+		var content = new ClipboardContent();
 		try {
 			content.putString(new GetPseudoEvent(table).execute());
 			clipboard.setContent(content);

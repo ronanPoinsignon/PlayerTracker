@@ -40,7 +40,7 @@ public class CommandeSuppression extends CommandeListe {
 
 	@Override
 	public boolean annuler() {
-		for(int i = 0; i < listeJoueurs.size(); i++) {
+		for(var i = 0; i < listeJoueurs.size(); i++) {
 			int index = listeIndex.get(i);
 			try {
 				JoueurFx joueur = listeJoueurs.get(i);

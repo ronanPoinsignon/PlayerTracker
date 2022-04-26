@@ -1,7 +1,6 @@
 package service;
 
 import java.awt.AWTException;
-import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -47,12 +46,12 @@ public class NotificationService implements IService {
 	}
 
 	private void notifier(Joueur joueur) {
-		Thread t = new Thread(() -> {
+		var t = new Thread(() -> {
 			try {
 				String nom = joueur.getNom() != null && !joueur.getNom().trim().isEmpty() ? joueur.getNom() : joueur.getPseudo();
-				SystemTray tray = SystemTray.getSystemTray();
-				Image image = Toolkit.getDefaultToolkit().createImage(Files.readAllBytes(fm.getFileFromResources("images/exclamation.png").toPath()));
-				TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
+				var tray = SystemTray.getSystemTray();
+				var image = Toolkit.getDefaultToolkit().createImage(Files.readAllBytes(fm.getFileFromResources("images/exclamation.png").toPath()));
+				var trayIcon = new TrayIcon(image, "Tray Demo");
 				trayIcon.setImageAutoSize(true);
 				tray.add(trayIcon);
 				trayIcon.displayMessage("Player tracker", nom + " est en jeu", MessageType.INFO);

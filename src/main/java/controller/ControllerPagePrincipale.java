@@ -81,7 +81,7 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 
 		// Wrap de l'image dans une cellule permettant son affichage
 		colonneInGame.setCellFactory(col -> {
-			final ImageView imageview = new ImageView();
+			final var imageview = new ImageView();
 			imageview.setFitHeight(20);
 			imageview.setFitWidth(20);
 			TableCell<JoueurFx, Image> cell = new TableCell<>() {
@@ -135,7 +135,7 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 
 	@FXML
 	public void onAjout() {
-		Thread t = new Thread(new AddEvent(table, nom.getText(), pseudo.getText()));
+		var t = new Thread(new AddEvent(table, nom.getText(), pseudo.getText()));
 		t.setDaemon(true);
 		t.start();
 	}

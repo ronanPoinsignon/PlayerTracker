@@ -50,7 +50,6 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 
 	@Override
 	public void handle(KeyEvent event) {
-		System.out.println("oui");
 		if(event.getCode().equals(KeyCode.ALT)) {
 			event.consume();
 			return;
@@ -90,8 +89,8 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 * Copie la ligne séléctionnée de la table dans le presse-papiers.
 	 */
 	public void copier() {
-		Clipboard clipboard = Clipboard.getSystemClipboard();
-		ClipboardContent content = new ClipboardContent();
+		var clipboard = Clipboard.getSystemClipboard();
+		var content = new ClipboardContent();
 		try {
 			content.putString(getSelectedLink());
 			clipboard.setContent(content);
@@ -112,7 +111,7 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 * Supprime une ligne de la table.
 	 */
 	public void supprimer() {
-		Thread th = new Thread(new DeleteEvent(table));
+		var th = new Thread(new DeleteEvent(table));
 		th.setDaemon(true);
 		th.start();
 	}
@@ -130,7 +129,7 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 * Inverse la ligne séléctionnée avec celle du haut.
 	 */
 	public void swapUp() {
-		Thread th = new Thread(new SwapUpEvent(table));
+		var th = new Thread(new SwapUpEvent(table));
 		th.setDaemon(true);
 		th.start();
 	}
@@ -139,13 +138,13 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 * Inverse la ligne séléctionnée avec celle du bas.
 	 */
 	public void swapDown() {
-		Thread th = new Thread(new SwapDownEvent(table));
+		var th = new Thread(new SwapDownEvent(table));
 		th.setDaemon(true);
 		th.start();
 	}
 
 	public void addJoueurFxToTable(String nom, String pseudo) {
-		Thread th = new Thread(new AddEvent(table, nom, pseudo));
+		var th = new Thread(new AddEvent(table, nom, pseudo));
 		th.setDaemon(true);
 		th.start();
 	}

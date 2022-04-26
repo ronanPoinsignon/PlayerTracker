@@ -14,10 +14,10 @@ public class CollerEvent extends EventAction<Void> {
 
 	@Override
 	public Void execute() {
-		Clipboard clipboard = Clipboard.getSystemClipboard();
-		String pseudo = clipboard.getString();
+		var clipboard = Clipboard.getSystemClipboard();
+		var pseudo = clipboard.getString();
 		if(pseudo != null && !pseudo.isEmpty()) {
-			Thread th = new Thread(new AddEvent(table, "", pseudo));
+			var th = new Thread(new AddEvent(table, "", pseudo));
 			th.setDaemon(true);
 			th.start();
 		}

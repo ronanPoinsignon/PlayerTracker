@@ -23,7 +23,7 @@ public class AddEvent extends RunnableEvent {
 
 	@Override
 	public Void execute() {
-		TacheCharger tache = new TacheCharger(nom, pseudo);
+		var tache = new TacheCharger(nom, pseudo);
 		//		labelIndicateur.textProperty().unbind();
 		//		labelIndicateur.textProperty().bind(tache.messageProperty());
 		//		indicateur.progressProperty().unbind();
@@ -38,7 +38,7 @@ public class AddEvent extends RunnableEvent {
 			//					}
 			//					updateActionPossibleGestionnaire();
 		});
-		Thread t = new Thread(tache);
+		var t = new Thread(tache);
 		t.setDaemon(true);
 		t.start();
 		return null;

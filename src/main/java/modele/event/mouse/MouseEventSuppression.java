@@ -18,7 +18,7 @@ public class MouseEventSuppression extends MouseEventHandler {
 
 	@Override
 	public void handle(MouseEvent event) {
-		Thread th = new Thread(new DeleteEvent(table));
+		var th = new Thread(new DeleteEvent(table));
 		th.setDaemon(true);
 		th.start();
 	}

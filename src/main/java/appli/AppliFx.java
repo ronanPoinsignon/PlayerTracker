@@ -1,5 +1,4 @@
 package appli;
-import java.io.File;
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -22,7 +21,7 @@ public class AppliFx extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		Thread th = new Thread(() -> {
+		var th = new Thread(() -> {
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e2) {
@@ -31,7 +30,7 @@ public class AppliFx extends Application {
 			}
 			while(true) {
 				try {
-					String t = "['type' => 'tracker:players','players' => ['a5Gwv5NZxa6WVtJKOFBy8sX7uBagkv0pODShPv9IjPTtslE', 'l2b1wQIobGI3FfnM_HM_9ppRWE9WTip-v3hhbpOX2MX3mFA', 'lEMlQTR5NnNM61BLdvLNVvgHVqDpUO8pTCewgSGyD42wXGc']]";
+					var t = "['type' => 'tracker:players','players' => ['a5Gwv5NZxa6WVtJKOFBy8sX7uBagkv0pODShPv9IjPTtslE', 'l2b1wQIobGI3FfnM_HM_9ppRWE9WTip-v3hhbpOX2MX3mFA', 'lEMlQTR5NnNM61BLdvLNVvgHVqDpUO8pTCewgSGyD42wXGc']]";
 					System.out.println("write avant");
 					socketService.write(t);
 					System.out.println("write apres");
@@ -51,10 +50,10 @@ public class AppliFx extends Application {
 
 		stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
 		stage.setTitle("Player tracker");
-		File file = fm.getFileFromResources("fxml/page_principale.fxml");
-		FXMLLoader loader = new FXMLLoader(file.toURI().toURL());
+		var file = fm.getFileFromResources("fxml/page_principale.fxml");
+		var loader = new FXMLLoader(file.toURI().toURL());
 		Parent sceneVideo = loader.load();
-		Scene scene = new Scene(sceneVideo);
+		var scene = new Scene(sceneVideo);
 		stage.setScene(scene);
 		stage.show();
 	}

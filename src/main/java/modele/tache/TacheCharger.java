@@ -26,7 +26,7 @@ public class TacheCharger extends Tache<JoueurFx> {
 
 	@Override
 	protected JoueurFx call() throws NoPlayerFoundException, IOException {
-		Joueur joueur = new Joueur(nom, pseudo);
+		var joueur = new Joueur(nom, pseudo);
 		updateMessage("chargement de " + joueur.getAppellation());
 		return new JoueurFx(joueur);
 	}

@@ -15,7 +15,7 @@ public class FileManager implements IService {
 	private Map<String, Image> imageMap = new HashMap<>();
 
 	public File getFileFromResources(String fileName) throws IOException {
-		File file = fileMap.get(fileName);
+		var file = fileMap.get(fileName);
 		if(file != null) {
 			return file;
 		}
@@ -25,7 +25,7 @@ public class FileManager implements IService {
 	}
 
 	public Image getImageFromResource(String imageName) throws IOException {
-		Image image = imageMap.get(imageName);
+		var image = imageMap.get(imageName);
 		if(image != null) {
 			return image;
 		}
@@ -35,14 +35,14 @@ public class FileManager implements IService {
 	}
 
 	private File getFileFromResource(String fileName) throws IOException {
-		File f = new File("file");
+		var f = new File("file");
 		copyInputStreamToFile(getInputStreamFromResource(fileName), f);
 		return f;
 	}
 
 	private void copyInputStreamToFile(InputStream inputStream, File file) throws IOException {
-		try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
-			byte[] bytes = new byte[2048];
+		try (var outputStream = new FileOutputStream(file, false)) {
+			var bytes = new byte[2048];
 			int read;
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
@@ -50,9 +50,9 @@ public class FileManager implements IService {
 		}
 	}
 
-	private InputStream getInputStreamFromResource(String fileName) throws IOException {
-		ClassLoader classLoader = this.getClass().getClassLoader();
-		InputStream inputStream = classLoader.getResourceAsStream(fileName);
+	private InputStream getInputStreamFromResource(String fileName) {
+		var classLoader = this.getClass().getClassLoader();
+		var inputStream = classLoader.getResourceAsStream(fileName);
 		if (inputStream == null) {
 			throw new IllegalArgumentException("file not found! " + fileName);
 		} else {

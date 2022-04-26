@@ -1,7 +1,6 @@
 package modele.web.socketstrategy;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class KeepConnection extends ASocketStrategy {
 
@@ -13,7 +12,7 @@ public class KeepConnection extends ASocketStrategy {
 
 	@Override
 	public void listen() {
-		Thread t = new Thread(() -> {
+		var t = new Thread(() -> {
 			while(true) {
 				if(isListening) {
 					try {
@@ -25,9 +24,9 @@ public class KeepConnection extends ASocketStrategy {
 				}
 				isListening = true;
 				try {
-					byte[] info = new byte[10000];
-					InputStream input = clientSocket.getInputStream();
-					String reponsePrec = "";
+					var info = new byte[10000];
+					var input = clientSocket.getInputStream();
+					var reponsePrec = "";
 					String resultat = null;
 					while (true) {
 						input.read(info);
