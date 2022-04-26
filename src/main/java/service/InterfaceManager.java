@@ -21,5 +21,13 @@ public class InterfaceManager implements IService {
 		return disableTableProperty;
 	}
 
+	public void bloquerInterface() {
+		disableAjoutProperty.set(true);
+		disableTableProperty.set(true);
+	}
 
+	public void debloquerInterface() {
+		disableAjoutProperty.set(false);
+		disableTableProperty.set(false);
+	}
 }
