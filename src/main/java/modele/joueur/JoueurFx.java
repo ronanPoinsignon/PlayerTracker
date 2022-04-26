@@ -27,12 +27,12 @@ public class JoueurFx extends Joueur {
 	public JoueurFx(Joueur joueur) throws IOException {
 		super(joueur.nom, joueur.pseudo);
 		this.joueur = joueur;
-		id = joueur.id;
-		isConnecte = joueur.isConnecte;
-		idProperty = new SimpleStringProperty(joueur.getId());
+		playerId = joueur.playerId;
+		inGame = joueur.inGame;
+		idProperty = new SimpleStringProperty(joueur.getPlayerId());
 		nomProperty = new SimpleStringProperty(joueur.nom);
 		pseudoProperty = new SimpleStringProperty(joueur.pseudo);
-		isConnecteProperty = new SimpleBooleanProperty(joueur.isConnecte);
+		isConnecteProperty = new SimpleBooleanProperty(joueur.inGame);
 		if(isConnecteProperty.get()) {
 			etat = new Connecte();
 		} else {
@@ -89,14 +89,14 @@ public class JoueurFx extends Joueur {
 	}
 
 	@Override
-	public void setId(String id) {
-		super.setId(id);
-		idProperty.set(id);
+	public void setPlayerId(String playerId) {
+		super.setPlayerId(playerId);
+		idProperty.set(playerId);
 	}
 
 	@Override
-	public void setConnected(boolean connected) {
-		super.setConnected(connected);
+	public void setInGame(boolean connected) {
+		super.setInGame(connected);
 		isConnecteProperty.set(connected);
 	}
 }
