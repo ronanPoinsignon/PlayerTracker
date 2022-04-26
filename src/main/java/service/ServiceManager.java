@@ -1,5 +1,6 @@
 package service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,10 +23,10 @@ public abstract class ServiceManager {
 		T service = (T) ServiceManager.services.get(clazz);
 		if(service == null) {
 			try {
-				service = clazz.newInstance();
+				service = clazz.getDeclaredConstructor().newInstance();
 				ServiceManager.services.put(clazz, service);
-			} catch (InstantiationException | IllegalAccessException e) {
-				throw new ServiceCreationFailedException();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				throw new ServiceCreationFailedException(e);
 			}
 		}
 		return service;
