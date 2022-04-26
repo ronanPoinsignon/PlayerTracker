@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
@@ -26,11 +27,11 @@ import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
+import modele.observer.Observateur;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
-import service.NoPlayerFoundException;
 import service.ServiceManager;
-import service.WebService;
+import service.SocketService;
 
 public class ControllerPagePrincipale implements Initializable, Observateur {
 
@@ -66,7 +67,6 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 	private SimpleObjectProperty<JoueurFx> joueurCourant = new SimpleObjectProperty<>();
 
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
-	private WebService webService = ServiceManager.getInstance(WebService.class);
 	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
 	private SocketService socketService = ServiceManager.getInstance(SocketService.class);
 
