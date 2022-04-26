@@ -2,5 +2,5 @@ package modele.observer;
 
 public interface Observateur {
 
-	void notifyPlayerInGame(String id, boolean inGame);
+	void notifyNewData(String data);
 }

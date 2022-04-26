@@ -22,14 +22,13 @@ public class SocketService implements IService {
 
 			@Override
 			public void onReceive(String msg) {
-				System.out.println(msg);
+				setConnected(true);
+				notifyPlayerOnline(msg);
 			}
 
 			@Override
 			public void onError(Exception e) {
-				System.out.println("erreur");
 				e.printStackTrace();
-				super.onError(e);
 			}
 		};
 		client.listen();
@@ -47,8 +46,12 @@ public class SocketService implements IService {
 		return observateurs.remove(obs);
 	}
 
-	public void notifyPlayerOnline(String id, boolean inGame) {
-		observateurs.forEach(obs -> obs.notifyPlayerInGame(id, inGame));
+	public void notifyPlayerOnline(String data) {
+		observateurs.forEach(obs -> obs.notifyNewData(data));
+	}
+
+	public void setConnected(boolean isOnline) {
+		System.out.println("en ligne : " + isOnline);
 	}
 
 }
