@@ -84,7 +84,7 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 			final ImageView imageview = new ImageView();
 			imageview.setFitHeight(20);
 			imageview.setFitWidth(20);
-			TableCell<JoueurFx, Image> cell = new TableCell<JoueurFx, Image>() {
+			TableCell<JoueurFx, Image> cell = new TableCell<>() {
 				@Override
 				public void updateItem(Image item, boolean empty) {
 					imageview.setImage(item);
@@ -173,22 +173,16 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 		joueurCourant.set(null);
 	}
 
-	private void setId(JoueurFx joueur) throws NoPlayerFoundException {
-		joueur.setId(webService.getIdFromPseudo(joueur.getPseudo()));
-	}
-
 	@Override
 	public void notifyNewData(String data) {
 		System.out.println(data);
+
 	}
 
-	private void debloquerInterface() {
-		ajouter.setDisable(false);
-		table.setDisable(false);
-	}
-
-	@FXML
-	private void onBorderPaneKeyPressed() {
-		System.out.println("test");
+	private JoueurFx findJoueurByIdOrPseudo(String id, String pseudo) {
+		List<JoueurFx> joueurs = table.getItems();
+		return joueurs.stream().filter(joueur -> id != null && joueur.getPlayerId() != null && joueur.getPlayerId().equals(id)).findFirst()
+				.orElse(joueurs.stream().filter(joueur -> pseudo != null && joueur.getPseudo() != null && joueur.getPseudo().equals(pseudo)).findFirst()
+						.orElse(null));
 	}
 }
