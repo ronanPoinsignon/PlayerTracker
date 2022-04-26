@@ -1,9 +1,7 @@
 package modele.web.socketstrategy;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Socket;
 
 public class PushConnection extends ASocketStrategy {
 
@@ -15,8 +13,6 @@ public class PushConnection extends ASocketStrategy {
 	public void listen() {
 		Thread t = new Thread(() -> {
 			try {
-				clientSocket = new Socket(address, port);
-				os = new DataOutputStream(clientSocket.getOutputStream());
 				byte[] info = new byte[10000];
 				InputStream input = clientSocket.getInputStream();
 				String reponsePrec = "";

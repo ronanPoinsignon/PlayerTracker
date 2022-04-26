@@ -1,9 +1,7 @@
 package modele.web.socketstrategy;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Socket;
 
 public class KeepConnection extends ASocketStrategy {
 
@@ -27,10 +25,6 @@ public class KeepConnection extends ASocketStrategy {
 				}
 				isListening = true;
 				try {
-					System.out.println("avant co");
-					clientSocket = new Socket(address, port);
-					System.out.println("après co");
-					os = new DataOutputStream(clientSocket.getOutputStream());
 					byte[] info = new byte[10000];
 					InputStream input = clientSocket.getInputStream();
 					String reponsePrec = "";

@@ -16,11 +16,16 @@ public abstract class ASocketStrategy implements ISocketStrategy, SocketEvent {
 	protected ASocketStrategy(String address, int port) {
 		this.address = address;
 		this.port = port;
+		try {
+			clientSocket = new Socket(address, port);
+			os = new DataOutputStream(clientSocket.getOutputStream());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public void write(String msg) throws IOException {
-		System.out.println("write");
 		os.writeBytes(msg);
 	}
 }
