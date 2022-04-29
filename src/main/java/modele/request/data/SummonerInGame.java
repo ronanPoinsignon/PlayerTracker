@@ -1,6 +1,6 @@
-package modele.request;
+package modele.request.data;
 
-public class PlayerData {
+public class SummonerInGame {
 
 	private String playerId;
 	private String playerPseudo;
@@ -8,7 +8,11 @@ public class PlayerData {
 	private int gameId;
 	private String encryptionKey;
 
-	public PlayerData(String playerId, String playerPseudo, boolean inGame, int gameId, String encryptionKey) {
+	public SummonerInGame() {
+
+	}
+
+	public SummonerInGame(String playerId, String playerPseudo, boolean inGame, int gameId, String encryptionKey) {
 		this.playerId = playerId;
 		this.playerPseudo = playerPseudo;
 		this.inGame = inGame;
@@ -34,6 +38,12 @@ public class PlayerData {
 
 	public String getEncryptionKey() {
 		return encryptionKey;
+	}
+
+	@Override
+	public String toString() {
+		return "SummonerInGame [playerId=" + playerId + ", playerPseudo=" + playerPseudo + ", inGame=" + inGame
+				+ ", gameId=" + gameId + ", encryptionKey=" + encryptionKey + "]";
 	}
 
 }
