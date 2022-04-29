@@ -5,7 +5,7 @@ public class SummonerData {
 	private String summoner_id;
 	private String name;
 	private boolean in_game;
-	private int last_game;
+	private String last_game;
 	private String last_update;
 	private String id;
 	private String toString;
@@ -14,7 +14,7 @@ public class SummonerData {
 
 	}
 
-	public SummonerData(String summoner_id, String name, boolean in_game, int last_game, String last_update, String id,
+	public SummonerData(String summoner_id, String name, boolean in_game, String last_game, String last_update, String id,
 			String toString) {
 		this.summoner_id = summoner_id;
 		this.name = name;
@@ -49,11 +49,11 @@ public class SummonerData {
 		this.in_game = in_game;
 	}
 
-	public int getLast_game() {
+	public String getLast_game() {
 		return last_game;
 	}
 
-	public void setLast_game(int last_game) {
+	public void setLast_game(String last_game) {
 		this.last_game = last_game;
 	}
 
