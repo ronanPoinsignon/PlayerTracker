@@ -27,13 +27,13 @@ import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
-import modele.observer.Observateur;
+import modele.observer.ObservateurInterface;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.ServiceManager;
 import service.SocketService;
 
-public class ControllerPagePrincipale implements Initializable, Observateur {
+public class ControllerPagePrincipale implements Initializable, ObservateurInterface {
 
 	@FXML
 	private BorderPane borderPane;
@@ -120,12 +120,15 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 		pseudo.setAlignment(Pos.CENTER_LEFT);
 
 		rowMenu.getItems().addAll(editItem, removeItem);
+
+		addEvent();
 	}
 
 	protected void addEvent() {
 		table.addEventHandler(KeyEvent.ANY, new ClavierEventHandler(table));
 		borderPane.addEventHandler(KeyEvent.ANY, new ClavierEventHandler(table));
 
+		interfaceManager.addObs(this);
 		ajouter.disableProperty().bind(interfaceManager.getDisableAjoutProperty());
 		modifier.disableProperty().bind(interfaceManager.getDisableModifierProperty());
 		table.disableProperty().bind(interfaceManager.getDisableTableProperty());
@@ -162,15 +165,12 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 
 	public void removePLayerFromTable(JoueurFx joueur) {
 		gestionnaireCommandeService.addCommande(new CommandeSuppression(table, joueur)).executer();
-		reset();
+		joueurCourant = null;
 	}
 
-	private void reset() {
-		pseudo.setDisable(false);
-		nom.setDisable(false);
-		pseudo.setText("");
-		nom.setText("");
+	public void reset() {
 		joueurCourant.set(null);
+		interfaceManager.reset();
 	}
 
 	@Override
@@ -184,5 +184,12 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 		return joueurs.stream().filter(joueur -> id != null && joueur.getPlayerId() != null && joueur.getPlayerId().equals(id)).findFirst()
 				.orElse(joueurs.stream().filter(joueur -> pseudo != null && joueur.getPseudo() != null && joueur.getPseudo().equals(pseudo)).findFirst()
 						.orElse(null));
+	}
+
+	@Override
+	public void notifyNewStringValue(String value) {
+		System.out.println("3");
+		nom.setText("");
+		pseudo.setText("");
 	}
 }
