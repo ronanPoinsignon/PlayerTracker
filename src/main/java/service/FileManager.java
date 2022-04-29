@@ -35,7 +35,8 @@ public class FileManager implements IService {
 	}
 
 	private File getFileFromResource(String fileName) throws IOException {
-		var f = new File("file");
+		var f = File.createTempFile("file", ""); //cree un fichier temporaire pour ne pas le sauvegarder sur le pc
+		f.deleteOnExit();
 		copyInputStreamToFile(getInputStreamFromResource(fileName), f);
 		return f;
 	}
