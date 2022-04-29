@@ -1,4 +1,4 @@
-package modele.web.socketstrategy;
+package modele.web.socket.socketstrategy;
 
 public class KeepConnection extends ASocketStrategy {
 
