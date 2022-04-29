@@ -31,7 +31,6 @@ import modele.observer.ObservateurInterface;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.ServiceManager;
-import service.SocketService;
 
 public class ControllerPagePrincipale implements Initializable, ObservateurInterface {
 
@@ -68,12 +67,9 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
-	private SocketService socketService = ServiceManager.getInstance(SocketService.class);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		socketService.addObs(this);
-
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
 		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudoProperty());
 		colonneId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
@@ -171,12 +167,6 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	public void reset() {
 		joueurCourant.set(null);
 		interfaceManager.reset();
-	}
-
-	@Override
-	public void notifyNewData(String data) {
-		System.out.println(data);
-
 	}
 
 	private JoueurFx findJoueurByIdOrPseudo(String id, String pseudo) {
