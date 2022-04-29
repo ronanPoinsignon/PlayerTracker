@@ -1,4 +1,4 @@
-package modele.web;
+package modele.web.socket;
 
 public interface SocketEvent {
 

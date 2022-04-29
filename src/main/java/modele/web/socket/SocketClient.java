@@ -1,9 +1,9 @@
-package modele.web;
+package modele.web.socket;
 
 import java.io.IOException;
 
-import modele.web.socketstrategy.ASocketStrategy;
-import modele.web.socketstrategy.KeepConnection;
+import modele.web.socket.socketstrategy.ASocketStrategy;
+import modele.web.socket.socketstrategy.KeepConnection;
 
 public class SocketClient implements SocketEvent {
 
