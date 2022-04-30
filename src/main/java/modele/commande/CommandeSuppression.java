@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 import modele.joueur.JoueurFx;
 import service.NotificationService;
 import service.ServiceManager;
+import service.WebRequestScheduler;
 
 /**
  * Classe permettant la suppression de vidéos de la liste.
@@ -17,6 +18,8 @@ import service.ServiceManager;
 public class CommandeSuppression extends CommandeListe {
 
 	private NotificationService notificationService = ServiceManager.getInstance(NotificationService.class);
+	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
+
 	private List<Integer> listeIndex = new ArrayList<>();
 
 	public CommandeSuppression(TableView<JoueurFx> table, List<JoueurFx> listeJoueurs) {
@@ -32,6 +35,7 @@ public class CommandeSuppression extends CommandeListe {
 		for(JoueurFx joueur : listeJoueurs) {
 			listeIndex.add(table.getItems().indexOf(joueur));
 			notificationService.unbind(joueur);
+			scheduler.removeJoueur(joueur);
 		}
 		List<JoueurFx> listeVideosNonPresentes = commandeUtil.removeAll(table, listeJoueurs);
 		listeJoueurs.removeAll(listeVideosNonPresentes);
