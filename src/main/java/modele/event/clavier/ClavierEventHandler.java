@@ -50,6 +50,9 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 
 	@Override
 	public void handle(KeyEvent event) {
+		if(event.getEventType() != KeyEvent.KEY_PRESSED) {
+			return;
+		}
 		if(event.getCode().equals(KeyCode.ALT)) {
 			event.consume();
 			return;
@@ -104,7 +107,7 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 * Colle le contenu du presse-papiers dans la table afin d'essayer d'en ajouter le contenu.
 	 */
 	public void coller() {
-		new CollerEvent(table);
+		new CollerEvent(table).execute();
 	}
 
 	/**

@@ -11,9 +11,13 @@ public class SwapUpEvent extends SwapDownEvent {
 	}
 
 	@Override
-	public void run() {
+	public Void execute() {
 		int index = table.getSelectionModel().getSelectedIndex();
+		if(index == 0) {
+			return null;
+		}
 		gestionnaireCommandeService.addCommande(new CommandeInversion(table, index, index - 1)).executer();
+		return null;
 	}
 
 }

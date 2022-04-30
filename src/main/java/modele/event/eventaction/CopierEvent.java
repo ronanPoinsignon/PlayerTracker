@@ -15,6 +15,9 @@ public class CopierEvent extends EventAction<Void> {
 
 	@Override
 	public Void execute() {
+		if(table.getItems().isEmpty()) {
+			return null;
+		}
 		var clipboard = Clipboard.getSystemClipboard();
 		var content = new ClipboardContent();
 		try {

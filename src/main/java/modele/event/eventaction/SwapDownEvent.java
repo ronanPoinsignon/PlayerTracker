@@ -17,6 +17,9 @@ public class SwapDownEvent extends RunnableEvent {
 	@Override
 	public Void execute() {
 		int index = table.getSelectionModel().getSelectedIndex();
+		if(table.getItems().size() == index + 1) {
+			return null;
+		}
 		gestionnaireCommandeService.addCommande(new CommandeInversion(table, index, index + 1)).executer();
 		return null;
 	}
