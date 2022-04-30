@@ -1,6 +1,8 @@
 package service;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import modele.request.result.SummonerDataResult;
 import modele.request.result.SummonerInGameResult;
@@ -21,6 +23,7 @@ public class WebService implements IService {
 	}
 
 	public SummonerDataResult getSummonerByName(String name) {
+		name = URLEncoder.encode(name, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
 		return getValue(SummonerDataResult.class, baseUrl + WebService.GET_SUMMONER_BY_NAME + name);
 	}
 
