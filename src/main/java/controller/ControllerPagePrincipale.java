@@ -1,7 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
@@ -176,13 +175,6 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	public void reset() {
 		joueurCourant.set(null);
 		interfaceManager.reset();
-	}
-
-	private JoueurFx findJoueurByIdOrPseudo(String id, String pseudo) {
-		List<JoueurFx> joueurs = table.getItems();
-		return joueurs.stream().filter(joueur -> id != null && joueur.getPlayerId() != null && joueur.getPlayerId().equals(id)).findFirst()
-				.orElse(joueurs.stream().filter(joueur -> pseudo != null && joueur.getPseudo() != null && joueur.getPseudo().equals(pseudo)).findFirst()
-						.orElse(null));
 	}
 
 	@Override
