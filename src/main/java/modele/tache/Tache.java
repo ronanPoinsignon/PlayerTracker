@@ -4,6 +4,8 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import modele.event.tache.event.EventTacheUpdateMessage;
 import modele.event.tache.event.EventTacheUpdated;
+import service.AlertFxService;
+import service.ServiceManager;
 
 /**
  * Tache abstraite utilisée le maniement d'événements.
@@ -13,11 +15,12 @@ import modele.event.tache.event.EventTacheUpdated;
  */
 public abstract class Tache<T> extends Task<T> {
 
+	AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
+
 	protected Tache() {
 		exceptionProperty().addListener((observable, oldValue, newValue) ->  {
 			if(newValue != null) {
-				Exception ex = (Exception) newValue;
-				ex.printStackTrace();
+				alerteService.alert((Exception) newValue);
 				this.cancel();
 			}
 		});
