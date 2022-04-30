@@ -27,17 +27,12 @@ import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
-import modele.joueur.Partie;
 import modele.observer.ObservateurInterface;
-import modele.observer.ObservateurWeb;
-import modele.request.data.SummonerData;
-import modele.request.data.SummonerInGame;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.ServiceManager;
-import service.WebService;
 
-public class ControllerPagePrincipale implements Initializable, ObservateurInterface, ObservateurWeb {
+public class ControllerPagePrincipale implements Initializable, ObservateurInterface {
 
 	@FXML
 	private BorderPane borderPane;
@@ -72,7 +67,6 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
-	private WebService webService = ServiceManager.getInstance(WebService.class);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -176,36 +170,6 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	public void reset() {
 		joueurCourant.set(null);
 		interfaceManager.reset();
-	}
-
-	@Override
-	public void notifyData(SummonerData data) {
-		JoueurFx joueur = findJoueurByIdOrPseudo(data.getSummoner_id(), data.getName());
-		if(joueur == null) {
-			return;
-		}
-		joueur.setPlayerId(data.getSummoner_id());
-		joueur.setPseudo(data.getName());
-		joueur.setInGame(data.isIn_game());
-		if(!data.isIn_game()) {
-			joueur.setPartie(null);
-		}
-		else {
-			webService.getSummonerGame(joueur.getPlayerId());
-		}
-	}
-
-	@Override
-	public void notifyData(SummonerInGame data) {
-		JoueurFx joueur = findJoueurByIdOrPseudo(data.getSummoner_id(), data.getSummoner_name());
-		if(joueur == null) {
-			return;
-		}
-		joueur.setPseudo(data.getSummoner_name());
-		joueur.setInGame(data.isIn_game());
-		if(data.isIn_game()) {
-			joueur.setPartie(new Partie(data.getGame_id(), data.getEncryption_key()));
-		}
 	}
 
 	private JoueurFx findJoueurByIdOrPseudo(String id, String pseudo) {
