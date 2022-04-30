@@ -10,9 +10,9 @@ public class WebService implements IService {
 
 	PropertiesService propertiesService = ServiceManager.getInstance(PropertiesService.class);
 
-	private static final String GET_SUMMONER_BY_ID = "getById/";
-	private static final String GET_SUMMONER_BY_NAME = "getByName/";
-	private static final String GET_SUMMONER_GAME = "getGame/";
+	private static final String GET_SUMMONER_BY_ID = "api/summoner/getById/";
+	private static final String GET_SUMMONER_BY_NAME = "api/summoner/getByName/";
+	private static final String GET_SUMMONER_GAME = "api/summoner/getGame/";
 
 	private final String baseUrl;
 
