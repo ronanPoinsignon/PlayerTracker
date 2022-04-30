@@ -5,8 +5,8 @@ import java.io.IOException;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.request.data.SummonerData;
+import modele.web.request.DataNotFoundException;
 import service.GestionnaireCommandeService;
-import service.NoPlayerFoundException;
 import service.ServiceManager;
 import service.WebService;
 
@@ -29,19 +29,21 @@ public class TacheCharger extends Tache<JoueurFx> {
 	}
 
 	@Override
-	protected JoueurFx call() throws NoPlayerFoundException, IOException {
+	protected JoueurFx call() throws DataNotFoundException, IOException {
 		var joueur = new Joueur(nom, pseudo);
 		updateMessage("chargement de " + joueur.getAppellation());
-		SummonerData summoner = webService.getSummonerByName(joueur.getPseudo()).getData();
-		setInfo(joueur, summoner);
+		try {
+			SummonerData summoner = webService.getSummonerByName(joueur.getPseudo()).getData();
+			setInfo(joueur, summoner);
+		} catch (DataNotFoundException e) {
+			updateMessage("");
+			throw e;
+		}
 		return new JoueurFx(joueur);
 	}
 
 	private void setInfo(Joueur joueur, SummonerData summoner) {
-		if(joueur == null) {
-			return;
-		}
-		if(summoner == null) {
+		if(joueur == null || summoner == null) {
 			return;
 		}
 		joueur.setPseudo(summoner.getName());
