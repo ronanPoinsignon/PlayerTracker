@@ -1,5 +1,7 @@
 package service;
 
+import java.awt.AWTException;
+import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
@@ -44,14 +46,20 @@ public class NotificationService implements IService {
 	}
 
 	private void notifier(Joueur joueur) {
+		if(!SystemTray.isSupported()) {
+			return;
+		}
 		var t = new Thread(() -> {
 			try {
+				var tray = SystemTray.getSystemTray();
 				var image = Toolkit.getDefaultToolkit().createImage(Files.readAllBytes(fm.getFileFromResources("images/exclamation.png").toPath()));
-				var trayIcon = new TrayIcon(image, "Tray Demo");
+				var trayIcon = new TrayIcon(image, "Player Tracker");
 				trayIcon.setImageAutoSize(true);
+				tray.add(trayIcon);
 				trayIcon.displayMessage("Player tracker", joueur.getAppellation() + " est en jeu", MessageType.INFO);
+				tray.remove(trayIcon);
 			}
-			catch(IOException e) {
+			catch(AWTException | IOException e) {
 				alertFxService.alert(e);
 			}
 		});
