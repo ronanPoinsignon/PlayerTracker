@@ -27,12 +27,17 @@ import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
+import modele.joueur.Partie;
 import modele.observer.ObservateurInterface;
+import modele.observer.ObservateurWeb;
+import modele.request.data.SummonerData;
+import modele.request.data.SummonerInGame;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.ServiceManager;
+import service.WebService;
 
-public class ControllerPagePrincipale implements Initializable, ObservateurInterface {
+public class ControllerPagePrincipale implements Initializable, ObservateurInterface, ObservateurWeb {
 
 	@FXML
 	private BorderPane borderPane;
@@ -67,6 +72,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
+	private WebService webService = ServiceManager.getInstance(WebService.class);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -137,6 +143,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		var t = new Thread(new AddEvent(table, nom.getText(), pseudo.getText()));
 		t.setDaemon(true);
 		t.start();
+		reset();
 	}
 
 	@FXML
@@ -169,6 +176,36 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		interfaceManager.reset();
 	}
 
+	@Override
+	public void notifyData(SummonerData data) {
+		JoueurFx joueur = findJoueurByIdOrPseudo(data.getSummoner_id(), data.getName());
+		if(joueur == null) {
+			return;
+		}
+		joueur.setPlayerId(data.getSummoner_id());
+		joueur.setPseudo(data.getName());
+		joueur.setInGame(data.isIn_game());
+		if(!data.isIn_game()) {
+			joueur.setPartie(null);
+		}
+		else {
+			webService.getSummonerGame(joueur.getPlayerId());
+		}
+	}
+
+	@Override
+	public void notifyData(SummonerInGame data) {
+		JoueurFx joueur = findJoueurByIdOrPseudo(data.getSummonerId(), data.getSummonerName());
+		if(joueur == null) {
+			return;
+		}
+		joueur.setPseudo(data.getSummonerName());
+		joueur.setInGame(data.isInGame());
+		if(data.isInGame()) {
+			joueur.setPartie(new Partie(data.getGameId(), data.getEncryptionKey()));
+		}
+	}
+
 	private JoueurFx findJoueurByIdOrPseudo(String id, String pseudo) {
 		List<JoueurFx> joueurs = table.getItems();
 		return joueurs.stream().filter(joueur -> id != null && joueur.getPlayerId() != null && joueur.getPlayerId().equals(id)).findFirst()
@@ -178,7 +215,6 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	@Override
 	public void notifyNewStringValue(String value) {
-		System.out.println("3");
 		nom.setText("");
 		pseudo.setText("");
 	}
