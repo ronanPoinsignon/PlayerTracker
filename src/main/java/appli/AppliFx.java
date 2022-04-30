@@ -8,10 +8,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import service.FileManager;
 import service.ServiceManager;
+import service.WebRequestScheduler;
 
 public class AppliFx extends Application {
 
 	private FileManager fm = ServiceManager.getInstance(FileManager.class);
+	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 
 	public static void start(String[] args) {
 		Application.launch(args);
@@ -26,7 +28,12 @@ public class AppliFx extends Application {
 		Parent sceneVideo = loader.load();
 		var scene = new Scene(sceneVideo);
 		stage.setScene(scene);
+		stage.setOnCloseRequest(evt -> onCLose());
 		stage.show();
+	}
+
+	private void onCLose() {
+		scheduler.stopScheduler();
 	}
 
 }
