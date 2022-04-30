@@ -46,17 +46,20 @@ public class NotificationService implements IService {
 	}
 
 	private void notifier(Joueur joueur) {
+		if(!SystemTray.isSupported()) {
+			return;
+		}
 		var t = new Thread(() -> {
 			try {
-				String nom = joueur.getNom() != null && !joueur.getNom().trim().isEmpty() ? joueur.getNom() : joueur.getPseudo();
 				var tray = SystemTray.getSystemTray();
 				var image = Toolkit.getDefaultToolkit().createImage(Files.readAllBytes(fm.getFileFromResources("images/exclamation.png").toPath()));
-				var trayIcon = new TrayIcon(image, "Tray Demo");
+				var trayIcon = new TrayIcon(image, "Player Tracker");
 				trayIcon.setImageAutoSize(true);
 				tray.add(trayIcon);
-				trayIcon.displayMessage("Player tracker", nom + " est en jeu", MessageType.INFO);
+				trayIcon.displayMessage("Player tracker", joueur.getAppellation() + " est en jeu", MessageType.INFO);
+				tray.remove(trayIcon);
 			}
-			catch(AWTException | IOException  e) {
+			catch(AWTException | IOException e) {
 				alertFxService.alert(e);
 			}
 		});
