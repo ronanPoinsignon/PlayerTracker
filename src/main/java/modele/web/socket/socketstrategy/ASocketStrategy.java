@@ -1,11 +1,11 @@
-package modele.web.socketstrategy;
+package modele.web.socket.socketstrategy;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import modele.web.SocketEvent;
+import modele.web.socket.SocketEvent;
 
 public abstract class ASocketStrategy implements ISocketStrategy, SocketEvent {
 
@@ -30,7 +30,7 @@ public abstract class ASocketStrategy implements ISocketStrategy, SocketEvent {
 	public void connect() {
 		try {
 			clientSocket = new Socket();
-			clientSocket.setSoTimeout(5000);
+			clientSocket.setSoTimeout(1000);
 			clientSocket.connect(new InetSocketAddress(address, port));
 			os = new DataOutputStream(clientSocket.getOutputStream());
 		} catch (IOException e) {

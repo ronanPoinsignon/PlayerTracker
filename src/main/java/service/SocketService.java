@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modele.observer.Observateur;
-import modele.web.SocketClient;
+import modele.web.socket.SocketClient;
 
 public class SocketService implements IService {
 
