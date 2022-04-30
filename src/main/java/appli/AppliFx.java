@@ -13,7 +13,7 @@ import service.WebRequestScheduler;
 public class AppliFx extends Application {
 
 	private FileManager fm = ServiceManager.getInstance(FileManager.class);
-	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
+	private WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 
 	public static void start(String[] args) {
 		Application.launch(args);
