@@ -3,6 +3,7 @@ package modele.event.eventaction;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.control.TableView;
 import modele.commande.CommandeAjout;
+import modele.event.eventaction.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
 import modele.tache.TacheCharger;
 import service.GestionnaireCommandeService;
@@ -25,6 +26,12 @@ public class AddEvent extends RunnableEvent {
 
 	@Override
 	public Void execute() {
+		if(pseudo == null || pseudo.isBlank()) {
+			return null;
+		}
+		if(table.getItems().stream().anyMatch(joueur -> pseudo.equals(joueur.getPseudo()))) {
+			throw new JoueurDejaPresentException(nom);
+		}
 		var tache = new TacheCharger(nom, pseudo);
 		//		labelIndicateur.textProperty().unbind();
 		//		labelIndicateur.textProperty().bind(tache.messageProperty());
