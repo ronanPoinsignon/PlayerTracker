@@ -1,13 +1,16 @@
 package modele.web.request;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 
 public class ClientWeb<T> {
 
@@ -24,8 +27,11 @@ public class ClientWeb<T> {
 				URI.create(url))
 				.header("accept", "application/json")
 				.build();
-
-		return client.send(request, new JsonBodyHandler<>(clazz)).body().get();
+		HttpResponse<Supplier<T>> response = client.send(request, new JsonBodyHandler<>(clazz));
+		if(response.statusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+			throw new DataNotFoundException();
+		}
+		return response.body().get();
 	}
 
 	public T post(String url, Map<Object, Object> data) throws IOException, InterruptedException {
