@@ -3,11 +3,11 @@ package modele.joueur;
 public class Champion {
 
 	private String championName;
-	private String championImage;
+	private String base64ChampionImage;
 
 	public Champion(String championName, String championImage) {
 		this.championName = championName;
-		this.championImage = championImage;
+		this.base64ChampionImage = championImage;
 	}
 
 	public String getChampionName() {
@@ -18,12 +18,12 @@ public class Champion {
 		this.championName = championName;
 	}
 
-	public String getChampionImage() {
-		return championImage;
+	public String getBase64ChampionImage() {
+		return base64ChampionImage;
 	}
 
-	public void setChampionImage(String championImage) {
-		this.championImage = championImage;
+	public void setBase64ChampionImage(String championImage) {
+		this.base64ChampionImage = championImage;
 	}
 
 }
