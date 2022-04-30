@@ -27,13 +27,17 @@ import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
-import modele.observer.Observateur;
+import modele.joueur.Partie;
+import modele.observer.ObservateurInterface;
+import modele.observer.ObservateurWeb;
+import modele.request.data.SummonerData;
+import modele.request.data.SummonerInGame;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.ServiceManager;
-import service.SocketService;
+import service.WebService;
 
-public class ControllerPagePrincipale implements Initializable, Observateur {
+public class ControllerPagePrincipale implements Initializable, ObservateurInterface, ObservateurWeb {
 
 	@FXML
 	private BorderPane borderPane;
@@ -68,12 +72,10 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
-	private SocketService socketService = ServiceManager.getInstance(SocketService.class);
+	private WebService webService = ServiceManager.getInstance(WebService.class);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		socketService.addObs(this);
-
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
 		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudoProperty());
 		colonneId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
@@ -97,7 +99,7 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 		// clic droit sur une ligne
 		table.setRowFactory(tableView -> {
 			final TableRow<JoueurFx> row = new TableRow<>();
-			editItem.setOnAction(event -> onEdit(row.getItem()));
+			editItem.setOnAction(event -> onEdit(table.getSelectionModel().getSelectedItem()));
 			row.contextMenuProperty().bind(Bindings.when(row.emptyProperty())
 					.then((ContextMenu) null)
 					.otherwise(rowMenu));
@@ -106,29 +108,35 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 
 		joueurCourant.addListener((obs, oldValue, newValue) -> {
 			if(newValue != null) {
-				modifier.setVisible(true);
-				ajouter.setVisible(false);
-				nom.setText(newValue.getNom());
-				pseudo.setText(newValue.getPseudo());
-				return;
+				interfaceManager.setDisableModifierProperty(false);
+				interfaceManager.setDisableAjoutProperty(true);
+				interfaceManager.setNomValue(newValue.getNom());
+				interfaceManager.setPseudoValue(newValue.getPseudo());
+				interfaceManager.setDisablePseudoProperty(true);
+				interfaceManager.setVisibleModifierProperty();
 			}
-			modifier.setVisible(false);
-			ajouter.setVisible(true);
 		});
 
 		nom.setAlignment(Pos.CENTER_LEFT);
 		pseudo.setAlignment(Pos.CENTER_LEFT);
 
 		rowMenu.getItems().addAll(editItem, removeItem);
+
+		addEvent();
 	}
 
 	protected void addEvent() {
 		table.addEventHandler(KeyEvent.ANY, new ClavierEventHandler(table));
 		borderPane.addEventHandler(KeyEvent.ANY, new ClavierEventHandler(table));
 
+		interfaceManager.addObs(this);
 		ajouter.disableProperty().bind(interfaceManager.getDisableAjoutProperty());
+		ajouter.visibleProperty().bind(interfaceManager.getVisibleAjoutProperty());
 		modifier.disableProperty().bind(interfaceManager.getDisableModifierProperty());
+		modifier.visibleProperty().bind(interfaceManager.getVisibleModifierProperty());
 		table.disableProperty().bind(interfaceManager.getDisableTableProperty());
+		interfaceManager.getDisablePseudoProperty().addListener((obs, oldV, newV) -> pseudo.setDisable(newV));
+		interfaceManager.getDisableNomProperty().addListener((obs, oldV, newV) -> nom.setDisable(newV));
 
 		removeItem.setOnAction(new ActionEventSupprimer(table));
 	}
@@ -138,6 +146,7 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 		var t = new Thread(new AddEvent(table, nom.getText(), pseudo.getText()));
 		t.setDaemon(true);
 		t.start();
+		reset();
 	}
 
 	@FXML
@@ -157,26 +166,46 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 
 	public void onEdit(JoueurFx joueur) {
 		joueurCourant.set(joueur);
-		pseudo.setDisable(true);
 	}
 
 	public void removePLayerFromTable(JoueurFx joueur) {
 		gestionnaireCommandeService.addCommande(new CommandeSuppression(table, joueur)).executer();
-		reset();
+		joueurCourant = null;
 	}
 
-	private void reset() {
-		pseudo.setDisable(false);
-		nom.setDisable(false);
-		pseudo.setText("");
-		nom.setText("");
+	public void reset() {
 		joueurCourant.set(null);
+		interfaceManager.reset();
 	}
 
 	@Override
-	public void notifyNewData(String data) {
-		System.out.println(data);
+	public void notifyData(SummonerData data) {
+		JoueurFx joueur = findJoueurByIdOrPseudo(data.getSummoner_id(), data.getName());
+		if(joueur == null) {
+			return;
+		}
+		joueur.setPlayerId(data.getSummoner_id());
+		joueur.setPseudo(data.getName());
+		joueur.setInGame(data.isIn_game());
+		if(!data.isIn_game()) {
+			joueur.setPartie(null);
+		}
+		else {
+			webService.getSummonerGame(joueur.getPlayerId());
+		}
+	}
 
+	@Override
+	public void notifyData(SummonerInGame data) {
+		JoueurFx joueur = findJoueurByIdOrPseudo(data.getSummonerId(), data.getSummonerName());
+		if(joueur == null) {
+			return;
+		}
+		joueur.setPseudo(data.getSummonerName());
+		joueur.setInGame(data.isInGame());
+		if(data.isInGame()) {
+			joueur.setPartie(new Partie(data.getGameId(), data.getEncryptionKey()));
+		}
 	}
 
 	private JoueurFx findJoueurByIdOrPseudo(String id, String pseudo) {
@@ -184,5 +213,15 @@ public class ControllerPagePrincipale implements Initializable, Observateur {
 		return joueurs.stream().filter(joueur -> id != null && joueur.getPlayerId() != null && joueur.getPlayerId().equals(id)).findFirst()
 				.orElse(joueurs.stream().filter(joueur -> pseudo != null && joueur.getPseudo() != null && joueur.getPseudo().equals(pseudo)).findFirst()
 						.orElse(null));
+	}
+
+	@Override
+	public void notifyNewStringValueNom(String value) {
+		nom.setText(value);
+	}
+
+	@Override
+	public void notifyNewStringValuePseudo(String value) {
+		pseudo.setText(value);
 	}
 }
