@@ -3,6 +3,7 @@ package modele.scheduler;
 import java.util.ArrayList;
 import java.util.List;
 
+import modele.joueur.Champion;
 import modele.joueur.Joueur;
 import modele.joueur.Partie;
 import modele.request.data.SummonerInGame;
@@ -30,7 +31,7 @@ public class WebRequestRunnable implements Runnable {
 		joueur.setPseudo(summoner.getSummoner_name());
 		joueur.setInGame(summoner.isIn_game());
 		if(summoner.isIn_game()) {
-			joueur.setPartie(new Partie(summoner.getGame_id(), summoner.getEncryption_key()));
+			joueur.setPartie(new Partie(summoner.getGame_id(), summoner.getEncryption_key(), new Champion(summoner.getChampion_name(), summoner.getChampion_image())));
 		}
 	}
 

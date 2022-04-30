@@ -4,14 +4,16 @@ public class Partie {
 
 	private String gameId;
 	private String encryptionKey;
+	private Champion champion;
 
 	public Partie() {
 
 	}
 
-	public Partie(String gameId, String encryptionKey) {
+	public Partie(String gameId, String encryptionKey, Champion champion) {
 		this.gameId = gameId;
 		this.encryptionKey = encryptionKey;
+		this.champion = champion;
 	}
 
 	public String getGameId() {
@@ -28,6 +30,14 @@ public class Partie {
 
 	public void setEncryptionKey(String encryptionKey) {
 		this.encryptionKey = encryptionKey;
+	}
+
+	public Champion getChampion() {
+		return champion;
+	}
+
+	public void setChampion(Champion champion) {
+		this.champion = champion;
 	}
 
 }

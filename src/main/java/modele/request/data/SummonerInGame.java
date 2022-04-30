@@ -8,18 +8,23 @@ public class SummonerInGame {
 	private String game_id;
 	private String encryption_key;
 	private String game_type;
+	private String champion_name;
+	private String champion_image;
 
 	public SummonerInGame() {
 
 	}
 
-	public SummonerInGame(String summoner_id, String summoner_name, boolean in_game, String game_id, String encryption_key, String game_type) {
+	public SummonerInGame(String summoner_id, String summoner_name, boolean in_game, String game_id,
+			String encryption_key, String game_type, String champion_name, String champion_image) {
 		this.summoner_id = summoner_id;
 		this.summoner_name = summoner_name;
 		this.in_game = in_game;
 		this.game_id = game_id;
 		this.encryption_key = encryption_key;
 		this.game_type = game_type;
+		this.champion_name = champion_name;
+		this.champion_image = champion_image;
 	}
 
 	public String getSummoner_id() {
@@ -70,10 +75,27 @@ public class SummonerInGame {
 		this.game_type = game_type;
 	}
 
+	public String getChampion_name() {
+		return champion_name;
+	}
+
+	public void setChampion_name(String champion_name) {
+		this.champion_name = champion_name;
+	}
+
+	public String getChampion_image() {
+		return champion_image;
+	}
+
+	public void setChampion_image(String champion_image) {
+		this.champion_image = champion_image;
+	}
+
 	@Override
 	public String toString() {
-		return "SummonerInGame [summonerId=" + summoner_id + ", summonerName=" + summoner_name + ", inGame=" + in_game
-				+ ", gameId=" + game_id + ", encryptionKey=" + encryption_key + "]";
+		return "SummonerInGame [summoner_id=" + summoner_id + ", summoner_name=" + summoner_name + ", in_game="
+				+ in_game + ", game_id=" + game_id + ", encryption_key=" + encryption_key + ", game_type=" + game_type
+				+ ", champion_name=" + champion_name + "]";
 	}
 
 }
