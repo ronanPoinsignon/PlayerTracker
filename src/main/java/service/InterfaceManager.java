@@ -38,7 +38,18 @@ public class InterfaceManager implements IService {
 	}
 
 	public void reset() {
-		observateurs.forEach(obs -> obs.notifyNewStringValue(""));
+		observateurs.forEach(obs -> {
+			obs.notifyNewStringValueNom("");
+			obs.notifyNewStringValuePseudo("");
+		});
+	}
+
+	public void setNomValue(String value) {
+		observateurs.forEach(obs -> obs.notifyNewStringValueNom(value));
+	}
+
+	public void setPseudoValue(String value) {
+		observateurs.forEach(obs ->	obs.notifyNewStringValuePseudo(value));
 	}
 
 	public void addObs(ObservateurInterface obs) {

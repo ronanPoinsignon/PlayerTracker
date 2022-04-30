@@ -187,9 +187,12 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	}
 
 	@Override
-	public void notifyNewStringValue(String value) {
-		System.out.println("3");
-		nom.setText("");
-		pseudo.setText("");
+	public void notifyNewStringValueNom(String value) {
+		nom.setText(value);
+	}
+
+	@Override
+	public void notifyNewStringValuePseudo(String value) {
+		pseudo.setText(value);
 	}
 }

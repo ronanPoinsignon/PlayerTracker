@@ -2,5 +2,6 @@ package modele.observer;
 
 public interface ObservateurInterface {
 
-	void notifyNewStringValue(String value);
+	void notifyNewStringValueNom(String value);
+	void notifyNewStringValuePseudo(String value);
 }
