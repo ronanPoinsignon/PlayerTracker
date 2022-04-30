@@ -1,6 +1,8 @@
 package service;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import modele.request.result.SummonerDataResult;
 import modele.request.result.SummonerInGameResult;
@@ -10,9 +12,9 @@ public class WebService implements IService {
 
 	PropertiesService propertiesService = ServiceManager.getInstance(PropertiesService.class);
 
-	private static final String GET_SUMMONER_BY_ID = "getById/";
-	private static final String GET_SUMMONER_BY_NAME = "getByName/";
-	private static final String GET_SUMMONER_GAME = "getGame/";
+	private static final String GET_SUMMONER_BY_ID = "api/summoner/getById/";
+	private static final String GET_SUMMONER_BY_NAME = "api/summoner/getByName/";
+	private static final String GET_SUMMONER_GAME = "api/summoner/getGame/";
 
 	private final String baseUrl;
 
@@ -21,6 +23,7 @@ public class WebService implements IService {
 	}
 
 	public SummonerDataResult getSummonerByName(String name) {
+		name = URLEncoder.encode(name, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
 		return getValue(SummonerDataResult.class, baseUrl + WebService.GET_SUMMONER_BY_NAME + name);
 	}
 

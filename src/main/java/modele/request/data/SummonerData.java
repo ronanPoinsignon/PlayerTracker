@@ -6,23 +6,16 @@ public class SummonerData {
 	private String name;
 	private boolean in_game;
 	private String last_game;
-	private String last_update;
-	private String id;
-	private String toString;
 
 	public SummonerData() {
 
 	}
 
-	public SummonerData(String summoner_id, String name, boolean in_game, String last_game, String last_update, String id,
-			String toString) {
+	public SummonerData(String summoner_id, String name, boolean in_game, String last_game) {
 		this.summoner_id = summoner_id;
 		this.name = name;
 		this.in_game = in_game;
 		this.last_game = last_game;
-		this.last_update = last_update;
-		this.id = id;
-		this.toString = toString;
 	}
 
 	public String getSummoner_id() {
@@ -57,34 +50,10 @@ public class SummonerData {
 		this.last_game = last_game;
 	}
 
-	public String getLast_update() {
-		return last_update;
-	}
-
-	public void setLast_update(String last_update) {
-		this.last_update = last_update;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getToString() {
-		return toString;
-	}
-
-	public void setToString(String toString) {
-		this.toString = toString;
-	}
-
 	@Override
 	public String toString() {
-		return "SummonerData [\n\t\tsummoner_id=" + summoner_id + "\n\t\tname=" + name + "\n\t\tin_game=" + in_game + "\n\t\tlast_game="
-				+ last_game + "\n\t\tlast_update=" + last_update + "\n\t\tid=" + id + "\n\t\ttoString=" + toString + "\n\t]";
+		return "SummonerData [summoner_id=" + summoner_id + ", name=" + name + ", in_game=" + in_game + ", last_game="
+				+ last_game + "]";
 	}
 
 }

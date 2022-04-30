@@ -197,14 +197,14 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	@Override
 	public void notifyData(SummonerInGame data) {
-		JoueurFx joueur = findJoueurByIdOrPseudo(data.getSummonerId(), data.getSummonerName());
+		JoueurFx joueur = findJoueurByIdOrPseudo(data.getSummoner_id(), data.getSummoner_name());
 		if(joueur == null) {
 			return;
 		}
-		joueur.setPseudo(data.getSummonerName());
-		joueur.setInGame(data.isInGame());
-		if(data.isInGame()) {
-			joueur.setPartie(new Partie(data.getGameId(), data.getEncryptionKey()));
+		joueur.setPseudo(data.getSummoner_name());
+		joueur.setInGame(data.isIn_game());
+		if(data.isIn_game()) {
+			joueur.setPartie(new Partie(data.getGame_id(), data.getEncryption_key()));
 		}
 	}
 
