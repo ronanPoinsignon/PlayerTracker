@@ -24,10 +24,7 @@ public class WebRequestRunnable implements Runnable {
 	}
 
 	private void setInfo(Joueur joueur, SummonerInGame summoner) {
-		if(joueur == null) {
-			return;
-		}
-		if(summoner == null) {
+		if(joueur == null || summoner == null) {
 			return;
 		}
 		joueur.setPseudo(summoner.getSummoner_name());
