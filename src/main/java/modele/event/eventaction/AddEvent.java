@@ -7,10 +7,12 @@ import modele.joueur.JoueurFx;
 import modele.tache.TacheCharger;
 import service.GestionnaireCommandeService;
 import service.ServiceManager;
+import service.WebRequestScheduler;
 
 public class AddEvent extends RunnableEvent {
 
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
+	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 
 	private String nom;
 	private String pseudo;
@@ -33,6 +35,7 @@ public class AddEvent extends RunnableEvent {
 			//					labelIndicateur.textProperty().unbind();
 			//					labelIndicateur.setText(joueur.getAppellation() + " trouvé");
 			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur)).executer();
+			scheduler.addJoueur(joueur);
 			//					if(!tache.getListeUrlsMauvaisLien().isEmpty() || !tache.getListeUrlsErreur().isEmpty()) {
 			//						logger.showErrorAlertVideosNonChargees(tache.getListeUrlsMauvaisLien(), tache.getListeUrlsErreur());
 			//					}
