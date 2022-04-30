@@ -99,7 +99,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		// clic droit sur une ligne
 		table.setRowFactory(tableView -> {
 			final TableRow<JoueurFx> row = new TableRow<>();
-			editItem.setOnAction(event -> onEdit(row.getItem()));
+			editItem.setOnAction(event -> onEdit(table.getSelectionModel().getSelectedItem()));
 			row.contextMenuProperty().bind(Bindings.when(row.emptyProperty())
 					.then((ContextMenu) null)
 					.otherwise(rowMenu));
@@ -108,14 +108,13 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 		joueurCourant.addListener((obs, oldValue, newValue) -> {
 			if(newValue != null) {
-				modifier.setVisible(true);
-				ajouter.setVisible(false);
-				nom.setText(newValue.getNom());
-				pseudo.setText(newValue.getPseudo());
-				return;
+				interfaceManager.setDisableModifierProperty(false);
+				interfaceManager.setDisableAjoutProperty(true);
+				interfaceManager.setNomValue(newValue.getNom());
+				interfaceManager.setPseudoValue(newValue.getPseudo());
+				interfaceManager.setDisablePseudoProperty(true);
+				interfaceManager.setVisibleModifierProperty();
 			}
-			modifier.setVisible(false);
-			ajouter.setVisible(true);
 		});
 
 		nom.setAlignment(Pos.CENTER_LEFT);
@@ -132,8 +131,12 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 		interfaceManager.addObs(this);
 		ajouter.disableProperty().bind(interfaceManager.getDisableAjoutProperty());
+		ajouter.visibleProperty().bind(interfaceManager.getVisibleAjoutProperty());
 		modifier.disableProperty().bind(interfaceManager.getDisableModifierProperty());
+		modifier.visibleProperty().bind(interfaceManager.getVisibleModifierProperty());
 		table.disableProperty().bind(interfaceManager.getDisableTableProperty());
+		interfaceManager.getDisablePseudoProperty().addListener((obs, oldV, newV) -> pseudo.setDisable(newV));
+		interfaceManager.getDisableNomProperty().addListener((obs, oldV, newV) -> nom.setDisable(newV));
 
 		removeItem.setOnAction(new ActionEventSupprimer(table));
 	}
@@ -163,7 +166,6 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	public void onEdit(JoueurFx joueur) {
 		joueurCourant.set(joueur);
-		pseudo.setDisable(true);
 	}
 
 	public void removePLayerFromTable(JoueurFx joueur) {
