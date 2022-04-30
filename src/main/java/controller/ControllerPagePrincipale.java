@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -120,17 +121,22 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	}
 
 	protected void addEvent() {
-		table.addEventHandler(KeyEvent.ANY, new ClavierEventHandler(table));
 		borderPane.addEventHandler(KeyEvent.ANY, new ClavierEventHandler(table));
 
 		interfaceManager.addObs(this);
+
 		ajouter.disableProperty().bind(interfaceManager.getDisableAjoutProperty());
 		ajouter.visibleProperty().bind(interfaceManager.getVisibleAjoutProperty());
+
 		modifier.disableProperty().bind(interfaceManager.getDisableModifierProperty());
 		modifier.visibleProperty().bind(interfaceManager.getVisibleModifierProperty());
+
 		table.disableProperty().bind(interfaceManager.getDisableTableProperty());
+
 		interfaceManager.getDisablePseudoProperty().addListener((obs, oldV, newV) -> pseudo.setDisable(newV));
 		interfaceManager.getDisableNomProperty().addListener((obs, oldV, newV) -> nom.setDisable(newV));
+		pseudo.setOnAction(ActionEvent::consume);
+		nom.setOnAction(ActionEvent::consume);
 
 		removeItem.setOnAction(new ActionEventSupprimer(table));
 	}

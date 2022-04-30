@@ -36,7 +36,7 @@
       </GridPane>
    </bottom>
    <center>
-      <TableView fx:id="table" focusTraversable="false" prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="table" prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="colonneNom" prefWidth="75.0" text="Nom" />
           <TableColumn fx:id="colonnePseudo" prefWidth="75.0" text="Pseudo" />
