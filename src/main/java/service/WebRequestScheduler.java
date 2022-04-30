@@ -29,4 +29,8 @@ public class WebRequestScheduler implements IService {
 	public void stopScheduler() {
 		scheduler.shutdownNow();
 	}
+
+	public void executeNow() {
+		scheduler.execute(runnable);
+	}
 }
