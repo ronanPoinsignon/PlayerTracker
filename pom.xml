@@ -65,6 +65,63 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin> 
+			<plugin>
+          		<groupId>com.akathist.maven.plugins.launch4j</groupId>
+          		<artifactId>launch4j-maven-plugin</artifactId>
+          		<executions>
+                	<execution>
+                  		<id>l4j-gui</id>
+                  		<phase>package</phase>
+                  		<goals><goal>launch4j</goal></goals>
+                  		<configuration>
+		                    <headerType>gui</headerType>
+		                    <outfile>target/PlayerTracker.exe</outfile>
+		                    <jar>target/PlayerTracker-jar-with-dependencies.jar</jar>
+		                    <errTitle>PlayerTracker</errTitle>
+		                    <classPath>
+                      			<mainClass>appli.App</mainClass>
+                    		</classPath>
+		                    <jre>
+		                      <minVersion>1.5.0</minVersion>
+		                    </jre>
+		                    <versionInfo>
+		                      	<fileVersion>1.0.0.0</fileVersion>
+		                      	<txtFileVersion>txt file version?</txtFileVersion>
+		                      	<fileDescription>a description</fileDescription>
+		                      	<copyright>my copyright</copyright>
+		                      	<productVersion>1.0.0.0</productVersion>
+		                      	<txtProductVersion>txt product version</txtProductVersion>
+		                      	<productName>E-N-C-C</productName>
+		                      	<internalName>ccne</internalName>
+		                      	<originalFilename>PlayerTracker.exe</originalFilename>
+                    		</versionInfo>
+                  		</configuration>
+                	</execution>
+          		</executions>
+        	</plugin>
+         <plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <configuration>
+        <archive>
+          <manifest>
+            <mainClass>appli.App</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+      </configuration>
+      <executions>
+        <execution>
+          <id>make-assembly</id> 
+          <phase>package</phase> <!-- packaging phase -->
+          <goals>
+            <goal>single</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+
 		</plugins>
 	</build>
 </project>
