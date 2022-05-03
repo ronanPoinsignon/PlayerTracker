@@ -13,7 +13,7 @@ import service.TrayIconService;
 public class AppliFx extends Application {
 
 	private FileManager fm = ServiceManager.getInstance(FileManager.class);
-	private TrayIconService notificationService = ServiceManager.getInstance(TrayIconService.class);
+	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
 
 	public static void start(String[] args) {
 		Application.launch(args);
@@ -28,7 +28,7 @@ public class AppliFx extends Application {
 		Parent sceneVideo = loader.load();
 		var scene = new Scene(sceneVideo);
 		stage.setScene(scene);
-		notificationService.createFXTrayIcon(stage);
+		trayIconService.createFXTrayIcon(stage);
 		stage.show();
 	}
 

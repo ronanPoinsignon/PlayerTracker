@@ -6,8 +6,9 @@ import java.util.List;
 
 import javafx.scene.control.TableView;
 import modele.joueur.JoueurFx;
-import service.NotificationService;
+import service.AlertFxService;
 import service.ServiceManager;
+import service.TrayIconService;
 import service.WebRequestScheduler;
 
 /**
@@ -17,8 +18,9 @@ import service.WebRequestScheduler;
  */
 public class CommandeSuppression extends CommandeListe {
 
-	private NotificationService notificationService = ServiceManager.getInstance(NotificationService.class);
+	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
 	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
+	private AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 
 	private List<Integer> listeIndex = new ArrayList<>();
 
@@ -34,7 +36,7 @@ public class CommandeSuppression extends CommandeListe {
 	public boolean executer() {
 		for(JoueurFx joueur : listeJoueurs) {
 			listeIndex.add(table.getItems().indexOf(joueur));
-			notificationService.unbind(joueur);
+			trayIconService.unbind(joueur);
 			scheduler.removeJoueur(joueur);
 		}
 		List<JoueurFx> listeVideosNonPresentes = commandeUtil.removeAll(table, listeJoueurs);
@@ -49,10 +51,10 @@ public class CommandeSuppression extends CommandeListe {
 			try {
 				JoueurFx joueur = listeJoueurs.get(i);
 				commandeUtil.add(table, joueur, index);
-				notificationService.bind(joueur);
+				trayIconService.bind(joueur);
 			} catch (UnsupportedOperationException | ClassCastException | NullPointerException
 					| IllegalArgumentException | JoueurDejaPresentException e) {
-				// TODO Auto-generated catch block
+				alerteService.alert(e);
 				e.printStackTrace();
 			}
 		}

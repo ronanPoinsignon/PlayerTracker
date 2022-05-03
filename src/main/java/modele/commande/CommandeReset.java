@@ -5,8 +5,8 @@ import java.util.List;
 
 import javafx.scene.control.TableView;
 import modele.joueur.JoueurFx;
-import service.NotificationService;
 import service.ServiceManager;
+import service.TrayIconService;
 
 /**
  * Commande permettant de changer la table existante en une nouvelle.
@@ -15,7 +15,7 @@ import service.ServiceManager;
  */
 public class CommandeReset extends CommandeListe {
 
-	private NotificationService notificationService = ServiceManager.getInstance(NotificationService.class);
+	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
 	List<JoueurFx> listeJoueursSupprimes = new ArrayList<>();
 
 	public CommandeReset(TableView<JoueurFx> table, List<JoueurFx> listeVideos) {
@@ -29,7 +29,7 @@ public class CommandeReset extends CommandeListe {
 		}
 		listeJoueursSupprimes = commandeUtil.removeAll(table);
 		commandeUtil.addAll(table, listeJoueurs);
-		listeJoueursSupprimes.forEach(notificationService::unbind);
+		listeJoueursSupprimes.forEach(trayIconService::unbind);
 		return !listeJoueurs.isEmpty();
 	}
 
@@ -37,7 +37,7 @@ public class CommandeReset extends CommandeListe {
 	public boolean annuler() {
 		commandeUtil.removeAll(table);
 		commandeUtil.addAll(table, listeJoueursSupprimes);
-		listeJoueursSupprimes.forEach(notificationService::bind);
+		listeJoueursSupprimes.forEach(trayIconService::bind);
 		return !listeJoueurs.isEmpty();
 	}
 
