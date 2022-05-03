@@ -68,6 +68,7 @@
 			<plugin>
           		<groupId>com.akathist.maven.plugins.launch4j</groupId>
           		<artifactId>launch4j-maven-plugin</artifactId>
+          		<version>2.1.2</version>
           		<executions>
                 	<execution>
                   		<id>l4j-gui</id>
@@ -99,28 +100,6 @@
                 	</execution>
           		</executions>
         	</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-	      		<configuration>
-		        	<archive>
-			          	<manifest>
-			            	<mainClass>appli.App</mainClass>
-			          	</manifest>
-		        	</archive>
-		        	<descriptorRefs>
-		          		<descriptorRef>jar-with-dependencies</descriptorRef>
-		        	</descriptorRefs>
-	      		</configuration>
-	      		<executions>
-		        	<execution>
-		          	<id>make-assembly</id>
-		          	<phase>package</phase> <!-- packaging phase -->
-		          	<goals>
-		            	<goal>single</goal>
-		          	</goals>
-		        	</execution>
-	      		</executions>
-    		</plugin>
 		</plugins>
 	</build>
 </project>
