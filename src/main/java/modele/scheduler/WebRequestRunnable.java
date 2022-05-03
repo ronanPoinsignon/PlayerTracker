@@ -29,10 +29,12 @@ public class WebRequestRunnable implements Runnable {
 			return;
 		}
 		joueur.setPseudo(summoner.getSummoner_name());
-		joueur.setInGame(summoner.isIn_game());
 		if(summoner.isIn_game()) {
 			joueur.setPartie(new Partie(summoner.getGame_id(), summoner.getEncryption_key(), new Champion(summoner.getChampion_name(), summoner.getChampion_image())));
 		}
+		// à faire en dernier pour ne déclencher le service de notification uniquement lorsque
+		// toutes les informations du joueurs ont été mises à jour
+		joueur.setInGame(summoner.isIn_game());
 	}
 
 	public void add(Joueur joueur) {
