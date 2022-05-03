@@ -8,12 +8,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import service.FileManager;
 import service.ServiceManager;
-import service.WebRequestScheduler;
+import service.TrayIconService;
 
 public class AppliFx extends Application {
 
 	private FileManager fm = ServiceManager.getInstance(FileManager.class);
-	private WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
+	private TrayIconService notificationService = ServiceManager.getInstance(TrayIconService.class);
 
 	public static void start(String[] args) {
 		Application.launch(args);
@@ -28,12 +28,8 @@ public class AppliFx extends Application {
 		Parent sceneVideo = loader.load();
 		var scene = new Scene(sceneVideo);
 		stage.setScene(scene);
-		stage.setOnCloseRequest(evt -> onCLose());
+		notificationService.createFXTrayIcon(stage);
 		stage.show();
-	}
-
-	private void onCLose() {
-		scheduler.stopScheduler();
 	}
 
 }
