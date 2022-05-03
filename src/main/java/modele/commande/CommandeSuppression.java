@@ -52,12 +52,13 @@ public class CommandeSuppression extends CommandeListe {
 				JoueurFx joueur = listeJoueurs.get(i);
 				commandeUtil.add(table, joueur, index);
 				trayIconService.bind(joueur);
-			} catch (UnsupportedOperationException | ClassCastException | NullPointerException
+				scheduler.addJoueur(joueur);
+			} catch (UnsupportedOperationException | ClassCastException
 					| IllegalArgumentException | JoueurDejaPresentException e) {
 				alerteService.alert(e);
-				e.printStackTrace();
 			}
 		}
+		scheduler.executeNow();
 		listeIndex = new ArrayList<>();
 		return !listeJoueurs.isEmpty();
 	}

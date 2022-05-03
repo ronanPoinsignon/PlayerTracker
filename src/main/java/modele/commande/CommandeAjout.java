@@ -6,6 +6,7 @@ import javafx.scene.control.TableView;
 import modele.joueur.JoueurFx;
 import service.TrayIconService;
 import service.ServiceManager;
+import service.WebRequestScheduler;
 
 /**
  * Classe permettant l'ajout de vidéos à la liste.
@@ -15,6 +16,7 @@ import service.ServiceManager;
 public class CommandeAjout extends CommandeListe {
 
 	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
+	private WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 
 	public CommandeAjout(TableView<JoueurFx> table, List<JoueurFx> listeJoueurs) {
 		super(table, listeJoueurs);
@@ -29,6 +31,8 @@ public class CommandeAjout extends CommandeListe {
 		List<JoueurFx> listeJoueursDejaPresentes = commandeUtil.addAll(table, listeJoueurs);
 		listeJoueurs.removeAll(listeJoueursDejaPresentes);
 		listeJoueurs.forEach(trayIconService::bind);
+		listeJoueurs.forEach(scheduler::addJoueur);
+		scheduler.executeNow();
 		return !listeJoueurs.isEmpty(); //si cette liste est vide, aucun joueur n'a donc été ajouté et cette commande est donc inutile
 	}
 
@@ -36,6 +40,7 @@ public class CommandeAjout extends CommandeListe {
 	public boolean annuler() {
 		commandeUtil.removeAll(table, listeJoueurs);
 		listeJoueurs.forEach(trayIconService::unbind);
+		listeJoueurs.forEach(scheduler::removeJoueur);
 		return !listeJoueurs.isEmpty();
 	}
 
