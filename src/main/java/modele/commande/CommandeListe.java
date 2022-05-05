@@ -5,6 +5,8 @@ import java.util.List;
 
 import javafx.scene.control.TableView;
 import modele.joueur.JoueurFx;
+import service.SaveService;
+import service.ServiceManager;
 
 /**
  * Classe abstraite correspondant à toutes les commandes devant accéder à la table en elle-même.
@@ -14,6 +16,7 @@ import modele.joueur.JoueurFx;
 public abstract class CommandeListe extends Commande {
 
 	protected List<JoueurFx> listeJoueurs;
+	protected SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
 	protected CommandeListe(TableView<JoueurFx> table, List<JoueurFx> listeJoueurs) {
 		super(table);

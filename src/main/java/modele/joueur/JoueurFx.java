@@ -15,6 +15,8 @@ import modele.joueur.etat.NonConnecte;
 
 public class JoueurFx extends Joueur {
 
+	private static final long serialVersionUID = 109145397335591218L;
+	
 	private StringProperty idProperty;
 	private StringProperty nomProperty;
 	private StringProperty pseudoProperty;

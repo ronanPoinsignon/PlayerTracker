@@ -1,6 +1,8 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
@@ -21,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import modele.commande.CommandeAjout;
 import modele.commande.CommandeSuppression;
 import modele.event.action.ActionEventSupprimer;
 import modele.event.clavier.ClavierEventHandler;
@@ -28,8 +31,10 @@ import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.observer.ObservateurInterface;
+import service.AlertFxService;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
+import service.LoadService;
 import service.ServiceManager;
 
 public class ControllerPagePrincipale implements Initializable, ObservateurInterface {
@@ -67,9 +72,22 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
+	private LoadService loadService = ServiceManager.getInstance(LoadService.class);
+	private AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		List<Joueur> joueurs = loadService.load();
+		joueurs.forEach((joueur) -> {
+			try {
+				JoueurFx joueurFx = new JoueurFx(joueur);
+				gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueurFx)).executer();
+			} catch (IOException e) {
+				alertService.alert(e);
+			}
+		});
+		
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
 		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudoProperty());
 		colonneId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
