@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -153,8 +152,14 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 		interfaceManager.getDisablePseudoProperty().addListener((obs, oldV, newV) -> pseudo.setDisable(newV));
 		interfaceManager.getDisableNomProperty().addListener((obs, oldV, newV) -> nom.setDisable(newV));
-		pseudo.setOnAction(ActionEvent::consume);
-		nom.setOnAction(ActionEvent::consume);
+		pseudo.setOnAction(evt -> {
+			evt.consume();
+			onAjout();
+		});
+		nom.setOnAction(evt -> {
+			evt.consume();
+			pseudo.requestFocus();
+		});
 
 		removeItem.setOnAction(new ActionEventSupprimer(table));
 	}
