@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 import modele.exception.AException;
 import modele.exception.ARuntimeException;
 import modele.exception.IException;
@@ -13,6 +14,7 @@ import modele.joueur.Joueur;
 public class AlertFxService implements IService {
 
 	TrayIconService trayIconService;
+	FileManager fm;
 
 	public void alert(Exception exception) {
 		try {
@@ -32,6 +34,8 @@ public class AlertFxService implements IService {
 			alert.setTitle("PlayerTracker");
 			alert.setHeaderText(e.getMessage());
 			alert.setContentText(e.getDescription());
+			var stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
 
 			alert.showAndWait();
 			trayIconService.quitter();
@@ -44,6 +48,8 @@ public class AlertFxService implements IService {
 			alert.setTitle("PlayerTracker");
 			alert.setHeaderText("Une erreur s'est produite.");
 			alert.setContentText("Veuillez redémarrer l'application.");
+			var stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
 
 			alert.showAndWait();
 			trayIconService.quitter();
@@ -78,5 +84,6 @@ public class AlertFxService implements IService {
 	@Override
 	public void init() {
 		trayIconService = ServiceManager.getInstance(TrayIconService.class);
+		fm = ServiceManager.getInstance(FileManager.class);
 	}
 }
