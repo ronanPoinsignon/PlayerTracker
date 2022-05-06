@@ -14,7 +14,7 @@ public class FileManager implements IService {
 	private Map<String, File> fileMap = new HashMap<>();
 	private Map<String, Image> imageMap = new HashMap<>();
 
-	public File getFileFromResources(String fileName) throws IOException {
+	public File getFileFromResources(String fileName) {
 		var file = fileMap.get(fileName);
 		if(file != null) {
 			return file;
@@ -24,7 +24,7 @@ public class FileManager implements IService {
 		return file;
 	}
 
-	public Image getImageFromResource(String imageName) throws IOException {
+	public Image getImageFromResource(String imageName) {
 		var image = imageMap.get(imageName);
 		if(image != null) {
 			return image;
@@ -34,10 +34,15 @@ public class FileManager implements IService {
 		return image;
 	}
 
-	private File getFileFromResource(String fileName) throws IOException {
-		var f = File.createTempFile("file", ""); //cree un fichier temporaire pour ne pas le sauvegarder sur le pc
-		f.deleteOnExit();
-		copyInputStreamToFile(getInputStreamFromResource(fileName), f);
+	private File getFileFromResource(String fileName) {
+		File f = null;
+		try {
+			f = File.createTempFile("file", "");
+			f.deleteOnExit();
+			copyInputStreamToFile(getInputStreamFromResource(fileName), f);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		return f;
 	}
 

@@ -10,7 +10,7 @@ import modele.joueur.JoueurFx;
  * @author ronan
  *
  */
-public class CommandeInversion extends Commande {
+public class CommandeInversion extends CommandeTable {
 
 	int inv1;
 	int inv2;

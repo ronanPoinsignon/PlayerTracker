@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import modele.commande.CommandeAjout;
+import modele.commande.CommandeModifier;
 import modele.commande.CommandeSuppression;
 import modele.event.action.ActionEventSupprimer;
 import modele.event.clavier.ClavierEventHandler;
@@ -172,11 +173,9 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		if(joueur == null) {
 			return;
 		}
-		String newPseudo = pseudo.getText();
 		String newNom = nom.getText();
 
-		joueur.setNom(newNom);
-		joueur.setPseudo(newPseudo);
+		gestionnaireCommandeService.addCommande(new CommandeModifier(joueur, newNom)).executer();
 
 		reset();
 	}

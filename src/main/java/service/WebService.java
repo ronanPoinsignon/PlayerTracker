@@ -10,17 +10,13 @@ import modele.web.request.ClientWeb;
 
 public class WebService implements IService {
 
-	PropertiesService propertiesService = ServiceManager.getInstance(PropertiesService.class);
+	PropertiesService propertiesService;
 
 	private static final String GET_SUMMONER_BY_ID = "api/summoner/getById/";
 	private static final String GET_SUMMONER_BY_NAME = "api/summoner/getByName/";
 	private static final String GET_SUMMONER_GAME = "api/summoner/getGame/";
 
-	private final String baseUrl;
-
-	public WebService() {
-		baseUrl = propertiesService.get("base_url_api");
-	}
+	private String baseUrl;
 
 	public SummonerDataResult getSummonerByName(String name) {
 		name = URLEncoder.encode(name, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
@@ -45,5 +41,11 @@ public class WebService implements IService {
 
 	private <T> ClientWeb<T> getClient(Class<T> clazz){
 		return new ClientWeb<>(clazz);
+	}
+
+	@Override
+	public void init() {
+		propertiesService = ServiceManager.getInstance(PropertiesService.class);
+		baseUrl = propertiesService.get("base_url_api");
 	}
 }

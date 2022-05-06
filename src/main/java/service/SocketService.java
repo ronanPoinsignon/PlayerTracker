@@ -9,7 +9,7 @@ import modele.web.socket.SocketClient;
 
 public class SocketService implements IService {
 
-	PropertiesService propertiesService = ServiceManager.getInstance(PropertiesService.class);
+	PropertiesService propertiesService;
 
 	private List<Observateur> observateurs = new ArrayList<>();
 
@@ -52,6 +52,11 @@ public class SocketService implements IService {
 
 	public void setConnected(boolean isOnline) {
 		System.out.println("en ligne : " + isOnline);
+	}
+
+	@Override
+	public void init() {
+		propertiesService = ServiceManager.getInstance(PropertiesService.class);
 	}
 
 }
