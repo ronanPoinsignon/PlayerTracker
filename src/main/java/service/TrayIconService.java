@@ -43,8 +43,10 @@ public class TrayIconService implements IService {
 
 	public void quitter() {
 		scheduler.stopScheduler();
-		trayIcon.removeMenuItem(miExit);
-		trayIcon.clear();
+		if(trayIcon != null) {
+			trayIcon.removeMenuItem(miExit);
+			trayIcon.clear();
+		}
 		Platform.exit();
 		System.exit(0);
 	}
