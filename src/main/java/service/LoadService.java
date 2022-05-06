@@ -1,32 +1,36 @@
 package service;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 import modele.joueur.Joueur;
+import service.exception.SauvegardeCorrompueException;
 
 public class LoadService implements IService {
-	private FileManager fm = ServiceManager.getInstance(FileManager.class);
 	private AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
 	
 	public List<Joueur> load() {
 		File fichier = null;
 		List<Joueur> joueurs = new ArrayList<>();
 
-		//fichier = fm.getFileFromResources("joueurs.txt");
 		fichier = new File("joueurs.txt");
 		try {
 			fichier.createNewFile();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (IOException e) {
+			alertService.alert(e);
 		}
 		
-		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichier))) {
+		if(fichier.length() == 0)
+			return joueurs;
+		
+		try (FileInputStream is = new FileInputStream(fichier); ObjectInputStream ois = new ObjectInputStream(is)) {
 			Joueur joueur = null;
 			int size = ois.readInt();
 			
@@ -37,7 +41,17 @@ public class LoadService implements IService {
 			
 			return joueurs;
 			
-		} catch (IOException|ClassNotFoundException e) {
+		} catch (ClassNotFoundException|EOFException|StreamCorruptedException e) {
+			alertService.alert(new SauvegardeCorrompueException());
+			
+			try {
+				Files.delete(fichier.toPath());
+			} catch (IOException e1) {
+				alertService.alert(e1);
+			}
+			
+			return new ArrayList<>();
+		} catch (IOException e) {
 			alertService.alert(e);
 			return new ArrayList<>();
 		}

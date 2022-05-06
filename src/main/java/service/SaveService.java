@@ -28,13 +28,11 @@ public class SaveService implements IService {
 	public void save() {		
 		File fichier = null;
 
-		//fichier = fm.getFileFromResources("joueurs.txt");
 		fichier = new File("joueurs.txt");
 		try {
 			fichier.createNewFile();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (IOException e) {
+			alertService.alert(e);
 		}
 		
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier))) {
