@@ -1,6 +1,9 @@
 package modele.event.eventaction.exception;
 
-public class JoueurDejaPresentException extends RuntimeException {
+import modele.exception.ARuntimeException;
+import modele.exception.IException;
+
+public class JoueurDejaPresentException extends ARuntimeException implements IException {
 
 	/**
 	 *
@@ -15,5 +18,10 @@ public class JoueurDejaPresentException extends RuntimeException {
 
 	public JoueurDejaPresentException(String pseudo) {
 		super(pseudo + " est déjà présent");
+	}
+
+	@Override
+	public String getDescription() {
+		return "Vous ne pouvez pas ajouter un joueur plusieurs fois.";
 	}
 }

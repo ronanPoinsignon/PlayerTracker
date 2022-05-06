@@ -1,6 +1,8 @@
 package appli;
 
-public class ApplicationDejaEnCoursException extends Exception {
+import modele.exception.AException;
+
+public class ApplicationDejaEnCoursException extends AException {
 
 	/**
 	 *
@@ -9,5 +11,10 @@ public class ApplicationDejaEnCoursException extends Exception {
 
 	public ApplicationDejaEnCoursException() {
 		super("L'application est déjà en cours d'exécution.");
+	}
+
+	@Override
+	public String getDescription() {
+		return "Regardez dans vos icones windows pour y trouver l'application.";
 	}
 }

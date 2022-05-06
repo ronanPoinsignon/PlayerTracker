@@ -1,13 +1,15 @@
 package modele.web.request;
 
-public class DataNotFoundException extends RuntimeException {
+import modele.exception.ARuntimeException;
+
+public class DataNotFoundException extends ARuntimeException {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -5115305139178777898L;
 
-	private static final String MESSAGE = "Aucun résultat pour la requête.";
+	private static final String MESSAGE = "Le joueur n'existe pas";
 
 	public DataNotFoundException() {
 		super(DataNotFoundException.MESSAGE);
@@ -17,7 +19,8 @@ public class DataNotFoundException extends RuntimeException {
 		super(msg);
 	}
 
-	public DataNotFoundException(Exception e) {
-		super(e);
+	@Override
+	public String getDescription() {
+		return "Aucun résultat pour le pseudo donné.";
 	}
 }

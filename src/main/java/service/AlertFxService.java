@@ -2,13 +2,13 @@ package service;
 
 import java.util.List;
 
-import appli.ApplicationDejaEnCoursException;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import modele.exception.AException;
+import modele.exception.ARuntimeException;
+import modele.exception.IException;
 import modele.joueur.Joueur;
-import modele.web.request.DataNotFoundException;
-import service.exception.SauvegardeCorrompueException;
 
 public class AlertFxService implements IService {
 
@@ -18,62 +18,36 @@ public class AlertFxService implements IService {
 		try {
 			throw exception;
 		}
-		catch(DataNotFoundException e) {
-			showAlertFrom(e);
-		}
-		catch(ApplicationDejaEnCoursException e) {
-			showAlertFrom(e);
-		}
-		catch(SauvegardeCorrompueException e) {
-			showAlertFrom(e);
+		catch(AException | ARuntimeException e) {
+			showWarningAlert(e);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			showAlertFrom(e);
 		}
 	}
 
-	private void showAlertFrom(ApplicationDejaEnCoursException e) {
+	private void showWarningAlert(IException e) {
 		Platform.runLater(() -> {
 			var alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Application déjà en cours");
-			alert.setHeaderText("L'application est déjà en cours d'exécution.");
-			alert.setContentText("Regardez dans vos icones windows pour y trouver l'application.");
+			alert.setTitle("PlayerTracker");
+			alert.setHeaderText(e.getMessage());
+			alert.setContentText(e.getDescription());
 
 			alert.showAndWait();
 			trayIconService.quitter();
 		});
 	}
-	
-	private void showAlertFrom(SauvegardeCorrompueException e) {
+
+	private void showAlertFrom(Exception e) {
 		Platform.runLater(() -> {
-			var alert = new Alert(AlertType.WARNING);
+			var alert = new Alert(AlertType.ERROR);
 			alert.setTitle("PlayerTracker");
-			alert.setHeaderText("Impossible de charger la sauvegarde");
-			alert.setContentText(e.getMessage());
+			alert.setHeaderText("Une erreur s'est produite.");
+			alert.setContentText("Veuillez redémarrer l'application.");
 
 			alert.showAndWait();
+			trayIconService.quitter();
 		});
-	}
-
-
-	/**
-	 * Affiche une {@link Alert} pour avertir l'utilisateur que le joueur donné
-	 * à l'application n'existe pas.
-	 */
-	private void showAlertFrom(DataNotFoundException e) {
-		Platform.runLater(() -> {
-			var alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Joueur non trouvé");
-			alert.setHeaderText("Le joueur n'existe pas");
-			alert.setContentText("Le joueur donné n'existe pas.");
-
-			alert.showAndWait();
-		});
-	}
-
-	private void showAlertFrom(Throwable e) {
-		System.out.println("erreur :");
-		e.printStackTrace();
 	}
 
 	/**
