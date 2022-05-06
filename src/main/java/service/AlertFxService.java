@@ -2,6 +2,7 @@ package service;
 
 import java.util.List;
 
+import appli.ApplicationDejaEnCoursException;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -10,6 +11,8 @@ import modele.web.request.DataNotFoundException;
 
 public class AlertFxService implements IService {
 
+	TrayIconService trayIconService;
+
 	public void alert(Exception exception) {
 		try {
 			throw exception;
@@ -17,9 +20,24 @@ public class AlertFxService implements IService {
 		catch(DataNotFoundException e) {
 			showAlertFrom(e);
 		}
+		catch(ApplicationDejaEnCoursException e) {
+			showAlertFrom(e);
+		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void showAlertFrom(ApplicationDejaEnCoursException e) {
+		Platform.runLater(() -> {
+			var alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Application déjà en cours");
+			alert.setHeaderText("L'application est déjà en cours d'exécution.");
+			alert.setContentText("Regardez dans vos icones windows pour y trouver l'application.");
+
+			alert.showAndWait();
+			trayIconService.quitter();
+		});
 	}
 
 
@@ -66,5 +84,10 @@ public class AlertFxService implements IService {
 
 			alert.showAndWait();
 		});
+	}
+
+	@Override
+	public void init() {
+		trayIconService = ServiceManager.getInstance(TrayIconService.class);
 	}
 }
