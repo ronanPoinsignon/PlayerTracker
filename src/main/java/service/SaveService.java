@@ -11,21 +11,21 @@ import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 
 public class SaveService implements IService {
+
 	private List<Joueur> joueurs = new ArrayList<>();
-	private FileManager fm = ServiceManager.getInstance(FileManager.class);
 	private AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
-	
+
 	public void addJoueur(Joueur joueur) {
 		joueurs.add(joueur);
 		save();
 	}
-	
+
 	public void removeJoueur(Joueur joueur) {
 		joueurs.remove(joueur);
 		save();
 	}
-	
-	public void save() {		
+
+	public void save() {
 		File fichier = null;
 
 		fichier = new File("joueurs.txt");
@@ -34,22 +34,21 @@ public class SaveService implements IService {
 		} catch (IOException e) {
 			alertService.alert(e);
 		}
-		
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fichier))) {
+
+		try (var oos = new ObjectOutputStream(new FileOutputStream(fichier))) {
 			oos.writeInt(joueurs.size());
-			
+
 			for(Joueur joueur : joueurs) {
-				if(joueur instanceof JoueurFx)
+				if(joueur instanceof JoueurFx) {
 					joueur = ((JoueurFx) joueur).getJoueur();
-				
+				}
+
 				oos.writeObject(joueur);
 			}
-			
-			oos.close();
 		} catch (IOException e) {
 			alertService.alert(e);
 		}
-				
+
 	}
 
 }
