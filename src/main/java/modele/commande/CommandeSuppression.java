@@ -38,6 +38,7 @@ public class CommandeSuppression extends CommandeListe {
 			listeIndex.add(table.getItems().indexOf(joueur));
 			trayIconService.unbind(joueur);
 			scheduler.removeJoueur(joueur);
+			saveService.removeJoueur(joueur);
 		}
 		List<JoueurFx> listeVideosNonPresentes = commandeUtil.removeAll(table, listeJoueurs);
 		listeJoueurs.removeAll(listeVideosNonPresentes);
@@ -53,6 +54,7 @@ public class CommandeSuppression extends CommandeListe {
 				commandeUtil.add(table, joueur, index);
 				trayIconService.bind(joueur);
 				scheduler.addJoueur(joueur);
+				saveService.addJoueur(joueur);
 			} catch (UnsupportedOperationException | ClassCastException
 					| IllegalArgumentException | JoueurDejaPresentException e) {
 				alerteService.alert(e);

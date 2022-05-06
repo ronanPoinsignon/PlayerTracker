@@ -1,12 +1,16 @@
 package modele.joueur;
 
-public class Joueur {
+import java.io.Serializable;
 
+public class Joueur implements Serializable {
+
+	private static final long serialVersionUID = -8240099841397326986L;
+	
 	protected String playerId;
 	protected String nom;
 	protected String pseudo;
-	protected boolean inGame;
-	protected Partie partie;
+	protected transient boolean inGame;
+	protected transient Partie partie;
 
 	public Joueur(String nom, String pseudo) {
 		playerId = "";
@@ -58,4 +62,10 @@ public class Joueur {
 	public String getAppellation() {
 		return nom == null || nom.trim().isEmpty() ? pseudo : nom;
 	}
+
+	@Override
+	public String toString() {
+		return "Joueur [playerId=" + playerId + ", nom=" + nom + ", pseudo=" + pseudo + "]";
+	}
+	
 }

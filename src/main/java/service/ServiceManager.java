@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import service.exception.ServiceCreationFailedException;
+
 /**
  * Cette classe a pour but de faire une gestion de services pouvant être utilisés n'importe où dans l'application
  * en permettant l'unicité de chaque service.

@@ -37,12 +37,12 @@ public class WebRequestRunnable implements Runnable {
 		joueur.setInGame(summoner.isIn_game());
 	}
 
-	public void add(Joueur joueur) {
-		joueurs.add(joueur);
+	public boolean add(Joueur joueur) {
+		return joueurs.add(joueur);
 	}
 
-	public void remove(Joueur joueur) {
-		joueurs.remove(joueur);
+	public boolean remove(Joueur joueur) {
+		return joueurs.remove(joueur);
 	}
 
 }

@@ -34,6 +34,7 @@ public class CommandeReset extends CommandeListe {
 		commandeUtil.addAll(table, listeJoueurs);
 		listeJoueursSupprimes.forEach(trayIconService::unbind);
 		listeJoueursSupprimes.forEach(scheduler::removeJoueur);
+		listeJoueursSupprimes.forEach(saveService::removeJoueur);
 		return !listeJoueurs.isEmpty();
 	}
 
@@ -43,6 +44,7 @@ public class CommandeReset extends CommandeListe {
 		commandeUtil.addAll(table, listeJoueursSupprimes);
 		listeJoueursSupprimes.forEach(trayIconService::bind);
 		listeJoueursSupprimes.forEach(scheduler::addJoueur);
+		listeJoueursSupprimes.forEach(saveService::addJoueur);
 		return !listeJoueurs.isEmpty();
 	}
 

@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import modele.joueur.Joueur;
 import modele.web.request.DataNotFoundException;
+import service.exception.SauvegardeCorrompueException;
 
 public class AlertFxService implements IService {
 
@@ -23,12 +24,15 @@ public class AlertFxService implements IService {
 		catch(ApplicationDejaEnCoursException e) {
 			showAlertFrom(e);
 		}
+		catch(SauvegardeCorrompueException e) {
+			showAlertFrom(e);
+		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void showAlertFrom(ApplicationDejaEnCoursException e) {
+	private void showAlertFrom(ApplicationDejaEnCoursException e) {
 		Platform.runLater(() -> {
 			var alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Application déjà en cours");
@@ -39,13 +43,24 @@ public class AlertFxService implements IService {
 			trayIconService.quitter();
 		});
 	}
+	
+	private void showAlertFrom(SauvegardeCorrompueException e) {
+		Platform.runLater(() -> {
+			var alert = new Alert(AlertType.WARNING);
+			alert.setTitle("PlayerTracker");
+			alert.setHeaderText("Impossible de charger la sauvegarde");
+			alert.setContentText(e.getMessage());
+
+			alert.showAndWait();
+		});
+	}
 
 
 	/**
 	 * Affiche une {@link Alert} pour avertir l'utilisateur que le joueur donné
 	 * à l'application n'existe pas.
 	 */
-	public void showAlertFrom(DataNotFoundException e) {
+	private void showAlertFrom(DataNotFoundException e) {
 		Platform.runLater(() -> {
 			var alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Joueur non trouvé");
@@ -56,7 +71,7 @@ public class AlertFxService implements IService {
 		});
 	}
 
-	public void showAlertFrom(Throwable e) {
+	private void showAlertFrom(Throwable e) {
 		System.out.println("erreur :");
 		e.printStackTrace();
 	}
