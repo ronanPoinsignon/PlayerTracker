@@ -14,13 +14,17 @@ public class FileManager implements IService {
 	private Map<String, File> fileMap = new HashMap<>();
 	private Map<String, Image> imageMap = new HashMap<>();
 
-	public File getFileFromResources(String fileName) throws IOException {
+	public File getFileFromResources(String fileName) {
 		var file = fileMap.get(fileName);
 		if(file != null) {
 			return file;
 		}
-		file = getFileFromResource(fileName);
-		fileMap.put(fileName, file);
+		try {
+			file = getFileFromResource(fileName);
+			fileMap.put(fileName, file);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		return file;
 	}
 

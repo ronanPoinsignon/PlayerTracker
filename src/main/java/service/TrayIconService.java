@@ -17,9 +17,9 @@ import modele.joueur.JoueurFx;
 
 public class TrayIconService implements IService {
 
-	private FileManager fm = ServiceManager.getInstance(FileManager.class);
-	private AlertFxService alertFxService = ServiceManager.getInstance(AlertFxService.class);
-	private WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
+	private FileManager fm;
+	private AlertFxService alertFxService;
+	private WebRequestScheduler scheduler;
 
 	private HashMap<JoueurFx, BooleanProperty> binds = new HashMap<>();
 
@@ -80,5 +80,12 @@ public class TrayIconService implements IService {
 		var t = new Thread(() -> trayIcon.showMessage("Player tracker", joueur.getAppellation() + " est en jeu"));
 		t.setDaemon(true);
 		t.start();
+	}
+
+	@Override
+	public void init() {
+		fm = ServiceManager.getInstance(FileManager.class);
+		alertFxService = ServiceManager.getInstance(AlertFxService.class);
+		scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 	}
 }

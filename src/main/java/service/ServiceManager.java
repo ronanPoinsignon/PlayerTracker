@@ -25,6 +25,7 @@ public abstract class ServiceManager {
 			try {
 				service = clazz.getDeclaredConstructor().newInstance();
 				ServiceManager.services.put(clazz, service);
+				service.init();
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				throw new ServiceCreationFailedException(e);
 			}
