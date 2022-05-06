@@ -1,13 +1,11 @@
 package modele.joueur.etat;
 
-import java.io.IOException;
-
 import javafx.scene.image.Image;
 
 public class Connecte extends AEtat {
 
 	@Override
-	public Image getImageEtat() throws IOException {
+	public Image getImageEtat() {
 		return fm.getImageFromResource("images/pastille_verte.PNG");
 	}
 

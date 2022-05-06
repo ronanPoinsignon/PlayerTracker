@@ -43,12 +43,7 @@ public class JoueurFx extends Joueur {
 			if(!oldValue.equals(newValue)) {
 				etat = etat.next();
 			}
-			try {
-				imageConnexion.set(etat.getImageEtat());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			imageConnexion.set(etat.getImageEtat());
 		});
 	}
 
