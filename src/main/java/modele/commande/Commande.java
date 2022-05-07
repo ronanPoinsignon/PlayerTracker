@@ -5,8 +5,8 @@ package modele.commande;
  * @author ronan
  *
  */
-public abstract class Commande implements CommandeInterface {
+public abstract class Commande<T> implements CommandeInterface {
 
-	protected CommandeUtil commandeUtil = new CommandeUtil();
+	protected CommandeUtil<T> commandeUtil = new CommandeUtil<>();
 
 }

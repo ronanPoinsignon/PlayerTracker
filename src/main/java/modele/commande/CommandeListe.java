@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.scene.control.TableView;
-import modele.joueur.JoueurFx;
 import service.SaveService;
 import service.ServiceManager;
 
@@ -12,19 +11,19 @@ import service.ServiceManager;
  * @author ronan
  *
  */
-public abstract class CommandeListe extends CommandeTable {
+public abstract class CommandeListe<T> extends CommandeTable<T> {
 
-	protected List<JoueurFx> listeJoueurs;
+	protected List<T> elements;
 	protected SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
-	protected CommandeListe(TableView<JoueurFx> table, List<JoueurFx> listeJoueurs) {
+	protected CommandeListe(TableView<T> table, List<T> elements) {
 		super(table);
-		this.listeJoueurs = listeJoueurs;
+		this.elements = elements;
 	}
 
-	protected CommandeListe(TableView<JoueurFx> table, JoueurFx joueur) {
+	protected CommandeListe(TableView<T> table, T element) {
 		super(table);
-		listeJoueurs = Arrays.asList(joueur);
+		elements = Arrays.asList(element);
 	}
 
 }

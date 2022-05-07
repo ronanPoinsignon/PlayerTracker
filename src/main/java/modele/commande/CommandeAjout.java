@@ -14,7 +14,7 @@ import service.WebRequestScheduler;
  * @author ronan
  *
  */
-public class CommandeAjout extends CommandeListe {
+public class CommandeAjout extends CommandeListe<JoueurFx> {
 
 	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
 	private WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
@@ -30,29 +30,29 @@ public class CommandeAjout extends CommandeListe {
 
 	@Override
 	public boolean executer() {
-		List<JoueurFx> listeJoueursDejaPresentes = commandeUtil.addAll(table, listeJoueurs);
-		listeJoueurs.removeAll(listeJoueursDejaPresentes);
-		listeJoueurs.forEach(trayIconService::bind);
-		listeJoueurs.forEach(scheduler::addJoueur);
-		listeJoueurs.forEach(saveService::addJoueur);
+		List<JoueurFx> listeJoueursDejaPresentes = commandeUtil.addAll(table, elements);
+		elements.removeAll(listeJoueursDejaPresentes);
+		elements.forEach(trayIconService::bind);
+		elements.forEach(scheduler::addJoueur);
+		elements.forEach(saveService::addJoueur);
 		scheduler.executeNow();
-		return !listeJoueurs.isEmpty(); //si cette liste est vide, aucun joueur n'a donc été ajouté et cette commande est donc inutile
+		return !elements.isEmpty(); //si cette liste est vide, aucun joueur n'a donc été ajouté et cette commande est donc inutile
 	}
 
 	@Override
 	public boolean annuler() {
-		commandeUtil.removeAll(table, listeJoueurs);
-		listeJoueurs.forEach(trayIconService::unbind);
-		listeJoueurs.forEach(scheduler::removeJoueur);
-		listeJoueurs.forEach(saveService::removeJoueur);
-		return !listeJoueurs.isEmpty();
+		commandeUtil.removeAll(table, elements);
+		elements.forEach(trayIconService::unbind);
+		elements.forEach(scheduler::removeJoueur);
+		elements.forEach(saveService::removeJoueur);
+		return !elements.isEmpty();
 	}
 
 	@Override
 	public boolean reexecuter() {
-		commandeUtil.addAll(table, listeJoueurs);
-		listeJoueurs.forEach(trayIconService::bind);
-		listeJoueurs.forEach(saveService::addJoueur);
-		return !listeJoueurs.isEmpty();
+		commandeUtil.addAll(table, elements);
+		elements.forEach(trayIconService::bind);
+		elements.forEach(saveService::addJoueur);
+		return !elements.isEmpty();
 	}
 }

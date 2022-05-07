@@ -16,7 +16,7 @@ import service.WebRequestScheduler;
  * @author ronan
  *
  */
-public class CommandeSuppression extends CommandeListe {
+public class CommandeSuppression extends CommandeListe<JoueurFx> {
 
 	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
 	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
@@ -24,33 +24,33 @@ public class CommandeSuppression extends CommandeListe {
 
 	private List<Integer> listeIndex = new ArrayList<>();
 
-	public CommandeSuppression(TableView<JoueurFx> table, List<JoueurFx> listeJoueurs) {
-		super(table, listeJoueurs);
+	public CommandeSuppression(TableView<JoueurFx> table, List<JoueurFx> elements) {
+		super(table, elements);
 	}
 
-	public CommandeSuppression(TableView<JoueurFx> table,JoueurFx joueur) {
-		super(table, Arrays.asList(joueur));
+	public CommandeSuppression(TableView<JoueurFx> table,JoueurFx element) {
+		super(table, Arrays.asList(element));
 	}
 
 	@Override
 	public boolean executer() {
-		for(JoueurFx joueur : listeJoueurs) {
+		for(JoueurFx joueur : elements) {
 			listeIndex.add(table.getItems().indexOf(joueur));
 			trayIconService.unbind(joueur);
 			scheduler.removeJoueur(joueur);
 			saveService.removeJoueur(joueur);
 		}
-		List<JoueurFx> listeVideosNonPresentes = commandeUtil.removeAll(table, listeJoueurs);
-		listeJoueurs.removeAll(listeVideosNonPresentes);
-		return !listeJoueurs.isEmpty();
+		List<JoueurFx> listeVideosNonPresentes = commandeUtil.removeAll(table, elements);
+		elements.removeAll(listeVideosNonPresentes);
+		return !elements.isEmpty();
 	}
 
 	@Override
 	public boolean annuler() {
-		for(var i = 0; i < listeJoueurs.size(); i++) {
+		for(var i = 0; i < elements.size(); i++) {
 			int index = listeIndex.get(i);
 			try {
-				JoueurFx joueur = listeJoueurs.get(i);
+				JoueurFx joueur = elements.get(i);
 				commandeUtil.add(table, joueur, index);
 				trayIconService.bind(joueur);
 				scheduler.addJoueur(joueur);
@@ -62,7 +62,7 @@ public class CommandeSuppression extends CommandeListe {
 		}
 		scheduler.executeNow();
 		listeIndex = new ArrayList<>();
-		return !listeJoueurs.isEmpty();
+		return !elements.isEmpty();
 	}
 
 }

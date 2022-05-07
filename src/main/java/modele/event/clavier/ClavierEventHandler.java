@@ -132,7 +132,7 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 * Inverse la ligne séléctionnée avec celle du haut.
 	 */
 	public void swapUp() {
-		var th = new Thread(new SwapUpEvent(table));
+		var th = new Thread(new SwapUpEvent<>(table));
 		th.setDaemon(true);
 		th.start();
 	}
@@ -141,7 +141,7 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 * Inverse la ligne séléctionnée avec celle du bas.
 	 */
 	public void swapDown() {
-		var th = new Thread(new SwapDownEvent(table));
+		var th = new Thread(new SwapDownEvent<>(table));
 		th.setDaemon(true);
 		th.start();
 	}

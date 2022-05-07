@@ -2,11 +2,10 @@ package modele.event.eventaction;
 
 import javafx.scene.control.TableView;
 import modele.commande.CommandeInversion;
-import modele.joueur.JoueurFx;
 
-public class SwapUpEvent extends SwapDownEvent {
+public class SwapUpEvent<T> extends SwapDownEvent<T> {
 
-	public SwapUpEvent(TableView<JoueurFx> table) {
+	public SwapUpEvent(TableView<T> table) {
 		super(table);
 	}
 
@@ -16,7 +15,7 @@ public class SwapUpEvent extends SwapDownEvent {
 		if(index == 0) {
 			return null;
 		}
-		gestionnaireCommandeService.addCommande(new CommandeInversion(table, index, index - 1)).executer();
+		gestionnaireCommandeService.addCommande(new CommandeInversion<>(table, index, index - 1)).executer();
 		return null;
 	}
 

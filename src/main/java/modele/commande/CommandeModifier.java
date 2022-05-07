@@ -1,8 +1,9 @@
 package modele.commande;
 
 import modele.joueur.Joueur;
+import modele.joueur.JoueurFx;
 
-public class CommandeModifier extends Commande {
+public class CommandeModifier extends Commande<JoueurFx> {
 
 	private Joueur joueur;
 	private String nomModif;

@@ -2,15 +2,14 @@ package modele.event.eventaction;
 
 import javafx.scene.control.TableView;
 import modele.commande.CommandeInversion;
-import modele.joueur.JoueurFx;
 import service.GestionnaireCommandeService;
 import service.ServiceManager;
 
-public class SwapDownEvent extends RunnableEvent {
+public class SwapDownEvent<T> extends RunnableEvent<T> {
 
 	GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 
-	public SwapDownEvent(TableView<JoueurFx> table) {
+	public SwapDownEvent(TableView<T> table) {
 		super(table);
 	}
 
@@ -20,7 +19,7 @@ public class SwapDownEvent extends RunnableEvent {
 		if(table.getItems().size() == index + 1) {
 			return null;
 		}
-		gestionnaireCommandeService.addCommande(new CommandeInversion(table, index, index + 1)).executer();
+		gestionnaireCommandeService.addCommande(new CommandeInversion<>(table, index, index + 1)).executer();
 		return null;
 	}
 

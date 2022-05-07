@@ -6,51 +6,51 @@ import java.util.List;
 import javafx.scene.control.TableView;
 import modele.joueur.JoueurFx;
 
-public class CommandeUtil {
+public class CommandeUtil<T> {
 
-	public boolean add(TableView<JoueurFx> table, JoueurFx joueur) throws JoueurDejaPresentException {
-		if(joueur == null) {
+	public boolean add(TableView<T> table, T element) throws JoueurDejaPresentException {
+		if(element == null) {
 			return false;
 		}
-		if(table.getItems().contains(joueur)) {
+		if(table.getItems().contains(element)) {
 			throw new JoueurDejaPresentException();
 		}
-		return table.getItems().add(joueur);
+		return table.getItems().add(element);
 	}
 
-	public boolean add(TableView<JoueurFx> table, JoueurFx joueur, int index) throws JoueurDejaPresentException, UnsupportedOperationException,
+	public boolean add(TableView<T> table, T element, int index) throws JoueurDejaPresentException, UnsupportedOperationException,
 	ClassCastException, NullPointerException, IllegalArgumentException {
-		if(joueur == null) {
+		if(element == null) {
 			return false;
 		}
-		if(table.getItems().contains(joueur)) {
+		if(table.getItems().contains(element)) {
 			throw new JoueurDejaPresentException();
 		}
-		table.getItems().add(index, joueur);
+		table.getItems().add(index, element);
 		return true;
 	}
 
-	public List<JoueurFx> addAll(TableView<JoueurFx> table, List<JoueurFx> listeVideosASuppr) {
-		ArrayList<JoueurFx> listeVideoDejaPresentes = new ArrayList<>();
-		for(JoueurFx joueur : listeVideosASuppr) {
+	public List<T> addAll(TableView<T> table, List<T> elements) {
+		ArrayList<T> elementsDejaPresents = new ArrayList<>();
+		for(T element : elements) {
 			try {
-				this.add(table, joueur);
+				this.add(table, element);
 			} catch (JoueurDejaPresentException e) {
-				listeVideoDejaPresentes.add(joueur);
+				elementsDejaPresents.add(element);
 			}
 		}
-		return listeVideoDejaPresentes;
+		return elementsDejaPresents;
 	}
 
-	public JoueurFx remove(TableView<JoueurFx> table, int index) {
+	public T remove(TableView<T> table, int index) {
 		return table.getItems().remove(index);
 	}
 
-	public boolean remove(TableView<JoueurFx> table, JoueurFx joueur) throws PlayerNotFoundException {
-		if(!table.getItems().contains(joueur)) {
+	public boolean remove(TableView<T> table, T element) throws PlayerNotFoundException {
+		if(!table.getItems().contains(element)) {
 			throw new PlayerNotFoundException();
 		}
-		return table.getItems().remove(joueur);
+		return table.getItems().remove(element);
 	}
 
 	public List<JoueurFx> removeAll(TableView<JoueurFx> table) {
@@ -59,17 +59,17 @@ public class CommandeUtil {
 		return listeVideosRm;
 	}
 
-	public List<JoueurFx> removeAll(TableView<JoueurFx> table, List<JoueurFx> listeVideos) {
-		ArrayList<JoueurFx> listeVideosASuppr = new ArrayList<>(listeVideos);
-		ArrayList<JoueurFx> listeVideoNonPresentes = new ArrayList<>();
-		for(JoueurFx joueur : listeVideosASuppr) {
+	public List<T> removeAll(TableView<T> table, List<T> elements) {
+		ArrayList<T> elementsASuppr = new ArrayList<>(elements);
+		ArrayList<T> elementsNonPresents = new ArrayList<>();
+		for(T element : elementsASuppr) {
 			try {
-				this.remove(table, joueur);
+				this.remove(table, element);
 			} catch (PlayerNotFoundException e) {
-				listeVideoNonPresentes.add(joueur);
+				elementsNonPresents.add(element);
 			}
 		}
-		return listeVideoNonPresentes;
+		return elementsNonPresents;
 	}
 
 }

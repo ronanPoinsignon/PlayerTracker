@@ -10,7 +10,7 @@ import service.GestionnaireCommandeService;
 import service.ServiceManager;
 import service.WebRequestScheduler;
 
-public class AddEvent extends RunnableEvent {
+public class AddEvent extends RunnableEvent<JoueurFx> {
 
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);

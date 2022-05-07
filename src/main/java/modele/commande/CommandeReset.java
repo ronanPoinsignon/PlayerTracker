@@ -14,28 +14,28 @@ import service.WebRequestScheduler;
  * @author ronan
  *
  */
-public class CommandeReset extends CommandeListe {
+public class CommandeReset extends CommandeListe<JoueurFx> {
 
 	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
 	private WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 
 	List<JoueurFx> listeJoueursSupprimes = new ArrayList<>();
 
-	public CommandeReset(TableView<JoueurFx> table, List<JoueurFx> listeVideos) {
-		super(table, listeVideos);
+	public CommandeReset(TableView<JoueurFx> table, List<JoueurFx> elements) {
+		super(table, elements);
 	}
 
 	@Override
 	public boolean executer() {
-		if(table.getItems().equals(listeJoueurs)) {
+		if(table.getItems().equals(elements)) {
 			return false;
 		}
 		listeJoueursSupprimes = commandeUtil.removeAll(table);
-		commandeUtil.addAll(table, listeJoueurs);
+		commandeUtil.addAll(table, elements);
 		listeJoueursSupprimes.forEach(trayIconService::unbind);
 		listeJoueursSupprimes.forEach(scheduler::removeJoueur);
 		listeJoueursSupprimes.forEach(saveService::removeJoueur);
-		return !listeJoueurs.isEmpty();
+		return !elements.isEmpty();
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class CommandeReset extends CommandeListe {
 		listeJoueursSupprimes.forEach(trayIconService::bind);
 		listeJoueursSupprimes.forEach(scheduler::addJoueur);
 		listeJoueursSupprimes.forEach(saveService::addJoueur);
-		return !listeJoueurs.isEmpty();
+		return !elements.isEmpty();
 	}
 
 }
