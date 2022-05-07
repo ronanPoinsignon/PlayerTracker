@@ -33,19 +33,9 @@ public class AddEvent extends RunnableEvent<JoueurFx> {
 			throw new JoueurDejaPresentException(nom);
 		}
 		var tache = new TacheCharger(nom, pseudo);
-		//		labelIndicateur.textProperty().unbind();
-		//		labelIndicateur.textProperty().bind(tache.messageProperty());
-		//		indicateur.progressProperty().unbind();
-		//		indicateur.progressProperty().bind(tache.progressProperty());
 		tache.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> {
 			JoueurFx joueur = tache.getValue();
-			//					labelIndicateur.textProperty().unbind();
-			//					labelIndicateur.setText(joueur.getAppellation() + " trouvé");
 			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur)).executer();
-			//					if(!tache.getListeUrlsMauvaisLien().isEmpty() || !tache.getListeUrlsErreur().isEmpty()) {
-			//						logger.showErrorAlertVideosNonChargees(tache.getListeUrlsMauvaisLien(), tache.getListeUrlsErreur());
-			//					}
-			//					updateActionPossibleGestionnaire();
 		});
 		var t = new Thread(tache);
 		t.setDaemon(true);
