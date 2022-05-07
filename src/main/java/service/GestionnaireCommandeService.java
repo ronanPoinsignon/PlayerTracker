@@ -22,7 +22,7 @@ public class GestionnaireCommandeService implements IService {
 	 * Ajoute une commande à la liste des commandes devant être effectuées.
 	 * @param commande
 	 */
-	public GestionnaireCommandeService addCommande(Commande commande) {
+	public GestionnaireCommandeService addCommande(Commande<?> commande) {
 		listeCommandes.add(commande);
 		return this;
 	}
@@ -59,7 +59,7 @@ public class GestionnaireCommandeService implements IService {
 	 * @param commande
 	 * @throws CommandeNonTrouveeException
 	 */
-	public GestionnaireCommandeService executer(Commande commande) throws CommandeNonTrouveeException {
+	public GestionnaireCommandeService executer(Commande<?> commande) throws CommandeNonTrouveeException {
 		if(!listeCommandes.contains(commande)) {
 			throw new CommandeNonTrouveeException();
 		}
@@ -72,7 +72,7 @@ public class GestionnaireCommandeService implements IService {
 		return this;
 	}
 
-	public GestionnaireCommandeService executerInstant(Commande commande) {
+	public GestionnaireCommandeService executerInstant(Commande<?> commande) {
 		commande.executer();
 		return this;
 	}
