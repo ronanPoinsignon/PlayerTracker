@@ -1,7 +1,8 @@
 package modele.commande;
 
+import modele.exception.AException;
 
-public class JoueurDejaPresentException extends Exception {
+public class JoueurDejaPresentException extends AException {
 
 	private static final String MESSAGE = "Le joueur est déjà présent dans la table";
 
@@ -12,6 +13,11 @@ public class JoueurDejaPresentException extends Exception {
 
 	public JoueurDejaPresentException() {
 		super(JoueurDejaPresentException.MESSAGE);
+	}
+
+	@Override
+	public String getDescription() {
+		return "Vous ne pouvez ajouter plusieurs fois le même joueur.";
 	}
 
 }

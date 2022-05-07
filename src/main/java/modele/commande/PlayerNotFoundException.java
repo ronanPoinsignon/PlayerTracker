@@ -1,9 +1,10 @@
 package modele.commande;
 
+import modele.exception.AException;
 
-public class PlayerNotFoundException extends Exception {
+public class PlayerNotFoundException extends AException {
 
-	private static final String MESSAGE = "Le joueur n'est pas dans la liste.";
+	private static final String MESSAGE = "Joueur non trouvé";
 
 	/**
 	 *
@@ -12,6 +13,11 @@ public class PlayerNotFoundException extends Exception {
 
 	public PlayerNotFoundException() {
 		super(PlayerNotFoundException.MESSAGE);
+	}
+
+	@Override
+	public String getDescription() {
+		return "Le joueur n'est pas dans la liste.";
 	}
 
 }

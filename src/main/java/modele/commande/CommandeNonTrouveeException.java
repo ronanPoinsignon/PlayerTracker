@@ -1,6 +1,8 @@
 package modele.commande;
 
-public class CommandeNonTrouveeException extends Exception {
+import modele.exception.AException;
+
+public class CommandeNonTrouveeException extends AException {
 
 	private static final String MESSAGE = "La commande n'est pas dans le gestionnaire";
 
@@ -11,6 +13,11 @@ public class CommandeNonTrouveeException extends Exception {
 
 	public CommandeNonTrouveeException() {
 		super(CommandeNonTrouveeException.MESSAGE);
+	}
+
+	@Override
+	public String getDescription() {
+		return "Impossible d'exécuter la commande voulue.";
 	}
 
 }
