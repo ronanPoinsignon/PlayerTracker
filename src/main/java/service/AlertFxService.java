@@ -38,7 +38,6 @@ public class AlertFxService implements IService {
 			stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
 
 			alert.showAndWait();
-			trayIconService.quitter();
 		});
 	}
 
