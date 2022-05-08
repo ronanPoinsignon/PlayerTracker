@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 public class Connecte extends AEtat {
 
 	@Override
-	public Image getImageEtat() {
+	public Image getImageConnecte() {
 		return fm.getImageFromResource("images/pastille_verte.PNG");
 	}
 

@@ -4,6 +4,6 @@ import javafx.scene.image.Image;
 
 public interface IEtat {
 
-	Image getImageEtat();
+	Image getImageConnecte();
 	IEtat next();
 }

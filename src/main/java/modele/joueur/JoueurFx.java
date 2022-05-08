@@ -1,7 +1,5 @@
 package modele.joueur;
 
-import java.io.IOException;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -16,17 +14,17 @@ import modele.joueur.etat.NonConnecte;
 public class JoueurFx extends Joueur {
 
 	private static final long serialVersionUID = 109145397335591218L;
-	
-	private StringProperty idProperty;
-	private StringProperty nomProperty;
-	private StringProperty pseudoProperty;
-	private BooleanProperty isConnecteProperty;
 
-	private Joueur joueur;
-	private IEtat etat;
-	private ObjectProperty<Image> imageConnexion;
+	private transient StringProperty idProperty;
+	private transient StringProperty nomProperty;
+	private transient StringProperty pseudoProperty;
+	private transient BooleanProperty isConnecteProperty;
 
-	public JoueurFx(Joueur joueur) throws IOException {
+	private transient Joueur joueur;
+	private transient IEtat etat;
+	private transient ObjectProperty<Image> imageConnexion;
+
+	public JoueurFx(Joueur joueur) {
 		super(joueur.nom, joueur.pseudo);
 		this.joueur = joueur;
 		playerId = joueur.playerId;
@@ -40,12 +38,12 @@ public class JoueurFx extends Joueur {
 		} else {
 			etat = new NonConnecte();
 		}
-		imageConnexion = new SimpleObjectProperty<>(etat.getImageEtat());
+		imageConnexion = new SimpleObjectProperty<>(etat.getImageConnecte());
 		isConnecteProperty.addListener((obs, oldValue, newValue) -> {
 			if(!oldValue.equals(newValue)) {
 				etat = etat.next();
 			}
-			imageConnexion.set(etat.getImageEtat());
+			imageConnexion.set(etat.getImageConnecte());
 		});
 	}
 
