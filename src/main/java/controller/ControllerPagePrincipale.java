@@ -1,6 +1,5 @@
 package controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -73,21 +72,15 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
 	private LoadService loadService = ServiceManager.getInstance(LoadService.class);
-	private AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		List<Joueur> joueurs = loadService.load();
-		joueurs.forEach((joueur) -> {
-			try {
-				JoueurFx joueurFx = new JoueurFx(joueur);
-				gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueurFx)).executer();
-			} catch (IOException e) {
-				alertService.alert(e);
-			}
-		});
-		
+		joueurs.stream().map(JoueurFx::new)
+		.map(joueur -> new CommandeAjout(table, joueur))
+		.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
+
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
 		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudoProperty());
 		colonneId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
