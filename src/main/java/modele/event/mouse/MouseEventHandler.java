@@ -1,8 +1,8 @@
 package modele.event.mouse;
 
 import javafx.event.EventHandler;
-import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
 
 /**
@@ -12,9 +12,9 @@ import modele.joueur.JoueurFx;
  */
 public abstract class MouseEventHandler implements EventHandler<MouseEvent> {
 
-	protected TableView<JoueurFx> table;
+	protected ViewElement<JoueurFx> table;
 
-	protected MouseEventHandler(TableView<JoueurFx> table) {
+	protected MouseEventHandler(ViewElement<JoueurFx> table) {
 		this.table = table;
 	}
 }

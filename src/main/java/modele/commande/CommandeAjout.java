@@ -2,7 +2,7 @@ package modele.commande;
 
 import java.util.List;
 
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
 import service.SaveService;
 import service.ServiceManager;
@@ -20,11 +20,11 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 	private WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 	private SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
-	public CommandeAjout(TableView<JoueurFx> table, List<JoueurFx> listeJoueurs) {
+	public CommandeAjout(ViewElement<JoueurFx> table, List<JoueurFx> listeJoueurs) {
 		super(table, listeJoueurs);
 	}
 
-	public CommandeAjout(TableView<JoueurFx> table, JoueurFx joueur) {
+	public CommandeAjout(ViewElement<JoueurFx> table, JoueurFx joueur) {
 		super(table, joueur);
 	}
 

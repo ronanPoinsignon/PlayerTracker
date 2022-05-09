@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
 import service.AlertFxService;
 import service.ServiceManager;
@@ -24,11 +24,11 @@ public class CommandeSuppression extends CommandeListe<JoueurFx> {
 
 	private List<Integer> listeIndex = new ArrayList<>();
 
-	public CommandeSuppression(TableView<JoueurFx> table, List<JoueurFx> elements) {
+	public CommandeSuppression(ViewElement<JoueurFx> table, List<JoueurFx> elements) {
 		super(table, elements);
 	}
 
-	public CommandeSuppression(TableView<JoueurFx> table,JoueurFx element) {
+	public CommandeSuppression(ViewElement<JoueurFx> table,JoueurFx element) {
 		super(table, Arrays.asList(element));
 	}
 

@@ -3,12 +3,12 @@ package modele.commande;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
 
 public class CommandeUtil<T> {
 
-	public boolean add(TableView<T> table, T element) throws JoueurDejaPresentException {
+	public boolean add(ViewElement<T> table, T element) throws JoueurDejaPresentException {
 		if(element == null) {
 			return false;
 		}
@@ -18,7 +18,7 @@ public class CommandeUtil<T> {
 		return table.getItems().add(element);
 	}
 
-	public boolean add(TableView<T> table, T element, int index) throws JoueurDejaPresentException, UnsupportedOperationException,
+	public boolean add(ViewElement<T> table, T element, int index) throws JoueurDejaPresentException, UnsupportedOperationException,
 	ClassCastException, NullPointerException, IllegalArgumentException {
 		if(element == null) {
 			return false;
@@ -30,7 +30,7 @@ public class CommandeUtil<T> {
 		return true;
 	}
 
-	public List<T> addAll(TableView<T> table, List<T> elements) {
+	public List<T> addAll(ViewElement<T> table, List<T> elements) {
 		ArrayList<T> elementsDejaPresents = new ArrayList<>();
 		for(T element : elements) {
 			try {
@@ -42,24 +42,24 @@ public class CommandeUtil<T> {
 		return elementsDejaPresents;
 	}
 
-	public T remove(TableView<T> table, int index) {
+	public T remove(ViewElement<T> table, int index) {
 		return table.getItems().remove(index);
 	}
 
-	public boolean remove(TableView<T> table, T element) throws PlayerNotFoundException {
+	public boolean remove(ViewElement<T> table, T element) throws PlayerNotFoundException {
 		if(!table.getItems().contains(element)) {
 			throw new PlayerNotFoundException();
 		}
 		return table.getItems().remove(element);
 	}
 
-	public List<JoueurFx> removeAll(TableView<JoueurFx> table) {
+	public List<JoueurFx> removeAll(ViewElement<JoueurFx> table) {
 		List<JoueurFx> listeVideosRm = new ArrayList<>(table.getItems());
 		table.getItems().removeAll(listeVideosRm);
 		return listeVideosRm;
 	}
 
-	public List<T> removeAll(TableView<T> table, List<T> elements) {
+	public List<T> removeAll(ViewElement<T> table, List<T> elements) {
 		ArrayList<T> elementsASuppr = new ArrayList<>(elements);
 		ArrayList<T> elementsNonPresents = new ArrayList<>();
 		for(T element : elementsASuppr) {

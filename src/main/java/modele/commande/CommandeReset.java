@@ -3,7 +3,7 @@ package modele.commande;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
 import service.ServiceManager;
 import service.TrayIconService;
@@ -21,7 +21,7 @@ public class CommandeReset extends CommandeListe<JoueurFx> {
 
 	List<JoueurFx> listeJoueursSupprimes = new ArrayList<>();
 
-	public CommandeReset(TableView<JoueurFx> table, List<JoueurFx> elements) {
+	public CommandeReset(ViewElement<JoueurFx> table, List<JoueurFx> elements) {
 		super(table, elements);
 	}
 

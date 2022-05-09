@@ -1,7 +1,6 @@
 package modele.event.clavier;
 
 import javafx.event.EventHandler;
-import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
@@ -9,6 +8,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyCombination.Modifier;
 import javafx.scene.input.KeyEvent;
+import modele.affichage.ViewElement;
 import modele.event.eventaction.AddEvent;
 import modele.event.eventaction.CollerEvent;
 import modele.event.eventaction.DeleteEvent;
@@ -42,9 +42,9 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	private KeyCombination inverserHaut = new KeyCodeCombination(ClavierEventHandler.KEY_CODE_INVERSER_HAUT, ClavierEventHandler.MODIFIER_INVERSER_HAUT);
 	private KeyCombination inverserBas = new KeyCodeCombination(ClavierEventHandler.KEY_CODE_INVERSER_BAS, ClavierEventHandler.MODIFIER_INVERSER_BAS);
 
-	private TableView<JoueurFx> table;
+	private ViewElement<JoueurFx> table;
 
-	public ClavierEventHandler(TableView<JoueurFx> table) {
+	public ClavierEventHandler(ViewElement<JoueurFx> table) {
 		this.table = table;
 	}
 

@@ -1,7 +1,7 @@
 package modele.event.mouse;
 
-import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import modele.affichage.ViewElement;
 import modele.event.eventaction.DeleteEvent;
 import modele.joueur.JoueurFx;
 
@@ -12,7 +12,7 @@ import modele.joueur.JoueurFx;
  */
 public class MouseEventSuppression extends MouseEventHandler {
 
-	public MouseEventSuppression(TableView<JoueurFx> table) {
+	public MouseEventSuppression(ViewElement<JoueurFx> table) {
 		super(table);
 	}
 

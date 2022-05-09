@@ -1,7 +1,7 @@
 package modele.event.mouse;
 
-import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
 
 /**
@@ -11,7 +11,7 @@ import modele.joueur.JoueurFx;
  */
 public class MouseEventConversion extends MouseEventHandler {
 
-	public MouseEventConversion(TableView<JoueurFx> table) {
+	public MouseEventConversion(ViewElement<JoueurFx> table) {
 		super(table);
 	}
 

@@ -1,12 +1,12 @@
 package modele.event.eventaction;
 
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 
 public abstract class RunnableEvent<T> extends EventAction<Void> implements Runnable {
 
-	TableView<T> table;
+	ViewElement<T> table;
 
-	protected RunnableEvent(TableView<T> table) {
+	protected RunnableEvent(ViewElement<T> table) {
 		this.table = table;
 	}
 

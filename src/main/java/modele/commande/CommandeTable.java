@@ -1,6 +1,6 @@
 package modele.commande;
 
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 
 /**
  * Classe abstraite correspondant à toutes les commandes devant accéder à la table en elle-même.
@@ -9,9 +9,9 @@ import javafx.scene.control.TableView;
  */
 public abstract class CommandeTable<T> extends Commande<T> {
 
-	protected TableView<T> table;
+	protected ViewElement<T> table;
 
-	protected CommandeTable(TableView<T> table) {
+	protected CommandeTable(ViewElement<T> table) {
 		this.table = table;
 	}
 }

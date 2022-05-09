@@ -1,14 +1,14 @@
 package modele.event.eventaction;
 
-import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
+import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
 
 public class CollerEvent extends EventAction<Void> {
 
-	TableView<JoueurFx> table;
+	ViewElement<JoueurFx> table;
 
-	public CollerEvent(TableView<JoueurFx> table) {
+	public CollerEvent(ViewElement<JoueurFx> table) {
 		this.table = table;
 	}
 

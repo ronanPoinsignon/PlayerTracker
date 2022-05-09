@@ -21,6 +21,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import modele.affichage.TableViewElement;
 import modele.commande.CommandeAjout;
 import modele.commande.CommandeModifier;
 import modele.commande.CommandeSuppression;
@@ -30,7 +32,6 @@ import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.observer.ObservateurInterface;
-import service.AlertFxService;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.LoadService;
@@ -42,14 +43,13 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	private BorderPane borderPane;
 
 	@FXML
-	private TableView<JoueurFx> table;
-	@FXML
+	private GridPane paneCenter;
+
+	private TableViewElement<JoueurFx> table;
+
 	private TableColumn<JoueurFx, String> colonneNom;
-	@FXML
 	private TableColumn<JoueurFx, String> colonnePseudo;
-	@FXML
 	private TableColumn<JoueurFx, String> colonneId;
-	@FXML
 	private TableColumn<JoueurFx, Image> colonneInGame;
 
 	@FXML
@@ -75,7 +75,16 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		table = new TableViewElement<>();
+		table.prefHeight(400);
+		table.prefWidth(600);
+		paneCenter.setAlignment(Pos.CENTER);
+		colonneNom = new TableColumn<>("Nom");
+		colonnePseudo = new TableColumn<>("Pseudo");
+		colonneId = new TableColumn<>("Id");
+		colonneInGame = new TableColumn<>("En jeu");
+		table.getColumns().addAll(colonneNom, colonnePseudo, colonneId, colonneInGame);
+		paneCenter.add(table, 0, 0);
 		List<Joueur> joueurs = loadService.load();
 		joueurs.stream().map(JoueurFx::new)
 		.map(joueur -> new CommandeAjout(table, joueur))

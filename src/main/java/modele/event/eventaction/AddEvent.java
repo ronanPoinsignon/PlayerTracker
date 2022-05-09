@@ -1,7 +1,7 @@
 package modele.event.eventaction;
 
 import javafx.concurrent.WorkerStateEvent;
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 import modele.commande.CommandeAjout;
 import modele.event.eventaction.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
@@ -18,7 +18,7 @@ public class AddEvent extends RunnableEvent<JoueurFx> {
 	private String nom;
 	private String pseudo;
 
-	public AddEvent(TableView<JoueurFx> table, String nom, String pseudo) {
+	public AddEvent(ViewElement<JoueurFx> table, String nom, String pseudo) {
 		super(table);
 		this.nom = nom;
 		this.pseudo = pseudo;
