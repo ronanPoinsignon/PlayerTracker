@@ -73,6 +73,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
 	private LoadService loadService = ServiceManager.getInstance(LoadService.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		table = new TableViewElement<>();
