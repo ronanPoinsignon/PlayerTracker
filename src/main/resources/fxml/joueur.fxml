@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.JoueurController">
+   <children>
+      <Label fx:id="nom" layoutX="68.0" layoutY="33.0" text="Nom (pseudo)" />
+      <ImageView fx:id="image_statut" fitHeight="36.0" fitWidth="36.0" layoutX="24.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../Pictures/html-color-codes-color-tutorials-hero-00e10b1f.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="statut" layoutX="68.0" layoutY="73.0" text="Statut" />
+      <ImageView fx:id="image_joueur" fitHeight="36.0" fitWidth="36.0" layoutX="24.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../Pictures/1037731406.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>
