@@ -24,6 +24,7 @@ import javafx.scene.layout.BorderPane;
 import modele.commande.CommandeAjout;
 import modele.commande.CommandeModifier;
 import modele.commande.CommandeSuppression;
+import modele.event.action.ActionEventRegarder;
 import modele.event.action.ActionEventSupprimer;
 import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
@@ -64,6 +65,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	private MenuItem editItem = new MenuItem("Modifier le pseudo");
 	private MenuItem removeItem = new MenuItem("Supprimer");
+	private MenuItem lookItem = new MenuItem("Regarder");
 
 	final ContextMenu rowMenu = new ContextMenu();
 
@@ -125,7 +127,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		nom.setAlignment(Pos.CENTER_LEFT);
 		pseudo.setAlignment(Pos.CENTER_LEFT);
 
-		rowMenu.getItems().addAll(editItem, removeItem);
+		rowMenu.getItems().addAll(editItem, removeItem, lookItem);
 
 		addEvent();
 	}
@@ -155,6 +157,15 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		});
 
 		removeItem.setOnAction(new ActionEventSupprimer(table));
+
+		table.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
+			lookItem.visibleProperty().unbind();
+			if(newV == null) {
+				lookItem.setVisible(false);
+			}
+			lookItem.visibleProperty().bind(newV.getIsConnecteProperty());
+			lookItem.setOnAction(new ActionEventRegarder(newV));
+		});
 	}
 
 	@FXML
