@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.JoueurController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="169.0" prefWidth="300.0" styleClass="joueur-card" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.JoueurController">
    <children>
       <Label fx:id="nom" layoutX="68.0" layoutY="33.0" text="Nom (pseudo)" />
-      <ImageView fx:id="image_statut" fitHeight="36.0" fitWidth="36.0" layoutX="24.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="image_statut" fitHeight="36.0" fitWidth="36.0" layoutX="24.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../../../../Pictures/html-color-codes-color-tutorials-hero-00e10b1f.jpg" />
          </image>
       </ImageView>
-      <Label fx:id="statut" layoutX="68.0" layoutY="73.0" text="Statut" />
-      <ImageView fx:id="image_joueur" fitHeight="36.0" fitWidth="36.0" layoutX="24.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="statut" layoutX="68.0" layoutY="111.0" text="Statut" />
+      <ImageView fx:id="image_joueur" fitHeight="36.0" fitWidth="36.0" layoutX="24.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../../../../Pictures/1037731406.jpg" />
          </image>
       </ImageView>
+      <VBox layoutX="265.0" layoutY="15.0" prefHeight="30.0" prefWidth="20.0" styleClass="options">
+         <children>
+            <Circle fill="DODGERBLUE" radius="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="options-circle">
+               <VBox.margin>
+                  <Insets left="5.0" />
+               </VBox.margin>
+            </Circle>
+            <Circle fill="DODGERBLUE" radius="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="options-circle">
+               <VBox.margin>
+                  <Insets left="5.0" top="2.0" />
+               </VBox.margin>
+            </Circle>
+            <Circle fill="DODGERBLUE" radius="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="options-circle">
+               <VBox.margin>
+                  <Insets left="5.0" top="2.0" />
+               </VBox.margin>
+            </Circle>
+         </children>
+      </VBox>
    </children>
 </Pane>

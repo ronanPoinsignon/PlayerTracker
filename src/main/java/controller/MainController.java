@@ -24,17 +24,18 @@ public class MainController implements Initializable {
 		joueursContainer = new PaneViewElement();
 		
 		anchor.getChildren().add(joueursContainer);
-		System.out.println(anchor);
+				
+		openModal();
 	}
 	
 	@FXML
 	public void openModal() {
-		String[] nom = new String[] {"bite1", "bite2", "bite3"};
-		String[] pseudo = new String[] {"Guerinoob", "Tregum", "ronan3290"};
+		String[] nom = new String[] {"Théo"};
+		String[] pseudo = new String[] {"TheYoloToto"};
 		
 		Thread t;
 		
-		for(int i = 0; i < 3; i++) {
+		for(int i = 0; i < 1; i++) {
 			t = new Thread(new AddEvent(joueursContainer, nom[i], pseudo[i]));
 			t.setDaemon(true);
 			t.start();

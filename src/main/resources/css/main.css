@@ -1,0 +1,55 @@
+* {
+	-fx-main-color: #e74076;
+	-fx-secondary-color: #191937;
+	-fx-font-family: "Verdana";
+	font-family: "Verdana";
+}
+
+#anchor {
+	-fx-background-color: #070720;
+	background-color: #070720;
+}
+
+#joueursContainer {
+	padding: 40px;
+	-fx-padding: 40px;
+}
+
+.float-button {
+	-fx-fill: -fx-main-color;
+	fill: -fx-main-color;
+}
+
+.joueur-card {
+	-fx-background-color: -fx-secondary-color;
+	background-color: -fx-secondary-color;
+	-fx-border-color: -fx-secondary-color;
+	border-color: -fx-secondary-color;
+	-fx-border-width: 1px;
+	border-width: 1px;
+	-fx-border-radius: 15px;
+	border-radius: 15px;
+	-fx-background-radius: 15px;
+	-fx-font-size: 16px;
+	font-size: 16px;
+}
+
+.joueur-card .options .options-circle {
+	-fx-fill: #fff;
+	fill: #fff;
+}
+
+.joueur-card .options:hover {
+	-fx-cursor: hand;
+	cursor: hand;
+}
+
+.joueur-card #nom {
+	-fx-text-fill: #FFF;
+	-fx-font-size: 20px;
+	font-size: 20px;
+}
+
+.joueur-card #statut {
+	-fx-text-fill: #FFF;
+}

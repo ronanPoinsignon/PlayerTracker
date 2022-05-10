@@ -21,7 +21,9 @@ public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
 	private ObservableList<JoueurFx> elements = FXCollections.observableArrayList(new ArrayList<>());
 	private FileManager fm = ServiceManager.getInstance(FileManager.class);
 	
-	public PaneViewElement() {		
+	public PaneViewElement() {
+		this.setId("joueursContainer");
+		
 		elements.addListener((ListChangeListener.Change<? extends JoueurFx> change) -> {
 			change.next();
 			
