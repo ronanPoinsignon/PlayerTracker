@@ -15,55 +15,44 @@ import javafx.scene.layout.Pane;
 import modele.joueur.JoueurFx;
 
 public class JoueurController implements Initializable {
-	
+
 	@FXML
 	private Pane pane;
-	
+
 	@FXML
 	private Label nom;
-	
+
 	@FXML
-	private ImageView image_joueur;
-	
+	private ImageView imageJoueur;
+
 	@FXML
 	private Label statut;
-	
+
 	@FXML
-	private ImageView image_statut;
-	
+	private ImageView imageStatut;
+
 	private SimpleObjectProperty<JoueurFx> joueur = new SimpleObjectProperty<>();
 	private BooleanProperty isConnecte = new SimpleBooleanProperty();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.joueur.addListener((obs, oldV, newV) -> {
-			nom.setText(newV.getNom()+" ("+newV.getPseudo()+")");
-						
-			image_statut.imageProperty().bind(newV.getImageConnexion());
+		joueur.addListener((obs, oldV, newV) -> {
+			nom.setText(newV.getNom() + " (" + newV.getPseudo() + ")");
+
+			imageStatut.imageProperty().bind(newV.getImageConnexion());
 		});
-				
-		this.isConnecte.addListener((obs, oldV, newV) -> {
-			if(newV) {
-				Platform.runLater(() -> statut.setText("En jeu"));
-			}
-			else {
-				Platform.runLater(() -> statut.setText("Déconnecté"));
-			}
-		});
+
+		isConnecte.addListener((obs, oldV, newV) 
+				-> Platform.runLater(() ->	statut.setText(Boolean.TRUE.equals(newV) ? "En jeu" : "Déconnecté")));
 	}
-	
-	public void setJoueur(JoueurFx joueur) {		
+
+	public void setJoueur(JoueurFx joueur) {
 		this.joueur.set(joueur);
-		
-		this.isConnecte.unbind();
-		this.isConnecte.bind(joueur.getIsConnecteProperty());
-		
-		if(joueur.isInGame()) {
-			Platform.runLater(() -> statut.setText("En jeu"));
-		}
-		else {
-			Platform.runLater(() -> statut.setText("Déconnecté"));
-		}
+
+		isConnecte.unbind();
+		isConnecte.bind(joueur.getIsConnecteProperty());
+
+		Platform.runLater(() -> statut.setText(joueur.isInGame() ? "En jeu" : "Déconnecté"));
 	}
 
 }
