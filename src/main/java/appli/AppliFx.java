@@ -11,13 +11,14 @@ import javafx.stage.Stage;
 import service.AlertFxService;
 import service.FileManager;
 import service.ServiceManager;
+import service.StageManager;
 import service.TrayIconService;
 
 public class AppliFx extends Application {
 
-	private FileManager fm = ServiceManager.getInstance(FileManager.class);
-	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
-	private AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
+	private FileManager fm;
+	private TrayIconService trayIconService;
+	private AlertFxService alertService;
 
 	public static void start(String[] args) {
 		Application.launch(args);
@@ -31,6 +32,7 @@ public class AppliFx extends Application {
 			alertService.alert(e);
 			return;
 		}
+		initService(stage);
 		stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
 		stage.setTitle("Player tracker");
 		var file = fm.getFileFromResources("fxml/page_principale.fxml");
@@ -40,6 +42,13 @@ public class AppliFx extends Application {
 		stage.setScene(scene);
 		trayIconService.createFXTrayIcon(stage);
 		stage.show();
+	}
+
+	private void initService(Stage stage) {
+		fm = ServiceManager.getInstance(FileManager.class);
+		trayIconService = ServiceManager.getInstance(TrayIconService.class);
+		alertService = ServiceManager.getInstance(AlertFxService.class);
+		ServiceManager.getInstance(StageManager.class).setCurrentStage(stage);
 	}
 
 	private void checkAlreadyRunning() throws ApplicationDejaEnCoursException {
