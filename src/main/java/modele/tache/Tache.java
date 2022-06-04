@@ -27,7 +27,7 @@ public abstract class Tache<T> extends Task<T> {
 	}
 
 	@Override
-	public void updateMessage(String msg) {
+	public void updateMessage(final String msg) {
 		super.updateMessage(msg);
 		fireUpdateEvent(new EventTacheUpdateMessage(msg));
 	}
@@ -39,7 +39,7 @@ public abstract class Tache<T> extends Task<T> {
 	}*/
 
 	@Override
-	public void updateProgress(long workDone, long max) {
+	public void updateProgress(final long workDone, final long max) {
 		super.updateProgress(workDone, max);
 		//fireUpdateEvent(new EventTacheUpdateProgress(workDone, max));
 	}
@@ -51,7 +51,7 @@ public abstract class Tache<T> extends Task<T> {
 	}*/
 
 	@Override
-	public void updateValue(T value) {
+	public void updateValue(final T value) {
 		super.updateValue(value);
 		//fireUpdateEvent(new EventTacheUpdateValue());
 	}

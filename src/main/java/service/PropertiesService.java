@@ -7,19 +7,19 @@ import java.util.Properties;
 public class PropertiesService implements IService {
 
 	private FileManager fm;
-	private Properties properties = new Properties();
+	private final Properties properties = new Properties();
 
-	public String get(String element) {
+	public String get(final String element) {
 		return properties.getProperty(element);
 	}
 
 	@Override
 	public void init() {
 		fm = ServiceManager.getInstance(FileManager.class);
-		var f = fm.getFileFromResources("application.properties");
+		final var f = fm.getFileFromResources("application.properties");
 		try(var is = new FileInputStream(f);){
 			properties.load(is);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 	}

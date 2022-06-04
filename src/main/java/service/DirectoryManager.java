@@ -32,18 +32,18 @@ public class DirectoryManager implements IService {
 	 * @param extension
 	 * @return
 	 */
-	public File getFile(Window window) {
-		var chooser = new FileChooser();
-		var extFilter = new FileChooser.ExtensionFilter(DirectoryManager.DESCRIPTION_TYPE_FICHIER, DirectoryManager.TYPE_FICHIER);
+	public File getFile(final Window window) {
+		final var chooser = new FileChooser();
+		final var extFilter = new FileChooser.ExtensionFilter(DirectoryManager.DESCRIPTION_TYPE_FICHIER, DirectoryManager.TYPE_FICHIER);
 		chooser.getExtensionFilters().add(extFilter);
-		File fichier = chooser.showOpenDialog(window);
+		final var fichier = chooser.showOpenDialog(window);
 		if(fichier != null) {
 			directoryChooserManager.getOrCreateInstance("sauvegarder").setInitialDirectory(fichier);
 		}
 		return fichier;
 	}
 
-	public void setDirectory(File file, String directoryName) {
+	public void setDirectory(final File file, final String directoryName) {
 		directoryChooserManager.getOrCreateInstance(directoryName).setInitialDirectory(file);
 	}
 
@@ -52,8 +52,8 @@ public class DirectoryManager implements IService {
 	 * @param window
 	 * @return
 	 */
-	public File getFolder(Window window) {
-		var chooser = new DirectoryChooser();
+	public File getFolder(final Window window) {
+		final var chooser = new DirectoryChooser();
 		return chooser.showDialog(window);
 	}
 
@@ -63,11 +63,11 @@ public class DirectoryManager implements IService {
 	 * @param listeVideos
 	 * @throws IOException
 	 */
-	public void save(Window window, List<JoueurFx> listeJoueurs) throws IOException {
-		var chooser = new FileChooser();
-		var directory = directoryChooserManager.getOrCreateInstance("sauvegarder");
+	public void save(final Window window, final List<JoueurFx> listeJoueurs) throws IOException {
+		final var chooser = new FileChooser();
+		final var directory = directoryChooserManager.getOrCreateInstance("sauvegarder");
 		chooser.setInitialDirectory(directory.getInitialDirectory());
-		var extFilter = new FileChooser.ExtensionFilter(DirectoryManager.DESCRIPTION_TYPE_FICHIER, DirectoryManager.TYPE_FICHIER);
+		final var extFilter = new FileChooser.ExtensionFilter(DirectoryManager.DESCRIPTION_TYPE_FICHIER, DirectoryManager.TYPE_FICHIER);
 		chooser.getExtensionFilters().add(extFilter);
 		var file = directory.getInitialDirectory();
 		if(file == null) {
@@ -84,9 +84,9 @@ public class DirectoryManager implements IService {
 		}
 	}
 
-	public File setFileDirectory(Window window, String directoryName) {
-		var chooser = new FileChooser();
-		var directory = directoryChooserManager.getOrCreateInstance(directoryName);
+	public File setFileDirectory(final Window window, final String directoryName) {
+		final var chooser = new FileChooser();
+		final var directory = directoryChooserManager.getOrCreateInstance(directoryName);
 		chooser.setInitialDirectory(directory.getInitialDirectory());
 		var file = directory.getInitialDirectory();
 		if(file == null) {
@@ -99,9 +99,9 @@ public class DirectoryManager implements IService {
 		return directory.getInitialDirectory();
 	}
 
-	public File setFolderDirectory(Window window, String directoryName) {
-		var chooser = new DirectoryChooser();
-		var directory = directoryChooserManager.getOrCreateInstance(directoryName);
+	public File setFolderDirectory(final Window window, final String directoryName) {
+		final var chooser = new DirectoryChooser();
+		final var directory = directoryChooserManager.getOrCreateInstance(directoryName);
 		chooser.setInitialDirectory(directory.getInitialDirectory());
 		var file = directory.getInitialDirectory();
 		if(file == null) {
@@ -114,7 +114,7 @@ public class DirectoryManager implements IService {
 		return directory.getInitialDirectory();
 	}
 
-	public File getDirectory(String directoryName) {
+	public File getDirectory(final String directoryName) {
 		return directoryChooserManager.getOrCreateInstance(directoryName).getInitialDirectory();
 	}
 
@@ -126,8 +126,8 @@ public class DirectoryManager implements IService {
 	 * @throws ClassNotFoundException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<JoueurFx> load(Window window) throws IOException, ClassNotFoundException {
-		var file = getFile(window);
+	public List<JoueurFx> load(final Window window) throws IOException, ClassNotFoundException {
+		final var file = getFile(window);
 		if(file == null) {
 			return new ArrayList<>();
 		}

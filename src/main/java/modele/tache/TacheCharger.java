@@ -20,20 +20,20 @@ public class TacheCharger extends Tache<JoueurFx> {
 	GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	WebService webService = ServiceManager.getInstance(WebService.class);
 
-	private String nom;
-	private String pseudo;
+	private final String nom;
+	private final String pseudo;
 
-	public TacheCharger(String nom, String pseudo) {
+	public TacheCharger(final String nom, final String pseudo) {
 		this.nom = nom;
 		this.pseudo = pseudo;
 	}
 
 	@Override
 	protected JoueurFx call() throws DataNotFoundException {
-		var joueur = new Joueur(nom, pseudo);
+		final var joueur = new Joueur(nom, pseudo);
 		updateMessage("chargement de " + joueur.getAppellation());
 		try {
-			SummonerData summoner = webService.getSummonerByName(joueur.getPseudo()).getData();
+			final var summoner = webService.getSummonerByName(joueur.getPseudo()).getData();
 			setInfo(joueur, summoner);
 		} catch (DataNotFoundException | UncheckedIOException e) {
 			updateMessage("");
@@ -42,7 +42,7 @@ public class TacheCharger extends Tache<JoueurFx> {
 		return new JoueurFx(joueur);
 	}
 
-	private void setInfo(Joueur joueur, SummonerData summoner) {
+	private void setInfo(final Joueur joueur, final SummonerData summoner) {
 		if(joueur == null || summoner == null) {
 			return;
 		}

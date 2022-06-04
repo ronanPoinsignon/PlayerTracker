@@ -1,7 +1,6 @@
 package controller;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
@@ -62,22 +61,22 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	@FXML
 	private Button modifier;
 
-	private MenuItem editItem = new MenuItem("Modifier le pseudo");
-	private MenuItem removeItem = new MenuItem("Supprimer");
-	private MenuItem lookItem = new MenuItem("Regarder");
+	private final MenuItem editItem = new MenuItem("Modifier le pseudo");
+	private final MenuItem removeItem = new MenuItem("Supprimer");
+	private final MenuItem lookItem = new MenuItem("Regarder");
 
 	final ContextMenu rowMenu = new ContextMenu();
 
 	private SimpleObjectProperty<JoueurFx> joueurCourant = new SimpleObjectProperty<>();
 
-	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
-	private InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
-	private LoadService loadService = ServiceManager.getInstance(LoadService.class);
+	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
+	private final InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
+	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	public void initialize(final URL location, final ResourceBundle resources) {
 
-		List<Joueur> joueurs = loadService.load();
+		final var joueurs = loadService.load();
 		joueurs.stream().map(JoueurFx::new)
 		.map(joueur -> new CommandeAjout(table, joueur))
 		.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
@@ -92,9 +91,9 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 			final var imageview = new ImageView();
 			imageview.setFitHeight(20);
 			imageview.setFitWidth(20);
-			TableCell<JoueurFx, Image> cell = new TableCell<>() {
+			final TableCell<JoueurFx, Image> cell = new TableCell<>() {
 				@Override
-				public void updateItem(Image item, boolean empty) {
+				public void updateItem(final Image item, final boolean empty) {
 					imageview.setImage(item);
 				}
 			};
@@ -104,7 +103,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 		// clic droit sur une ligne
 		table.setRowFactory(tableView -> {
-			final TableRow<JoueurFx> row = new TableRow<>();
+			final var row = new TableRow<JoueurFx>();
 			editItem.setOnAction(event -> onEdit(table.getSelectionModel().getSelectedItem()));
 			row.contextMenuProperty().bind(Bindings.when(row.emptyProperty())
 					.then((ContextMenu) null)
@@ -169,7 +168,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	@FXML
 	public void onAjout() {
-		var t = new Thread(new AddEvent(table, nom.getText(), pseudo.getText()));
+		final var t = new Thread(new AddEvent(table, nom.getText(), pseudo.getText()));
 		t.setDaemon(true);
 		t.start();
 		reset();
@@ -177,22 +176,22 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	@FXML
 	public void onModif() {
-		Joueur joueur = joueurCourant.getValue();
+		final Joueur joueur = joueurCourant.getValue();
 		if(joueur == null) {
 			return;
 		}
-		String newNom = nom.getText();
+		final var newNom = nom.getText();
 
 		gestionnaireCommandeService.addCommande(new CommandeModifier(joueur, newNom)).executer();
 
 		reset();
 	}
 
-	public void onEdit(JoueurFx joueur) {
+	public void onEdit(final JoueurFx joueur) {
 		joueurCourant.set(joueur);
 	}
 
-	public void removePLayerFromTable(JoueurFx joueur) {
+	public void removePLayerFromTable(final JoueurFx joueur) {
 		gestionnaireCommandeService.addCommande(new CommandeSuppression(table, joueur)).executer();
 		joueurCourant = null;
 	}
@@ -203,12 +202,12 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	}
 
 	@Override
-	public void notifyNewStringValueNom(String value) {
+	public void notifyNewStringValueNom(final String value) {
 		nom.setText(value);
 	}
 
 	@Override
-	public void notifyNewStringValuePseudo(String value) {
+	public void notifyNewStringValuePseudo(final String value) {
 		pseudo.setText(value);
 	}
 }

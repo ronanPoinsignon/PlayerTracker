@@ -1,4 +1,4 @@
-package modele.commande;
+package modele.commande.exception;
 
 import modele.exception.AException;
 

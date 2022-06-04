@@ -9,8 +9,8 @@ import modele.scheduler.WebRequestRunnable;
 
 public class WebRequestScheduler implements IService {
 
-	private ScheduledExecutorService scheduler;
-	private WebRequestRunnable runnable;
+	private final ScheduledExecutorService scheduler;
+	private final WebRequestRunnable runnable;
 
 	public WebRequestScheduler() {
 		scheduler = Executors.newScheduledThreadPool(1);
@@ -18,11 +18,11 @@ public class WebRequestScheduler implements IService {
 		scheduler.scheduleWithFixedDelay(runnable, 0, 1, TimeUnit.MINUTES);
 	}
 
-	public void addJoueur(Joueur joueur) {
+	public void addJoueur(final Joueur joueur) {
 		runnable.add(joueur);
 	}
 
-	public void removeJoueur(Joueur joueur) {
+	public void removeJoueur(final Joueur joueur) {
 		runnable.remove(joueur);
 	}
 

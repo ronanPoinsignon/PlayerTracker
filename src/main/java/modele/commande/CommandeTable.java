@@ -11,7 +11,7 @@ public abstract class CommandeTable<T> extends Commande<T> {
 
 	protected TableView<T> table;
 
-	protected CommandeTable(TableView<T> table) {
+	protected CommandeTable(final TableView<T> table) {
 		this.table = table;
 	}
 }

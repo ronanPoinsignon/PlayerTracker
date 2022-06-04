@@ -16,38 +16,38 @@ public class AlertFxService implements IService {
 	TrayIconService trayIconService;
 	FileManager fm;
 
-	public void alert(Exception exception) {
+	public void alert(final Exception exception) {
 		try {
 			throw exception;
 		}
 		catch(AException | ARuntimeException e) {
 			showWarningAlert(e);
 		}
-		catch (Exception e) {
+		catch (final Exception e) {
 			showAlertFrom(e);
 		}
 	}
 
-	private void showWarningAlert(IException e) {
+	private void showWarningAlert(final IException e) {
 		Platform.runLater(() -> {
-			var alert = new Alert(AlertType.WARNING);
+			final var alert = new Alert(AlertType.WARNING);
 			alert.setTitle("PlayerTracker");
 			alert.setHeaderText(e.getMessage());
 			alert.setContentText(e.getDescription());
-			var stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			final var stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
 
 			alert.showAndWait();
 		});
 	}
 
-	private void showAlertFrom(Exception e) {
+	private void showAlertFrom(final Exception e) {
 		Platform.runLater(() -> {
-			var alert = new Alert(AlertType.ERROR);
+			final var alert = new Alert(AlertType.ERROR);
 			alert.setTitle("PlayerTracker");
 			alert.setHeaderText("Une erreur s'est produite.");
 			alert.setContentText("Veuillez redémarrer l'application.");
-			var stage = (Stage) alert.getDialogPane().getScene().getWindow();
+			final var stage = (Stage) alert.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
 
 			alert.showAndWait();
@@ -60,17 +60,17 @@ public class AlertFxService implements IService {
 	 * qu'il souhaite ajouter à la liste sont déjà présents.
 	 * @param listeJoueurs
 	 */
-	public void showWarningAlertJoueursDejaPresents(List<Joueur> listeJoueurs) {
+	public void showWarningAlertJoueursDejaPresents(final List<Joueur> listeJoueurs) {
 		if(listeJoueurs.isEmpty()) {
 			return;
 		}
 		Platform.runLater(() -> {
-			Alert alert = new Alert(AlertType.WARNING);
+			final var alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Joueurs déjà présents");
 
 			alert.setHeaderText("Certains joueurs sont déjà présents dans la liste");
-			StringBuilder liste = new StringBuilder("Les joueurs suivants sont déjà présents :");
-			for(Joueur video : listeJoueurs) {
+			final var liste = new StringBuilder("Les joueurs suivants sont déjà présents :");
+			for(final Joueur video : listeJoueurs) {
 				liste.append("\n\t- " + video.getPseudo());
 			}
 

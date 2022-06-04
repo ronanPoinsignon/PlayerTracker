@@ -5,13 +5,13 @@ import modele.commande.CommandeInversion;
 
 public class SwapUpEvent<T> extends SwapDownEvent<T> {
 
-	public SwapUpEvent(TableView<T> table) {
+	public SwapUpEvent(final TableView<T> table) {
 		super(table);
 	}
 
 	@Override
 	public Void execute() {
-		int index = table.getSelectionModel().getSelectedIndex();
+		final var index = table.getSelectionModel().getSelectedIndex();
 		if(index == 0) {
 			return null;
 		}

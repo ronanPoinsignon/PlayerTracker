@@ -24,7 +24,7 @@ public class JoueurFx extends Joueur {
 	private transient IEtat etat;
 	private transient ObjectProperty<Image> imageConnexion;
 
-	public JoueurFx(Joueur joueur) {
+	public JoueurFx(final Joueur joueur) {
 		super(joueur.nom, joueur.pseudo);
 		this.joueur = joueur;
 		playerId = joueur.playerId;
@@ -72,25 +72,25 @@ public class JoueurFx extends Joueur {
 	}
 
 	@Override
-	public void setNom(String nom) {
+	public void setNom(final String nom) {
 		super.setNom(nom);
 		nomProperty.set(nom);
 	}
 
 	@Override
-	public void setPseudo(String pseudo) {
+	public void setPseudo(final String pseudo) {
 		super.setPseudo(pseudo);
 		pseudoProperty.set(pseudo);
 	}
 
 	@Override
-	public void setPlayerId(String playerId) {
+	public void setPlayerId(final String playerId) {
 		super.setPlayerId(playerId);
 		idProperty.set(playerId);
 	}
 
 	@Override
-	public void setInGame(boolean connected) {
+	public void setInGame(final boolean connected) {
 		super.setInGame(connected);
 		isConnecteProperty.set(connected);
 	}

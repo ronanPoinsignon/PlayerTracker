@@ -4,9 +4,6 @@ import modele.exception.AException;
 
 public class ApplicationDejaEnCoursException extends AException {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 9169089125391404777L;
 
 	public ApplicationDejaEnCoursException() {

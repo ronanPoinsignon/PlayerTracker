@@ -11,7 +11,7 @@ public class SummonerData {
 
 	}
 
-	public SummonerData(String summoner_id, String name, boolean in_game, String last_game) {
+	public SummonerData(final String summoner_id, final String name, final boolean in_game, final String last_game) {
 		this.summoner_id = summoner_id;
 		this.name = name;
 		this.in_game = in_game;
@@ -22,7 +22,7 @@ public class SummonerData {
 		return summoner_id;
 	}
 
-	public void setSummoner_id(String summoner_id) {
+	public void setSummoner_id(final String summoner_id) {
 		this.summoner_id = summoner_id;
 	}
 
@@ -30,7 +30,7 @@ public class SummonerData {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -38,7 +38,7 @@ public class SummonerData {
 		return in_game;
 	}
 
-	public void setIn_game(boolean in_game) {
+	public void setIn_game(final boolean in_game) {
 		this.in_game = in_game;
 	}
 
@@ -46,7 +46,7 @@ public class SummonerData {
 		return last_game;
 	}
 
-	public void setLast_game(String last_game) {
+	public void setLast_game(final String last_game) {
 		this.last_game = last_game;
 	}
 

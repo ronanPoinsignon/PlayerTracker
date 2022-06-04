@@ -11,7 +11,7 @@ import modele.event.tache.event.EventTacheUpdateMessage;
 public abstract class EventHandlerTacheUpdateMessage implements EventHandler<EventTacheUpdateMessage> {
 
 	@Override
-	public void handle(EventTacheUpdateMessage event) {
+	public void handle(final EventTacheUpdateMessage event) {
 		event.invokeHandler(this);
 	}
 

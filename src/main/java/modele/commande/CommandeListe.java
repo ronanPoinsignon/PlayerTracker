@@ -16,12 +16,12 @@ public abstract class CommandeListe<T> extends CommandeTable<T> {
 	protected List<T> elements;
 	protected SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
-	protected CommandeListe(TableView<T> table, List<T> elements) {
+	protected CommandeListe(final TableView<T> table, final List<T> elements) {
 		super(table);
 		this.elements = elements;
 	}
 
-	protected CommandeListe(TableView<T> table, T element) {
+	protected CommandeListe(final TableView<T> table, final T element) {
 		super(table);
 		elements = Arrays.asList(element);
 	}

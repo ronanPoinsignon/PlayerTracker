@@ -14,7 +14,7 @@ public class CommandeInversion<T> extends CommandeTable<T> {
 	int inv1;
 	int inv2;
 
-	public CommandeInversion(TableView<T> table, int inv1, int inv2) {
+	public CommandeInversion(final TableView<T> table, final int inv1, final int inv2) {
 		super(table);
 		this.inv1 = inv1;
 		this.inv2 = inv2;
@@ -26,7 +26,7 @@ public class CommandeInversion<T> extends CommandeTable<T> {
 			Collections.swap(table.getItems(), inv1, inv2);
 			return true;
 		}
-		catch(ArrayIndexOutOfBoundsException e) {
+		catch(final ArrayIndexOutOfBoundsException e) {
 			return false;
 		}
 	}
@@ -37,7 +37,7 @@ public class CommandeInversion<T> extends CommandeTable<T> {
 			Collections.swap(table.getItems(), inv2, inv1);
 			return true;
 		}
-		catch(ArrayIndexOutOfBoundsException e) {
+		catch(final ArrayIndexOutOfBoundsException e) {
 			return false;
 		}
 	}

@@ -14,44 +14,45 @@ import modele.joueur.Joueur;
 import service.exception.SauvegardeCorrompueException;
 
 public class LoadService implements IService {
-	private AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
-	
+	private final AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
+
 	public List<Joueur> load() {
 		File fichier = null;
-		List<Joueur> joueurs = new ArrayList<>();
+		final List<Joueur> joueurs = new ArrayList<>();
 
 		fichier = new File("joueurs.txt");
 		try {
 			fichier.createNewFile();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			alertService.alert(e);
 		}
-		
-		if(fichier.length() == 0)
+
+		if(fichier.length() == 0) {
 			return joueurs;
-		
-		try (FileInputStream is = new FileInputStream(fichier); ObjectInputStream ois = new ObjectInputStream(is)) {
+		}
+
+		try (var is = new FileInputStream(fichier); var ois = new ObjectInputStream(is)) {
 			Joueur joueur = null;
-			int size = ois.readInt();
-			
-			for(int i = 1; i <= size; i++) {
+			final var size = ois.readInt();
+
+			for(var i = 1; i <= size; i++) {
 				joueur = (Joueur) ois.readObject();
 				joueurs.add(joueur);
 			}
-			
+
 			return joueurs;
-			
+
 		} catch (ClassNotFoundException|EOFException|StreamCorruptedException e) {
 			alertService.alert(new SauvegardeCorrompueException());
-			
+
 			try {
 				Files.delete(fichier.toPath());
-			} catch (IOException e1) {
+			} catch (final IOException e1) {
 				alertService.alert(e1);
 			}
-			
+
 			return new ArrayList<>();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			alertService.alert(e);
 			return new ArrayList<>();
 		}

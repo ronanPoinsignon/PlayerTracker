@@ -1,7 +1,7 @@
 package modele.commande;
 
 /**
- * Classe abstraite permettant d'effectuer des actions sur la liste de vidéos.
+ * Classe abstraite permettant d'effectuer des actions sur la liste de joueurs.
  * @author ronan
  *
  */

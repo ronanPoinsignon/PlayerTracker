@@ -23,15 +23,15 @@ public class WebService implements IService {
 		return getValue(SummonerDataResult.class, baseUrl + WebService.GET_SUMMONER_BY_NAME + name);
 	}
 
-	public SummonerDataResult getSummonerBySummonerId(String id) {
+	public SummonerDataResult getSummonerBySummonerId(final String id) {
 		return getValue(SummonerDataResult.class, baseUrl + WebService.GET_SUMMONER_BY_ID + id);
 	}
 
-	public SummonerInGameResult getSummonerGame(String id) {
+	public SummonerInGameResult getSummonerGame(final String id) {
 		return getValue(SummonerInGameResult.class, baseUrl + WebService.GET_SUMMONER_GAME + id);
 	}
 
-	private <T> T getValue(Class<T> clazz, String url) {
+	private <T> T getValue(final Class<T> clazz, final String url) {
 		try {
 			return getClient(clazz).get(url);
 		} catch (IOException | InterruptedException e) {
@@ -39,7 +39,7 @@ public class WebService implements IService {
 		}
 	}
 
-	private <T> ClientWeb<T> getClient(Class<T> clazz){
+	private <T> ClientWeb<T> getClient(final Class<T> clazz){
 		return new ClientWeb<>(clazz);
 	}
 

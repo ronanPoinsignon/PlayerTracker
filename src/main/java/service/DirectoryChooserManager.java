@@ -11,18 +11,18 @@ import javafx.stage.DirectoryChooser;
  */
 public class DirectoryChooserManager implements IService {
 
-	private HashMap<String, DirectoryChooser> map = new HashMap<>();
+	private final HashMap<String, DirectoryChooser> map = new HashMap<>();
 
 	private final DirectoryChooser directoryChooser = new DirectoryChooser();
 
-	public DirectoryChooser getOrCreateInstance(String instance) {
+	public DirectoryChooser getOrCreateInstance(final String instance) {
 		if(map.get(instance) == null) {
 			map.put(instance, new DirectoryChooserManager().getDirectoryChooser());
 		}
 		return map.get(instance);
 	}
 
-	public DirectoryChooser getInstance(String instance) {
+	public DirectoryChooser getInstance(final String instance) {
 		return map.get(instance);
 	}
 
