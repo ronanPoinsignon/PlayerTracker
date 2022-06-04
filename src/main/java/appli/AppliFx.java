@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import service.AlertFxService;
@@ -37,8 +36,7 @@ public class AppliFx extends Application {
 		stage.setTitle("Player tracker");
 		var file = fm.getFileFromResources("fxml/page_principale.fxml");
 		var loader = new FXMLLoader(file.toURI().toURL());
-		Parent sceneVideo = loader.load();
-		var scene = new Scene(sceneVideo);
+		var scene = new Scene(loader.load());
 		stage.setScene(scene);
 		trayIconService.createFXTrayIcon(stage);
 		stage.show();
