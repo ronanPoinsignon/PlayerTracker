@@ -31,7 +31,6 @@ import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.observer.ObservateurInterface;
-import service.AlertFxService;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.LoadService;
