@@ -43,25 +43,28 @@ public class ActionEventRegarder extends ActionEventHandler {
 			return;
 		}
 		final var t = new Thread(() -> {
+			final String[] cmd = {
+					"cmd.exe",
+					"/c",
+					"start",
+					"\"\"",
+					"\"League of Legends.exe\"",
+					"\"spectator spectator.euw1.lol.riotgames.com:80 " +  partie.getEncryptionKey() + " " + partie.getGameId() + " EUW1\"",
+					"-UseRads",
+					"-GameBaseDir=..",
+					"\"-Locale=fr_FR\"",
+					"-SkipBuild",
+					"-EnableCrashpad=true",
+					"-EnableLNP"
+			};
 			try {
-				final String[] cmd = {
-						"cmd.exe",
-						"/c",
-						"start",
-						"\"\"",
-						"\"League of Legends.exe\"",
-						"\"spectator spectator.euw1.lol.riotgames.com:80 " +  partie.getEncryptionKey() + " " + partie.getGameId() + " EUW1\"",
-						"-UseRads",
-						"-GameBaseDir=..",
-						"\"-Locale=fr_FR\"",
-						"-SkipBuild",
-						"-EnableCrashpad=true",
-						"-EnableLNP"
-				};
 				final var process = new ProcessBuilder(cmd).directory(possibleFile).start();
-				if(process.exitValue() != 0) {
-					alerteService.alert(new RegarderProcessException());
-				}
+				// on attend que le process se finisse pour vérifier si la commande a fonctionné ou non
+				process.onExit().thenRun(() -> {
+					if(process.exitValue() != 0) {
+						alerteService.alert(new RegarderProcessException());
+					}
+				});
 			} catch (final IOException e) {
 				alerteService.alert(e);
 			}
