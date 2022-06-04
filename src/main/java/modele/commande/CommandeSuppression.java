@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.scene.control.TableView;
+import modele.commande.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
 import service.AlertFxService;
 import service.ServiceManager;
@@ -12,45 +13,45 @@ import service.TrayIconService;
 import service.WebRequestScheduler;
 
 /**
- * Classe permettant la suppression de vidéos de la liste.
+ * Classe permettant la suppression de joueurs de la liste.
  * @author ronan
  *
  */
 public class CommandeSuppression extends CommandeListe<JoueurFx> {
 
-	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
+	private final TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
 	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
-	private AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
+	private final AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 
 	private List<Integer> listeIndex = new ArrayList<>();
 
-	public CommandeSuppression(TableView<JoueurFx> table, List<JoueurFx> elements) {
+	public CommandeSuppression(final TableView<JoueurFx> table, final List<JoueurFx> elements) {
 		super(table, elements);
 	}
 
-	public CommandeSuppression(TableView<JoueurFx> table,JoueurFx element) {
+	public CommandeSuppression(final TableView<JoueurFx> table,final JoueurFx element) {
 		super(table, Arrays.asList(element));
 	}
 
 	@Override
 	public boolean executer() {
-		for(JoueurFx joueur : elements) {
+		for(final JoueurFx joueur : elements) {
 			listeIndex.add(table.getItems().indexOf(joueur));
 			trayIconService.unbind(joueur);
 			scheduler.removeJoueur(joueur);
 			saveService.removeJoueur(joueur);
 		}
-		List<JoueurFx> listeVideosNonPresentes = commandeUtil.removeAll(table, elements);
-		elements.removeAll(listeVideosNonPresentes);
+		final var listeJoueursNonPresents = commandeUtil.removeAll(table, elements);
+		elements.removeAll(listeJoueursNonPresents);
 		return !elements.isEmpty();
 	}
 
 	@Override
 	public boolean annuler() {
 		for(var i = 0; i < elements.size(); i++) {
-			int index = listeIndex.get(i);
+			final int index = listeIndex.get(i);
 			try {
-				JoueurFx joueur = elements.get(i);
+				final var joueur = elements.get(i);
 				commandeUtil.add(table, joueur, index);
 				trayIconService.bind(joueur);
 				scheduler.addJoueur(joueur);

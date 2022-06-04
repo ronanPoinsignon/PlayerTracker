@@ -14,7 +14,7 @@ public class ActionEventRedo extends ActionEventHandler {
 	GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 
 	@Override
-	public void handle(ActionEvent event) {
+	public void handle(final ActionEvent event) {
 		gestionnaireCommandeService.reexecuter();
 	}
 

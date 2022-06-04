@@ -9,7 +9,7 @@ public abstract class RequestResult<T> {
 
 	}
 
-	protected RequestResult(boolean success, T data) {
+	protected RequestResult(final boolean success, final T data) {
 		this.success = success;
 		this.data = data;
 	}
@@ -18,7 +18,7 @@ public abstract class RequestResult<T> {
 		return success;
 	}
 
-	public void setSuccess(boolean success) {
+	public void setSuccess(final boolean success) {
 		this.success = success;
 	}
 
@@ -26,7 +26,7 @@ public abstract class RequestResult<T> {
 		return data;
 	}
 
-	public void setData(T data) {
+	public void setData(final T data) {
 		this.data = data;
 	}
 

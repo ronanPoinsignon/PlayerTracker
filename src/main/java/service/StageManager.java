@@ -10,7 +10,7 @@ public class StageManager implements IService {
 		return currentStage;
 	}
 
-	public void setCurrentStage(Stage currentStage) {
+	public void setCurrentStage(final Stage currentStage) {
 		this.currentStage = currentStage;
 	}
 

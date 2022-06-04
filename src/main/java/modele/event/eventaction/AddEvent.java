@@ -12,13 +12,13 @@ import service.WebRequestScheduler;
 
 public class AddEvent extends RunnableEvent<JoueurFx> {
 
-	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
+	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 
-	private String nom;
-	private String pseudo;
+	private final String nom;
+	private final String pseudo;
 
-	public AddEvent(TableView<JoueurFx> table, String nom, String pseudo) {
+	public AddEvent(final TableView<JoueurFx> table, final String nom, final String pseudo) {
 		super(table);
 		this.nom = nom;
 		this.pseudo = pseudo;
@@ -32,15 +32,14 @@ public class AddEvent extends RunnableEvent<JoueurFx> {
 		if(table.getItems().stream().anyMatch(joueur -> pseudo.equals(joueur.getPseudo()))) {
 			throw new JoueurDejaPresentException(nom);
 		}
-		var tache = new TacheCharger(nom, pseudo);
+		final var tache = new TacheCharger(nom, pseudo);
 		tache.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> {
-			JoueurFx joueur = tache.getValue();
+			final var joueur = tache.getValue();
 			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur)).executer();
 		});
-		var t = new Thread(tache);
+		final var t = new Thread(tache);
 		t.setDaemon(true);
 		t.start();
 		return null;
 	}
 }
-

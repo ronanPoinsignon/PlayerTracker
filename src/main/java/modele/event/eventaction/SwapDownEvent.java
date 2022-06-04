@@ -9,13 +9,13 @@ public class SwapDownEvent<T> extends RunnableEvent<T> {
 
 	GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 
-	public SwapDownEvent(TableView<T> table) {
+	public SwapDownEvent(final TableView<T> table) {
 		super(table);
 	}
 
 	@Override
 	public Void execute() {
-		int index = table.getSelectionModel().getSelectedIndex();
+		final var index = table.getSelectionModel().getSelectedIndex();
 		if(table.getItems().size() == index + 1) {
 			return null;
 		}

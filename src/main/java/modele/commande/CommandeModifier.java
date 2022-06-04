@@ -5,11 +5,11 @@ import modele.joueur.JoueurFx;
 
 public class CommandeModifier extends Commande<JoueurFx> {
 
-	private Joueur joueur;
-	private String nomModif;
-	private String ancienNom;
+	private final Joueur joueur;
+	private final String nomModif;
+	private final String ancienNom;
 
-	public CommandeModifier(Joueur joueur, String nomModif) {
+	public CommandeModifier(final Joueur joueur, final String nomModif) {
 		this.joueur = joueur;
 		this.nomModif = nomModif;
 		ancienNom = joueur.getNom();

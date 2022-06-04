@@ -15,8 +15,8 @@ public class SummonerInGame {
 
 	}
 
-	public SummonerInGame(String summoner_id, String summoner_name, boolean in_game, String game_id,
-			String encryption_key, String game_type, String champion_name, String champion_image) {
+	public SummonerInGame(final String summoner_id, final String summoner_name, final boolean in_game, final String game_id,
+			final String encryption_key, final String game_type, final String champion_name, final String champion_image) {
 		this.summoner_id = summoner_id;
 		this.summoner_name = summoner_name;
 		this.in_game = in_game;
@@ -31,7 +31,7 @@ public class SummonerInGame {
 		return summoner_id;
 	}
 
-	public void setSummoner_id(String summonerId) {
+	public void setSummoner_id(final String summonerId) {
 		summoner_id = summonerId;
 	}
 
@@ -39,7 +39,7 @@ public class SummonerInGame {
 		return summoner_name;
 	}
 
-	public void setSummoner_name(String summonerName) {
+	public void setSummoner_name(final String summonerName) {
 		summoner_name = summonerName;
 	}
 
@@ -47,7 +47,7 @@ public class SummonerInGame {
 		return in_game;
 	}
 
-	public void setIn_game(boolean inGame) {
+	public void setIn_game(final boolean inGame) {
 		in_game = inGame;
 	}
 
@@ -55,7 +55,7 @@ public class SummonerInGame {
 		return game_id;
 	}
 
-	public void setGame_id(String gameId) {
+	public void setGame_id(final String gameId) {
 		game_id = gameId;
 	}
 
@@ -63,7 +63,7 @@ public class SummonerInGame {
 		return encryption_key;
 	}
 
-	public void setEncryption_key(String encryptionKey) {
+	public void setEncryption_key(final String encryptionKey) {
 		encryption_key = encryptionKey;
 	}
 
@@ -71,7 +71,7 @@ public class SummonerInGame {
 		return game_type;
 	}
 
-	public void setGame_type(String game_type) {
+	public void setGame_type(final String game_type) {
 		this.game_type = game_type;
 	}
 
@@ -79,7 +79,7 @@ public class SummonerInGame {
 		return champion_name;
 	}
 
-	public void setChampion_name(String champion_name) {
+	public void setChampion_name(final String champion_name) {
 		this.champion_name = champion_name;
 	}
 
@@ -87,7 +87,7 @@ public class SummonerInGame {
 		return champion_image;
 	}
 
-	public void setChampion_image(String champion_image) {
+	public void setChampion_image(final String champion_image) {
 		this.champion_image = champion_image;
 	}
 

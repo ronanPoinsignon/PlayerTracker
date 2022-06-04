@@ -1,4 +1,4 @@
-package modele.commande;
+package modele.commande.exception;
 
 import modele.exception.AException;
 
@@ -21,4 +21,3 @@ public class CommandeNonTrouveeException extends AException {
 	}
 
 }
-

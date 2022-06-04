@@ -16,12 +16,12 @@ import service.WebRequestScheduler;
  */
 public class CommandeReset extends CommandeListe<JoueurFx> {
 
-	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
-	private WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
+	private final TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
+	private final WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 
 	List<JoueurFx> listeJoueursSupprimes = new ArrayList<>();
 
-	public CommandeReset(TableView<JoueurFx> table, List<JoueurFx> elements) {
+	public CommandeReset(final TableView<JoueurFx> table, final List<JoueurFx> elements) {
 		super(table, elements);
 	}
 

@@ -12,19 +12,19 @@ import service.WebService;
 
 public class WebRequestRunnable implements Runnable {
 
-	private WebService webService = ServiceManager.getInstance(WebService.class);
+	private final WebService webService = ServiceManager.getInstance(WebService.class);
 
-	private List<Joueur> joueurs = new ArrayList<>();
+	private final List<Joueur> joueurs = new ArrayList<>();
 
 	@Override
 	public void run() {
 		joueurs.stream().filter(joueur -> joueur != null && joueur.getPlayerId() != null && !joueur.getPlayerId().isBlank()).forEach(joueur -> {
-			SummonerInGame sumIG = webService.getSummonerGame(joueur.getPlayerId()).getData();
+			final var sumIG = webService.getSummonerGame(joueur.getPlayerId()).getData();
 			setInfo(joueur, sumIG);
 		});
 	}
 
-	private void setInfo(Joueur joueur, SummonerInGame summoner) {
+	private void setInfo(final Joueur joueur, final SummonerInGame summoner) {
 		if(joueur == null || summoner == null) {
 			return;
 		}
@@ -37,11 +37,11 @@ public class WebRequestRunnable implements Runnable {
 		joueur.setInGame(summoner.isIn_game());
 	}
 
-	public boolean add(Joueur joueur) {
+	public boolean add(final Joueur joueur) {
 		return joueurs.add(joueur);
 	}
 
-	public boolean remove(Joueur joueur) {
+	public boolean remove(final Joueur joueur) {
 		return joueurs.remove(joueur);
 	}
 

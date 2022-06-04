@@ -19,30 +19,30 @@ public class AppliFx extends Application {
 	private TrayIconService trayIconService;
 	private AlertFxService alertService;
 
-	public static void start(String[] args) {
+	public static void start(final String[] args) {
 		Application.launch(args);
 	}
 
 	@Override
-	public void start(Stage stage) throws IOException {
+	public void start(final Stage stage) throws IOException {
 		try {
 			checkAlreadyRunning();
-		} catch (ApplicationDejaEnCoursException e) {
+		} catch (final ApplicationDejaEnCoursException e) {
 			alertService.alert(e);
 			return;
 		}
 		initService(stage);
 		stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
 		stage.setTitle("Player tracker");
-		var file = fm.getFileFromResources("fxml/page_principale.fxml");
-		var loader = new FXMLLoader(file.toURI().toURL());
-		var scene = new Scene(loader.load());
+		final var file = fm.getFileFromResources("fxml/page_principale.fxml");
+		final var loader = new FXMLLoader(file.toURI().toURL());
+		final var scene = new Scene(loader.load());
 		stage.setScene(scene);
 		trayIconService.createFXTrayIcon(stage);
 		stage.show();
 	}
 
-	private void initService(Stage stage) {
+	private void initService(final Stage stage) {
 		fm = ServiceManager.getInstance(FileManager.class);
 		trayIconService = ServiceManager.getInstance(TrayIconService.class);
 		alertService = ServiceManager.getInstance(AlertFxService.class);
@@ -52,13 +52,13 @@ public class AppliFx extends Application {
 	private void checkAlreadyRunning() throws ApplicationDejaEnCoursException {
 		try(var s = new ServerSocket(1044, 0, InetAddress.getByName("localhost"));) {
 			// teste juste la possibilité d'ouvrir un serveur à cette adresse
-		} catch (IOException e1) {
+		} catch (final IOException e1) {
 			throw new ApplicationDejaEnCoursException();
 		}
-		var t = new Thread(() -> {
+		final var t = new Thread(() -> {
 			try(var server = new ServerSocket(1044, 0, InetAddress.getByName("localhost"));) {
 				server.accept();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				alertService.alert(e);
 			}
 		});

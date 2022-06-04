@@ -14,7 +14,7 @@ public abstract class MouseEventHandler implements EventHandler<MouseEvent> {
 
 	protected TableView<JoueurFx> table;
 
-	protected MouseEventHandler(TableView<JoueurFx> table) {
+	protected MouseEventHandler(final TableView<JoueurFx> table) {
 		this.table = table;
 	}
 }

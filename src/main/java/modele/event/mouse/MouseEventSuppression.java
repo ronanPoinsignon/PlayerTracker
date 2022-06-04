@@ -12,13 +12,13 @@ import modele.joueur.JoueurFx;
  */
 public class MouseEventSuppression extends MouseEventHandler {
 
-	public MouseEventSuppression(TableView<JoueurFx> table) {
+	public MouseEventSuppression(final TableView<JoueurFx> table) {
 		super(table);
 	}
 
 	@Override
-	public void handle(MouseEvent event) {
-		var th = new Thread(new DeleteEvent(table));
+	public void handle(final MouseEvent event) {
+		final var th = new Thread(new DeleteEvent(table));
 		th.setDaemon(true);
 		th.start();
 	}

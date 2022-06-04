@@ -15,7 +15,7 @@ public class DataNotFoundException extends ARuntimeException {
 		super(DataNotFoundException.MESSAGE);
 	}
 
-	public DataNotFoundException(String msg) {
+	public DataNotFoundException(final String msg) {
 		super(msg);
 	}
 

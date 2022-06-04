@@ -17,16 +17,16 @@ public class EventTacheUpdateProgress extends EventTacheUpdated {
 	public static final EventType<EventTacheUpdateProgress> EVENT_UPDATE_PROGRESS =
 			new EventType<>(EventTacheUpdated.EVENT_UPDATE, "UPDATE_MESSAGE");
 
-	private long workDone;
-	private long max;
+	private final long workDone;
+	private final long max;
 
-	public EventTacheUpdateProgress(long workDone, long max) {
+	public EventTacheUpdateProgress(final long workDone, final long max) {
 		super(EventTacheUpdateProgress.EVENT_UPDATE_PROGRESS);
 		this.workDone = workDone;
 		this.max = max;
 	}
 
-	public void invokeHandler(EventHandlerTacheUpdateProgress handler) {
+	public void invokeHandler(final EventHandlerTacheUpdateProgress handler) {
 		handler.onUpdateProgress(workDone, max);
 	}
 }

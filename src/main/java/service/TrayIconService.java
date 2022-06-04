@@ -21,13 +21,13 @@ public class TrayIconService implements IService {
 	private AlertFxService alertFxService;
 	private WebRequestScheduler scheduler;
 
-	private HashMap<JoueurFx, BooleanProperty> binds = new HashMap<>();
+	private final HashMap<JoueurFx, BooleanProperty> binds = new HashMap<>();
 
 	Stage stage;
 	FXTrayIcon trayIcon;
 	MenuItem miExit;
 
-	public void createFXTrayIcon(Stage stage) {
+	public void createFXTrayIcon(final Stage stage) {
 		this.stage = stage;
 		URL iconURL;
 		try {
@@ -36,7 +36,7 @@ public class TrayIconService implements IService {
 			miExit = new MenuItem("Quitter");
 			miExit.setOnAction(e -> quitter());
 			trayIcon.addMenuItem(miExit);
-		} catch (IOException e1) {
+		} catch (final IOException e1) {
 			alertFxService.alert(e1);
 		}
 	}
@@ -51,11 +51,11 @@ public class TrayIconService implements IService {
 		System.exit(0);
 	}
 
-	public void bind(JoueurFx joueur) {
+	public void bind(final JoueurFx joueur) {
 		if(binds.containsKey(joueur)) {
 			return;
 		}
-		BooleanProperty property = new SimpleBooleanProperty();
+		final BooleanProperty property = new SimpleBooleanProperty();
 		property.bind(joueur.getIsConnecteProperty());
 		property.addListener((obs, oldValue, newValue) -> {
 			if(!newValue.booleanValue()) {
@@ -66,8 +66,8 @@ public class TrayIconService implements IService {
 		binds.put(joueur, property);
 	}
 
-	public void unbind(JoueurFx joueur) {
-		BooleanProperty property = binds.get(joueur);
+	public void unbind(final JoueurFx joueur) {
+		final var property = binds.get(joueur);
 		if(property == null) {
 			return;
 		}
@@ -75,11 +75,11 @@ public class TrayIconService implements IService {
 		binds.remove(joueur);
 	}
 
-	public void notifier(Joueur joueur) {
+	public void notifier(final Joueur joueur) {
 		if(!SystemTray.isSupported()) {
 			return;
 		}
-		var t = new Thread(() -> trayIcon.showMessage("Player tracker", joueur.getAppellation() + " est en jeu"));
+		final var t = new Thread(() -> trayIcon.showMessage("Player tracker", joueur.getAppellation() + " est en jeu"));
 		t.setDaemon(true);
 		t.start();
 	}

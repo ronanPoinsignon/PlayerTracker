@@ -6,7 +6,7 @@ public abstract class RunnableEvent<T> extends EventAction<Void> implements Runn
 
 	TableView<T> table;
 
-	protected RunnableEvent(TableView<T> table) {
+	protected RunnableEvent(final TableView<T> table) {
 		this.table = table;
 	}
 

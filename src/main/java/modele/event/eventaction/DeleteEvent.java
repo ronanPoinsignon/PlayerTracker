@@ -8,19 +8,19 @@ import service.ServiceManager;
 
 public class DeleteEvent extends RunnableEvent<JoueurFx> {
 
-	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
+	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 
-	public DeleteEvent(TableView<JoueurFx> table) {
+	public DeleteEvent(final TableView<JoueurFx> table) {
 		super(table);
 	}
 
 	@Override
 	public Void execute() {
-		int selectedIndex = table.getSelectionModel().getSelectedIndex();
+		final var selectedIndex = table.getSelectionModel().getSelectedIndex();
 		if (selectedIndex < 0) {
 			return null;
 		}
-		JoueurFx element = table.getItems().get(selectedIndex);
+		final var element = table.getItems().get(selectedIndex);
 		gestionnaireCommandeService.addCommande(new CommandeSuppression(table, element)).executer();
 		return null;
 	}

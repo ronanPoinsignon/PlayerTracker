@@ -16,7 +16,7 @@ public class JoueurDejaPresentException extends ARuntimeException implements IEx
 		super(JoueurDejaPresentException.MESSAGE);
 	}
 
-	public JoueurDejaPresentException(String pseudo) {
+	public JoueurDejaPresentException(final String pseudo) {
 		super(pseudo + " est déjà présent");
 	}
 
