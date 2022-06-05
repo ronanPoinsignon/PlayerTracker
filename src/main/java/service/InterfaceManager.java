@@ -5,6 +5,7 @@ import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import modele.joueur.Serveur;
 import modele.observer.ObservateurInterface;
 
 public class InterfaceManager implements IService {
@@ -20,6 +21,7 @@ public class InterfaceManager implements IService {
 
 	private final BooleanProperty disablePseudoProperty = new SimpleBooleanProperty();
 	private final BooleanProperty disableNomProperty = new SimpleBooleanProperty();
+	private final BooleanProperty disableServerProperty = new SimpleBooleanProperty();
 
 	public InterfaceManager() {
 		debloquerInterface();
@@ -53,6 +55,10 @@ public class InterfaceManager implements IService {
 		return visibleModifierProperty;
 	}
 
+	public BooleanProperty getDisableServerProperty() {
+		return disableServerProperty;
+	}
+
 	public void bloquerInterface() {
 		setAllDisable(true);
 	}
@@ -69,6 +75,7 @@ public class InterfaceManager implements IService {
 		disableTableProperty.set(value);
 		disablePseudoProperty.set(value);
 		disableNomProperty.set(value);
+		disableServerProperty.set(value);
 	}
 
 	public void setDisableAjoutProperty(final boolean value) {
@@ -89,6 +96,10 @@ public class InterfaceManager implements IService {
 
 	public void setDisableNomProperty(final boolean value) {
 		disableNomProperty.set(value);
+	}
+
+	public void setDisableServerProperty(final boolean value) {
+		disableServerProperty.set(value);
 	}
 
 	public void setVisibleAjoutProperty() {
@@ -115,6 +126,10 @@ public class InterfaceManager implements IService {
 
 	public void setPseudoValue(final String value) {
 		observateurs.forEach(obs ->	obs.notifyNewStringValuePseudo(value));
+	}
+
+	public void setServerValue(final Serveur server) {
+		observateurs.forEach(obs ->	obs.notifyNewServerValue(server));
 	}
 
 	public void addObs(final ObservateurInterface obs) {
