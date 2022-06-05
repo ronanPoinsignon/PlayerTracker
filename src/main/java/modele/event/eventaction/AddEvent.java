@@ -5,6 +5,7 @@ import javafx.scene.control.TableView;
 import modele.commande.CommandeAjout;
 import modele.event.eventaction.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
+import modele.joueur.Serveur;
 import modele.tache.TacheCharger;
 import service.GestionnaireCommandeService;
 import service.ServiceManager;
@@ -17,11 +18,13 @@ public class AddEvent extends RunnableEvent<JoueurFx> {
 
 	private final String nom;
 	private final String pseudo;
+	private final Serveur serveur;
 
-	public AddEvent(final TableView<JoueurFx> table, final String nom, final String pseudo) {
+	public AddEvent(final TableView<JoueurFx> table, final String nom, final String pseudo, final Serveur serveur) {
 		super(table);
 		this.nom = nom;
 		this.pseudo = pseudo;
+		this.serveur = serveur;
 	}
 
 	@Override
@@ -32,7 +35,7 @@ public class AddEvent extends RunnableEvent<JoueurFx> {
 		if(table.getItems().stream().anyMatch(joueur -> pseudo.equals(joueur.getPseudo()))) {
 			throw new JoueurDejaPresentException(nom);
 		}
-		final var tache = new TacheCharger(nom, pseudo);
+		final var tache = new TacheCharger(nom, pseudo, serveur);
 		tache.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> {
 			final var joueur = tache.getValue();
 			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur)).executer();

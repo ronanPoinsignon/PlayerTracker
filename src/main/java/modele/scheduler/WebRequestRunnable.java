@@ -19,7 +19,7 @@ public class WebRequestRunnable implements Runnable {
 	@Override
 	public void run() {
 		joueurs.stream().filter(joueur -> joueur != null && joueur.getPlayerId() != null && !joueur.getPlayerId().isBlank()).forEach(joueur -> {
-			final var sumIG = webService.getSummonerGame(joueur.getPlayerId()).getData();
+			final var sumIG = webService.getSummonerGame(joueur.getPlayerId(), joueur.getServer().getServerId()).getData();
 			setInfo(joueur, sumIG);
 		});
 	}

@@ -16,6 +16,7 @@ import modele.event.eventaction.GetPseudoEvent;
 import modele.event.eventaction.SwapDownEvent;
 import modele.event.eventaction.SwapUpEvent;
 import modele.joueur.JoueurFx;
+import modele.joueur.Serveur;
 
 /**
  * Classe traitant la récéption d'événement clavier.
@@ -146,8 +147,8 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 		th.start();
 	}
 
-	public void addJoueurFxToTable(final String nom, final String pseudo) {
-		final var th = new Thread(new AddEvent(table, nom, pseudo));
+	public void addJoueurFxToTable(final String nom, final String pseudo, final Serveur serveur) {
+		final var th = new Thread(new AddEvent(table, nom, pseudo, serveur));
 		th.setDaemon(true);
 		th.start();
 	}
