@@ -28,10 +28,10 @@ public class ServerManager implements IService {
 		return servers.stream()
 				.filter(server -> server.getServerId().equals(defaultName))
 				.findFirst()
-				.orElse(getServerByName("euw1"));
+				.orElse(getServerById("euw1"));
 	}
 
-	public Serveur getServerByName(final String name) {
+	public Serveur getServerById(final String name) {
 		return servers.stream()
 				.filter(server -> server.getServerId().equals(name))
 				.findFirst()
