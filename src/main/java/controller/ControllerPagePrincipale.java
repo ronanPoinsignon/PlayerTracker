@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
@@ -9,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
@@ -20,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.util.StringConverter;
 import modele.commande.CommandeAjout;
 import modele.commande.CommandeModifier;
 import modele.commande.CommandeSuppression;
@@ -29,10 +32,12 @@ import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
+import modele.joueur.Serveur;
 import modele.observer.ObservateurInterface;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.LoadService;
+import service.ServerManager;
 import service.ServiceManager;
 
 public class ControllerPagePrincipale implements Initializable, ObservateurInterface {
@@ -50,18 +55,22 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	private TableColumn<JoueurFx, String> colonneId;
 	@FXML
 	private TableColumn<JoueurFx, Image> colonneInGame;
+	@FXML
+	private TableColumn<JoueurFx, String> colonneServeur;
 
 	@FXML
 	private TextField nom;
 	@FXML
 	private TextField pseudo;
+	@FXML
+	private ComboBox<Serveur> serverList;
 
 	@FXML
 	private Button ajouter;
 	@FXML
 	private Button modifier;
 
-	private final MenuItem editItem = new MenuItem("Modifier le pseudo");
+	private final MenuItem editItem = new MenuItem("Modifier");
 	private final MenuItem removeItem = new MenuItem("Supprimer");
 	private final MenuItem lookItem = new MenuItem("Regarder");
 
@@ -72,6 +81,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private final InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
 	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
+	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
@@ -85,6 +95,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudoProperty());
 		colonneId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
 		colonneInGame.setCellValueFactory(cellData -> cellData.getValue().getImageConnexion());
+		colonneServeur.setCellValueFactory(cellData -> cellData.getValue().getServerNameProperty());
 
 		// Wrap de l'image dans une cellule permettant son affichage
 		colonneInGame.setCellFactory(col -> {
@@ -99,6 +110,18 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 			};
 			cell.setGraphic(imageview);
 			return cell;
+		});
+
+		serverList.setConverter(new StringConverter<Serveur>() {
+			@Override
+			public String toString(final Serveur object) {
+				return object.getLabel();
+			}
+			@Override
+			public Serveur fromString(final String string) {
+				return serverList.getItems().stream().filter(ap ->
+				ap.getServerId().equals(string)).findFirst().orElse(null);
+			}
 		});
 
 		// clic droit sur une ligne
@@ -119,6 +142,8 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 				interfaceManager.setPseudoValue(newValue.getPseudo());
 				interfaceManager.setDisablePseudoProperty(true);
 				interfaceManager.setVisibleModifierProperty();
+				interfaceManager.setServerValue(newValue.getServer());
+				interfaceManager.setDisableServerProperty(true);
 			}
 		});
 
@@ -126,6 +151,10 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		pseudo.setAlignment(Pos.CENTER_LEFT);
 
 		rowMenu.getItems().addAll(editItem, removeItem, lookItem);
+
+		serverList.getItems().addAll(serverManager.getServers());
+		serverList.setValue(serverManager.getDefaultServer());
+		serverList.getItems().sort(Comparator.comparing(Serveur::getServerId));
 
 		addEvent();
 	}
@@ -145,6 +174,8 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 		interfaceManager.getDisablePseudoProperty().addListener((obs, oldV, newV) -> pseudo.setDisable(newV));
 		interfaceManager.getDisableNomProperty().addListener((obs, oldV, newV) -> nom.setDisable(newV));
+		interfaceManager.getDisableServerProperty().addListener((obs, oldV, newV) -> serverList.setDisable(newV));
+
 		pseudo.setOnAction(evt -> {
 			evt.consume();
 			onAjout();
@@ -168,7 +199,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	@FXML
 	public void onAjout() {
-		final var t = new Thread(new AddEvent(table, nom.getText(), pseudo.getText()));
+		final var t = new Thread(new AddEvent(table, nom.getText(), pseudo.getText(), serverList.getValue()));
 		t.setDaemon(true);
 		t.start();
 		reset();
@@ -181,8 +212,10 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 			return;
 		}
 		final var newNom = nom.getText();
+		final var newPseudo = pseudo.getText();
+		final var newServer = serverList.getValue();
 
-		gestionnaireCommandeService.addCommande(new CommandeModifier(joueur, newNom)).executer();
+		gestionnaireCommandeService.addCommande(new CommandeModifier(joueur, newNom, newPseudo, newServer)).executer();
 
 		reset();
 	}
@@ -209,5 +242,10 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	@Override
 	public void notifyNewStringValuePseudo(final String value) {
 		pseudo.setText(value);
+	}
+
+	@Override
+	public void notifyNewServerValue(final Serveur value) {
+		serverList.setValue(value);
 	}
 }
