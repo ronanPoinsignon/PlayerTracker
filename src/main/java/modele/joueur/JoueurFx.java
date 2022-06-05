@@ -13,19 +13,20 @@ import modele.joueur.etat.NonConnecte;
 
 public class JoueurFx extends Joueur {
 
-	private static final long serialVersionUID = 109145397335591218L;
+	private static final long serialVersionUID = 2397910852525053894L;
 
 	private transient StringProperty idProperty;
 	private transient StringProperty nomProperty;
 	private transient StringProperty pseudoProperty;
 	private transient BooleanProperty isConnecteProperty;
+	private transient StringProperty serverNameProperty;
 
 	private transient Joueur joueur;
 	private transient IEtat etat;
 	private transient ObjectProperty<Image> imageConnexion;
 
 	public JoueurFx(final Joueur joueur) {
-		super(joueur.nom, joueur.pseudo);
+		super(joueur.nom, joueur.pseudo, joueur.server);
 		this.joueur = joueur;
 		playerId = joueur.playerId;
 		inGame = joueur.inGame;
@@ -33,6 +34,7 @@ public class JoueurFx extends Joueur {
 		nomProperty = new SimpleStringProperty(joueur.nom);
 		pseudoProperty = new SimpleStringProperty(joueur.pseudo);
 		isConnecteProperty = new SimpleBooleanProperty(joueur.inGame);
+		serverNameProperty = new SimpleStringProperty(joueur.server != null ? joueur.server.getServerId() : "");
 		if(isConnecteProperty.get()) {
 			etat = new Connecte();
 		} else {
@@ -67,6 +69,10 @@ public class JoueurFx extends Joueur {
 		return isConnecteProperty;
 	}
 
+	public StringProperty getServerNameProperty() {
+		return serverNameProperty;
+	}
+
 	public Joueur getJoueur() {
 		return joueur;
 	}
@@ -93,5 +99,11 @@ public class JoueurFx extends Joueur {
 	public void setInGame(final boolean connected) {
 		super.setInGame(connected);
 		isConnecteProperty.set(connected);
+	}
+
+	@Override
+	public void setServer(final Serveur server) {
+		super.setServer(server);
+		serverNameProperty.set(server != null ? server.getServerId() : "");
 	}
 }

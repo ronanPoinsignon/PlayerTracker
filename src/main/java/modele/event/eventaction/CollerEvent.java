@@ -3,8 +3,12 @@ package modele.event.eventaction;
 import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
 import modele.joueur.JoueurFx;
+import service.ServerManager;
+import service.ServiceManager;
 
 public class CollerEvent extends EventAction<Void> {
+
+	ServerManager sm = ServiceManager.getInstance(ServerManager.class);
 
 	TableView<JoueurFx> table;
 
@@ -17,7 +21,7 @@ public class CollerEvent extends EventAction<Void> {
 		final var clipboard = Clipboard.getSystemClipboard();
 		final var pseudo = clipboard.getString();
 		if(pseudo != null && !pseudo.isEmpty()) {
-			final var th = new Thread(new AddEvent(table, "", pseudo));
+			final var th = new Thread(new AddEvent(table, "", pseudo, sm.getDefaultServer()));
 			th.setDaemon(true);
 			th.start();
 		}

@@ -14,7 +14,9 @@ import modele.joueur.Joueur;
 import service.exception.SauvegardeCorrompueException;
 
 public class LoadService implements IService {
-	private final AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
+
+	private AlertFxService alertService;
+	ServerManager sm;
 
 	public List<Joueur> load() {
 		File fichier = null;
@@ -37,6 +39,7 @@ public class LoadService implements IService {
 
 			for(var i = 1; i <= size; i++) {
 				joueur = (Joueur) ois.readObject();
+				joueur.setServer(sm.getServerById(joueur.getServer().getServerId()));
 				joueurs.add(joueur);
 			}
 
@@ -56,5 +59,11 @@ public class LoadService implements IService {
 			alertService.alert(e);
 			return new ArrayList<>();
 		}
+	}
+
+	@Override
+	public void init() {
+		alertService = ServiceManager.getInstance(AlertFxService.class);
+		sm = ServiceManager.getInstance(ServerManager.class);
 	}
 }

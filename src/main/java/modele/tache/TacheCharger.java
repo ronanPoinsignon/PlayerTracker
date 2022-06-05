@@ -4,6 +4,7 @@ import java.io.UncheckedIOException;
 
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
+import modele.joueur.Serveur;
 import modele.request.data.SummonerData;
 import modele.web.request.DataNotFoundException;
 import service.GestionnaireCommandeService;
@@ -22,18 +23,20 @@ public class TacheCharger extends Tache<JoueurFx> {
 
 	private final String nom;
 	private final String pseudo;
+	private final Serveur serveur;
 
-	public TacheCharger(final String nom, final String pseudo) {
+	public TacheCharger(final String nom, final String pseudo, final Serveur serveur) {
 		this.nom = nom;
 		this.pseudo = pseudo;
+		this.serveur = serveur;
 	}
 
 	@Override
 	protected JoueurFx call() throws DataNotFoundException {
-		final var joueur = new Joueur(nom, pseudo);
+		final var joueur = new Joueur(nom, pseudo, serveur);
 		updateMessage("chargement de " + joueur.getAppellation());
 		try {
-			final var summoner = webService.getSummonerByName(joueur.getPseudo()).getData();
+			final var summoner = webService.getSummonerByName(joueur.getPseudo(), joueur.getServer().getServerId()).getData();
 			setInfo(joueur, summoner);
 		} catch (DataNotFoundException | UncheckedIOException e) {
 			updateMessage("");
