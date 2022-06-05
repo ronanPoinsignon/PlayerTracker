@@ -6,16 +6,18 @@ public class SummonerData {
 	private String name;
 	private boolean in_game;
 	private String last_game;
+	private String server_id;
 
 	public SummonerData() {
 
 	}
 
-	public SummonerData(final String summoner_id, final String name, final boolean in_game, final String last_game) {
+	public SummonerData(final String summoner_id, final String name, final boolean in_game, final String last_game, final String server_id) {
 		this.summoner_id = summoner_id;
 		this.name = name;
 		this.in_game = in_game;
 		this.last_game = last_game;
+		this.server_id = server_id;
 	}
 
 	public String getSummoner_id() {
@@ -48,6 +50,14 @@ public class SummonerData {
 
 	public void setLast_game(final String last_game) {
 		this.last_game = last_game;
+	}
+
+	public String getServer_id() {
+		return server_id;
+	}
+
+	public void setServer_id(final String server_id) {
+		this.server_id = server_id;
 	}
 
 	@Override
