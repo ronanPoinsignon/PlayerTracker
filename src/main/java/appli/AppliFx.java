@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import service.AlertFxService;
 import service.FileManager;
+import service.PropertiesService;
 import service.ServiceManager;
 import service.StageManager;
 import service.TrayIconService;
@@ -19,6 +20,7 @@ public class AppliFx extends Application {
 	private FileManager fm;
 	private TrayIconService trayIconService;
 	private AlertFxService alertService;
+	PropertiesService ps;
 
 	public static void start(final String[] args) {
 		Application.launch(args);
@@ -34,7 +36,7 @@ public class AppliFx extends Application {
 			return;
 		}
 		stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
-		stage.setTitle("Player tracker");
+		stage.setTitle(ps.get("application_name"));
 		final var file = fm.getFileFromResources("fxml/page_principale.fxml");
 		final var loader = new FXMLLoader(file.toURI().toURL());
 		stage.setScene(new Scene(loader.load()));
@@ -46,6 +48,7 @@ public class AppliFx extends Application {
 		fm = ServiceManager.getInstance(FileManager.class);
 		trayIconService = ServiceManager.getInstance(TrayIconService.class);
 		alertService = ServiceManager.getInstance(AlertFxService.class);
+		ps = ServiceManager.getInstance(PropertiesService.class);
 		ServiceManager.getInstance(StageManager.class).setCurrentStage(stage);
 	}
 

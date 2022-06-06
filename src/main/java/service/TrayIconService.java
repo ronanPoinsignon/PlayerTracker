@@ -20,6 +20,7 @@ public class TrayIconService implements IService {
 	private FileManager fm;
 	private AlertFxService alertFxService;
 	private WebRequestScheduler scheduler;
+	PropertiesService ps;
 
 	private final HashMap<JoueurFx, BooleanProperty> binds = new HashMap<>();
 
@@ -79,7 +80,7 @@ public class TrayIconService implements IService {
 		if(!SystemTray.isSupported()) {
 			return;
 		}
-		final var t = new Thread(() -> trayIcon.showMessage("Player tracker", joueur.getAppellation() + " est en jeu"));
+		final var t = new Thread(() -> trayIcon.showMessage(ps.get("application_name"), joueur.getAppellation() + " est en jeu"));
 		t.setDaemon(true);
 		t.start();
 	}
@@ -89,5 +90,6 @@ public class TrayIconService implements IService {
 		fm = ServiceManager.getInstance(FileManager.class);
 		alertFxService = ServiceManager.getInstance(AlertFxService.class);
 		scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
+		ps = ServiceManager.getInstance(PropertiesService.class);
 	}
 }
