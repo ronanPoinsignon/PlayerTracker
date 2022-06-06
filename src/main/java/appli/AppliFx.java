@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
+import appli.exception.ApplicationDejaEnCoursException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,19 +26,18 @@ public class AppliFx extends Application {
 
 	@Override
 	public void start(final Stage stage) throws IOException {
+		initService(stage);
 		try {
 			checkAlreadyRunning();
 		} catch (final ApplicationDejaEnCoursException e) {
 			alertService.alert(e);
 			return;
 		}
-		initService(stage);
 		stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
 		stage.setTitle("Player tracker");
 		final var file = fm.getFileFromResources("fxml/page_principale.fxml");
 		final var loader = new FXMLLoader(file.toURI().toURL());
-		final var scene = new Scene(loader.load());
-		stage.setScene(scene);
+		stage.setScene(new Scene(loader.load()));
 		trayIconService.createFXTrayIcon(stage);
 		stage.show();
 	}
