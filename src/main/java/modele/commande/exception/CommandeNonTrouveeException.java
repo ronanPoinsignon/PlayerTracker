@@ -4,12 +4,9 @@ import modele.exception.AException;
 
 public class CommandeNonTrouveeException extends AException {
 
-	private static final String MESSAGE = "La commande n'est pas dans le gestionnaire";
+	private static final long serialVersionUID = -9033354465958272972L;
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final String MESSAGE = "La commande n'est pas dans le gestionnaire";
 
 	public CommandeNonTrouveeException() {
 		super(CommandeNonTrouveeException.MESSAGE);
