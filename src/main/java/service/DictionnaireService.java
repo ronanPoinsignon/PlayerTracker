@@ -30,6 +30,8 @@ public class DictionnaireService implements IService {
 	private final StringProperty colonneIdLegende = new SimpleStringProperty();
 	private final StringProperty colonneInGameLegende = new SimpleStringProperty();
 	private final StringProperty colonneServeurLegende = new SimpleStringProperty();
+	private final StringProperty nomPlaceHolder = new SimpleStringProperty();
+	private final StringProperty pseudoPlaceHolder = new SimpleStringProperty();
 
 	// CommandeNonTrouveeException
 	private final StringProperty commandeNonTrouveeExceptionMessage = new SimpleStringProperty();
@@ -161,6 +163,14 @@ public class DictionnaireService implements IService {
 
 	public StringProperty getColonneServeurLegende() {
 		return colonneServeurLegende;
+	}
+
+	public StringProperty getNomPlaceHolder() {
+		return nomPlaceHolder;
+	}
+
+	public StringProperty getPseudoPlaceHolder() {
+		return pseudoPlaceHolder;
 	}
 
 	public StringProperty getCommandeNonTrouveeExceptionMessage() {

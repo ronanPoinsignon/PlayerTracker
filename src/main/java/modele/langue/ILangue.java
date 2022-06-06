@@ -22,6 +22,8 @@ public interface ILangue {
 	String colonneIdLegende();
 	String colonneInGameLegende();
 	String colonneServeurLegende();
+	String nomPlaceHolder();
+	String pseudoPlaceHolder();
 
 	// CommandeNonTrouveeException
 	String commandeNonTrouveeExceptionMessage();

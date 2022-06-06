@@ -210,7 +210,8 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		editItem.textProperty().bind(dictionnaire.getMenuItemModifier());
 		removeItem.textProperty().bind(dictionnaire.getMenuItemSupprimer());
 		lookItem.textProperty().bind(dictionnaire.getMenuItemRegarder());
-
+		nom.promptTextProperty().bind(dictionnaire.getNomPlaceHolder());
+		pseudo.promptTextProperty().bind(dictionnaire.getPseudoPlaceHolder());
 	}
 
 	@FXML

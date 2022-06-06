@@ -73,6 +73,16 @@ public class Francais implements ILangue {
 	}
 
 	@Override
+	public String nomPlaceHolder() {
+		return "nom";
+	}
+
+	@Override
+	public String pseudoPlaceHolder() {
+		return "pseudo";
+	}
+
+	@Override
 	public String commandeNonTrouveeExceptionMessage() {
 		return "Impossible d'exécuter la commande voulue.";
 	}

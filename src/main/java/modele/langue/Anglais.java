@@ -87,6 +87,18 @@ public class Anglais implements ILangue {
 	}
 
 	@Override
+	public String nomPlaceHolder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String pseudoPlaceHolder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public String commandeNonTrouveeExceptionMessage() {
 		// TODO Auto-generated method stub
 		return null;
