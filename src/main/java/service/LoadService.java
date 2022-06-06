@@ -4,19 +4,21 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.StreamCorruptedException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import appli.exception.DataLoadingException;
 import modele.joueur.Joueur;
 import service.exception.SauvegardeCorrompueException;
 
 public class LoadService implements IService {
 
 	private AlertFxService alertService;
-	ServerManager sm;
+	private ServerManager sm;
 
 	public List<Joueur> load() {
 		File fichier = null;
@@ -55,7 +57,12 @@ public class LoadService implements IService {
 			}
 
 			return new ArrayList<>();
-		} catch (final IOException e) {
+		}
+		catch (final InvalidClassException e) {
+			alertService.alert(new DataLoadingException());
+			return new ArrayList<>();
+		}
+		catch (final IOException e) {
 			alertService.alert(e);
 			return new ArrayList<>();
 		}

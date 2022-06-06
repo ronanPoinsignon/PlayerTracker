@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -15,6 +16,7 @@ public class AlertFxService implements IService {
 
 	TrayIconService trayIconService;
 	FileManager fm;
+	PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
 
 	public void alert(final Exception exception) {
 		try {
@@ -30,26 +32,19 @@ public class AlertFxService implements IService {
 
 	private void showWarningAlert(final IException e) {
 		Platform.runLater(() -> {
-			final var alert = new Alert(AlertType.WARNING);
-			alert.setTitle("PlayerTracker");
-			alert.setHeaderText(e.getMessage());
-			alert.setContentText(e.getDescription());
-			final var stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
-
-			alert.showAndWait();
+			createWarningAlert(e.getMessage(), e.getDescription()).showAndWait();
+			final var t = new Thread(e.next());
+			t.setDaemon(true);
+			t.start();
 		});
 	}
 
 	private void showAlertFrom(final Exception e) {
+		e.printStackTrace();
 		Platform.runLater(() -> {
-			final var alert = new Alert(AlertType.ERROR);
-			alert.setTitle("PlayerTracker");
-			alert.setHeaderText("Une erreur s'est produite.");
-			alert.setContentText("Veuillez redémarrer l'application.");
-			final var stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
-
+			final var header = "Une erreur s'est produite.";
+			final var context = "Veuillez redémarrer l'application.";
+			final var alert = createErrorAlert(header, context);
 			alert.showAndWait();
 			trayIconService.quitter();
 		});
@@ -65,19 +60,31 @@ public class AlertFxService implements IService {
 			return;
 		}
 		Platform.runLater(() -> {
-			final var alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Joueurs déjà présents");
-
-			alert.setHeaderText("Certains joueurs sont déjà présents dans la liste");
-			final var liste = new StringBuilder("Les joueurs suivants sont déjà présents :");
-			for(final Joueur video : listeJoueurs) {
-				liste.append("\n\t- " + video.getPseudo());
-			}
-
-			alert.setContentText(liste.toString());
-
+			final var header = "Certains joueurs sont déjà présents dans la liste";
+			final var liste = new StringBuilder("Les joueurs suivants sont déjà présents :\n\t");
+			final var joueurs = listeJoueurs.stream().map(Joueur::getPseudo).collect(Collectors.joining("\n\t- "));
+			liste.append(joueurs);
+			final var alert = createWarningAlert(header, liste.toString());
 			alert.showAndWait();
 		});
+	}
+
+	private Alert createWarningAlert(final String header, final String contexte) {
+		return createAlert(AlertType.WARNING, header, contexte);
+	}
+
+	private Alert createErrorAlert(final String header, final String contexte) {
+		return createAlert(AlertType.ERROR, header, contexte);
+	}
+
+	private Alert createAlert(final AlertType type, final String header, final String contexte) {
+		final var alert = new Alert(type);
+		alert.setTitle(ps.get("application_name"));
+		alert.setHeaderText(header);
+		alert.setContentText(contexte);
+		final var stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
+		return alert;
 	}
 
 	@Override

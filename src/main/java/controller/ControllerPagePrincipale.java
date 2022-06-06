@@ -191,6 +191,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 			lookItem.visibleProperty().unbind();
 			if(newV == null) {
 				lookItem.setVisible(false);
+				return;
 			}
 			lookItem.visibleProperty().bind(newV.getIsConnecteProperty());
 			lookItem.setOnAction(new ActionEventRegarder(newV));
