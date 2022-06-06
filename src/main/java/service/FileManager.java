@@ -11,6 +11,8 @@ import javafx.scene.image.Image;
 
 public class FileManager implements IService {
 
+	DictionnaireService dictionnaire;
+
 	private final Map<String, File> fileMap = new HashMap<>();
 	private final Map<String, Image> imageMap = new HashMap<>();
 
@@ -60,9 +62,14 @@ public class FileManager implements IService {
 		final var classLoader = this.getClass().getClassLoader();
 		final var inputStream = classLoader.getResourceAsStream(fileName);
 		if (inputStream == null) {
-			throw new IllegalArgumentException("file not found! " + fileName);
+			throw new IllegalArgumentException(dictionnaire.getGetInputStreamFromResourceFileNotFound().getValue() + " : " + fileName);
 		} else {
 			return inputStream;
 		}
+	}
+
+	@Override
+	public void init() {
+		dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	}
 }

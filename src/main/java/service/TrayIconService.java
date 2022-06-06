@@ -21,6 +21,7 @@ public class TrayIconService implements IService {
 	private AlertFxService alertFxService;
 	private WebRequestScheduler scheduler;
 	PropertiesService ps;
+	DictionnaireService dictionnaire;
 
 	private final HashMap<JoueurFx, BooleanProperty> binds = new HashMap<>();
 
@@ -34,7 +35,8 @@ public class TrayIconService implements IService {
 		try {
 			iconURL = fm.getFileFromResources("images/loupe.PNG").toURI().toURL();
 			trayIcon = new FXTrayIcon.Builder(stage, iconURL).show().build();
-			miExit = new MenuItem("Quitter");
+			miExit = new MenuItem();
+			miExit.textProperty().bind(dictionnaire.getTrayIconServiceQuitter());
 			miExit.setOnAction(e -> quitter());
 			trayIcon.addMenuItem(miExit);
 		} catch (final IOException e1) {
@@ -80,7 +82,7 @@ public class TrayIconService implements IService {
 		if(!SystemTray.isSupported()) {
 			return;
 		}
-		final var t = new Thread(() -> trayIcon.showMessage(ps.get("application_name"), joueur.getAppellation() + " est en jeu"));
+		final var t = new Thread(() -> trayIcon.showMessage(ps.get("application_name"), joueur.getAppellation() + " " + dictionnaire.getTrayIconServiceEnJeu().getValue()));
 		t.setDaemon(true);
 		t.start();
 	}
@@ -91,5 +93,6 @@ public class TrayIconService implements IService {
 		alertFxService = ServiceManager.getInstance(AlertFxService.class);
 		scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 		ps = ServiceManager.getInstance(PropertiesService.class);
+		dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	}
 }
