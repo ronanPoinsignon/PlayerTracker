@@ -4,10 +4,8 @@ import modele.exception.AException;
 
 public class NoLolInstallationFound extends AException {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -6845460775683090231L;
+
 	private static final String MESSAGE = "L'installation n'a pu être trouvée.";
 
 	public NoLolInstallationFound() {

@@ -4,9 +4,6 @@ import modele.exception.AException;
 
 public class RegarderProcessException extends AException {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -1793510066978472310L;
 
 	private static final String MESSAGE = "La partie n'a pu être lancée.";

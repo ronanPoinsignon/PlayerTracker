@@ -4,9 +4,6 @@ import modele.exception.ARuntimeException;
 
 public class DataNotFoundException extends ARuntimeException {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -5115305139178777898L;
 
 	private static final String MESSAGE = "Le joueur n'existe pas";
