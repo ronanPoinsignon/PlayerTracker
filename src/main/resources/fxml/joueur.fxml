@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="169.0" prefWidth="300.0" styleClass="joueur-card" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.JoueurController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="169.0" prefWidth="300.0" styleClass="joueur-card" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.JoueurController">
    <children>
       <Label fx:id="nom" layoutX="68.0" layoutY="33.0" text="Nom (pseudo)" />
       <ImageView fx:id="imageStatut" fitHeight="36.0" fitWidth="36.0" layoutX="24.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
