@@ -36,12 +36,19 @@ public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
 					try {
 						loader = new FXMLLoader(template.toURI().toURL());
 						Pane paneJoueur = loader.load();
-
+						
 						JoueurController controller = loader.getController();
 						
 						controller.setJoueur(joueur);
 						
+						int[] position = calculateNextPosition();
+						
 						this.getChildren().add(paneJoueur);
+												
+						paneJoueur.setTranslateX(position[0]);
+						paneJoueur.setTranslateY(position[1]);
+						
+						this.setPrefHeight(position[1] + 240);
 					} catch (IOException e) {
 						throw new RuntimeException(e);
 					}
@@ -51,6 +58,18 @@ public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
 			}
 		});
 		
+	}
+	
+	public int[] calculateNextPosition() {
+		int size = elements.size() - 1;
+		
+		int rowPosition = size % 3;
+		int rowNumber = size / 3;
+		
+		int x = rowPosition * (300 + 40);
+		int y= rowNumber * 200;
+		
+		return new int[] {x, y};
 	}
 
 	@Override
