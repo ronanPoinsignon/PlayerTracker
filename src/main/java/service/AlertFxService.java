@@ -83,7 +83,7 @@ public class AlertFxService implements IService {
 		alert.setHeaderText(header);
 		alert.setContentText(contexte);
 		final var stage = (Stage) alert.getDialogPane().getScene().getWindow();
-		stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
+		stage.getIcons().add(fm.getImageFromResource("images/icon.png"));
 		return alert;
 	}
 
