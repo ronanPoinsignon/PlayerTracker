@@ -1,5 +1,6 @@
 package modele.scheduler;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,24 @@ public class WebRequestRunnable implements Runnable {
 	@Override
 	public void run() {
 		joueurs.stream().filter(joueur -> joueur != null && joueur.getPlayerId() != null && !joueur.getPlayerId().isBlank()).forEach(joueur -> {
-			final var sumIG = webService.getSummonerGame(joueur.getPlayerId(), joueur.getServer().getServerId()).getData();
-			setInfo(joueur, sumIG);
+			try {
+				try {
+					final var sumIG = webService.getSummonerGame(joueur.getPlayerId(), joueur.getServer().getServerId()).getData();
+					setInfo(joueur, sumIG);
+				} catch (final RuntimeException e) {
+					final var cause = e.getCause();
+					if(cause != null) {
+						throw cause;
+					}
+					throw e;
+				}
+			} catch (final ConnectException e) {
+				// pas de connexion à internet, ne rien faire
+			} catch(final RuntimeException e) {
+				throw e;
+			} catch(final Throwable e) {
+				throw new RuntimeException(e);
+			}
 		});
 	}
 
