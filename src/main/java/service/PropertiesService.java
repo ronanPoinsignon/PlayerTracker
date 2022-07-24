@@ -4,10 +4,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import modele.properties.CaselessProperties;
+
 public class PropertiesService implements IService {
 
 	private FileManager fm;
-	private final Properties properties = new Properties();
+	private final Properties properties = new CaselessProperties();
 
 	public String get(final String element) {
 		return properties.getProperty(element);

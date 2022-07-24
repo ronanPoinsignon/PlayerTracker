@@ -1,0 +1,38 @@
+applicationDejaEnCoursExceptionMessage:L'application est déjà en cours d'exécution.
+applicationDejaEnCoursExceptionDescription:Regardez dans vos icones windows pour y trouver l'application.
+dataLoadingExceptionMessage:Impossible de charger les données
+dataLoadingExceptionDescription:Veuillez supprimer le fichier de sauvegarde "joueurs.txt".
+menuItemAjouter:Ajouter
+menuItemModifier:Modifier
+menuItemSupprimer:Supprimer
+menuItemRegarder:Regarder
+colonneNomLegende:Nom
+colonnePseudoLegende:Pseudo
+colonneIdLegende:Id
+colonneInGameLegende:Connecté
+colonneServeurLegende:Serveur
+nomPlaceHolder:nom
+pseudoPlaceHolder:pseudo
+commandeNonTrouveeExceptionMessage:Impossible d'exécuter la commande voulue
+commandeNonTrouveeExceptionDescription:La commande n'est pas dans le gestionnaire
+playerNotFoundExceptionMessage:Joueur non trouvé
+playerNotFoundExceptionDescription:Le joueur n'est pas dans la liste.
+noLolInstallationFoundMessage:L'installation n'a pu être trouvée.
+noLolInstallationFoundDescription:Veuillez vérifier que le dossier donné coorespond bien à celui de League of Legends.
+regarderProcessExceptionMessage:La partie n'a pu être lancée.
+regarderProcessExceptionDescription:Vérifiez que le dossier d'installation de league of Legends est correct et recommencez.\nIl est aussi possible que l'erreur vienne de League of Legends.
+joueurDejaPresentExceptionMessage:Le joueur est déjà présent dans la table
+joueurDejaPresentExceptionDescription:Vous ne pouvez ajouter plusieurs fois le même joueur.
+dataNotFoundExceptionMessage:Le joueur n'existe pas
+dataNotFoundExceptionDescription:Aucun résultat pour le pseudo donné.
+sauvegardeCorrompueExceptionMessage:Impossible de charger la sauvegarde
+sauvegardeCorrompueExceptionDescription:La sauvegarde est vide ou corrompue, elle ne peut donc pas être chargée.
+serviceCreationFailedExceptionMessage:Une exception a eu lieu.
+serviceCreationFailedExceptionDescription:Veuillez redémarrer l'application.
+showAlertFromHeader:Une erreur s'est produite
+showAlertFromContext:Veuillez redémarrer l'application.
+showWarningAlertJoueursDejaPresentsHeader:Certains joueurs sont déjà présents dans la liste
+showWarningAlertJoueursDejaPresentsListe:Les joueurs suivants sont déjà présents
+getInputStreamFromResourceFileNotFound:Fichier non trouvé
+trayIconServiceQuitter:Quitter
+trayIconServiceEnJeu:est en jeu

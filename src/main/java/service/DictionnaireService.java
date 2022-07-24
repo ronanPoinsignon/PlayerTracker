@@ -1,16 +1,21 @@
 package service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import modele.langue.Francais;
 import modele.langue.ILangue;
+import modele.properties.CaselessProperties;
 
 public class DictionnaireService implements IService {
 
-	private ILangue langue;
+	FileManager fm;
+
+	private File langue;
 
 	// ApplicationDejaEnCoursException
 	private final StringProperty applicationDejaEnCoursExceptionMessage = new SimpleStringProperty();
@@ -82,7 +87,7 @@ public class DictionnaireService implements IService {
 	private final StringProperty trayIconServiceEnJeu = new SimpleStringProperty();
 
 	public DictionnaireService() {
-		setLangue(new Francais());
+
 	}
 
 	/**
@@ -91,25 +96,32 @@ public class DictionnaireService implements IService {
 	 * Cependant, cette gestion impose d'avoir exactement le même nom entre l'attribut et la méthode côté {@link ILangue}.
 	 * @param langue
 	 */
-	public void setLangue(final ILangue langue) {
+	public void setLangue(final File langue) {
 		this.langue = langue;
 		final var fields = this.getClass().getDeclaredFields();
+		final var properties = new CaselessProperties();
+		try(var is = new InputStreamReader(new FileInputStream(langue))) {
+			properties.load(is);
+		} catch (final IOException e) {
+			throw new RuntimeException(e);
+		}
 		for(final Field field: fields) {
 			try {
 				if("langue".equals(field.getName())) {
 					continue;
 				}
-				final var method = langue.getClass().getDeclaredMethod(field.getName());
 				final var property = (StringProperty) field.get(this);
-				final var value = (String) method.invoke(langue);
+				final var value = properties.getProperty(field.getName());
 				property.set(value);
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				// n'est pas censé passer dedans
+			} catch(final ClassCastException e ) {
+				// gère les problème de cast (par exemple le fileManager n'est pas une propertie
+			} catch (SecurityException | IllegalAccessException | IllegalArgumentException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}
 
-	public ILangue getLangue() {
+	public File getLangue() {
 		return langue;
 	}
 
@@ -263,5 +275,11 @@ public class DictionnaireService implements IService {
 
 	public StringProperty getTrayIconServiceEnJeu() {
 		return trayIconServiceEnJeu;
+	}
+
+	@Override
+	public void init() {
+		fm = ServiceManager.getInstance(FileManager.class);
+		setLangue(fm.getFileFromResources("traductions/fr_FR.txt"));
 	}
 }
