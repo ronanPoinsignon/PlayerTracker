@@ -62,9 +62,7 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 		.stream()
 		.filter(entry -> entry.getKey().match(event))
 		.findFirst()
-		.ifPresent(entry -> {
-			entry.getValue().run();
-		});
+		.ifPresent(entry -> entry.getValue().run());
 	}
 
 	/**
