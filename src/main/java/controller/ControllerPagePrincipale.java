@@ -90,6 +90,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		joueurs.stream().map(JoueurFx::new)
 		.map(joueur -> new CommandeAjout(table, joueur))
 		.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
+		gestionnaireCommandeService.viderCommandes();
 
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
 		colonnePseudo.setCellValueFactory(cellData -> cellData.getValue().getPseudoProperty());
@@ -160,7 +161,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	}
 
 	protected void addEvent() {
-		borderPane.addEventHandler(KeyEvent.ANY, new ClavierEventHandler(table));
+		borderPane.addEventHandler(KeyEvent.KEY_PRESSED, new ClavierEventHandler(table));
 
 		interfaceManager.addObs(this);
 

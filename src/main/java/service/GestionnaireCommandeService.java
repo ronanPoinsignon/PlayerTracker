@@ -81,7 +81,11 @@ public class GestionnaireCommandeService implements IService {
 	 * Annule la dernière commande effectuée.
 	 */
 	public GestionnaireCommandeService annuler() {
-		final var commande = listeCommandesEffectuees.remove(listeCommandesEffectuees.size() - 1);
+		final var index = listeCommandesEffectuees.size() - 1;
+		if(index < 0) {
+			return this;
+		}
+		final var commande = listeCommandesEffectuees.remove(index);
 		if(commande.annuler()) {
 			listeCommandesAnnulees.add(commande);
 			listeCommandesAReexecuteer.add(commande);
@@ -93,7 +97,11 @@ public class GestionnaireCommandeService implements IService {
 	 * Réexécute la commande annulée.
 	 */
 	public GestionnaireCommandeService reexecuter() {
-		final var commande = listeCommandesAReexecuteer.remove(listeCommandesAReexecuteer.size() - 1);
+		final var index = listeCommandesAReexecuteer.size() - 1;
+		if(index < 0) {
+			return this;
+		}
+		final var commande = listeCommandesAReexecuteer.remove(index);
 		if(commande.reexecuter()) {
 			listeCommandesEffectuees.add(commande);
 		}
@@ -121,5 +129,13 @@ public class GestionnaireCommandeService implements IService {
 	 */
 	public boolean canReexecuter() {
 		return !listeCommandesAReexecuteer.isEmpty();
+	}
+
+	public GestionnaireCommandeService viderCommandes() {
+		listeCommandes.clear();
+		listeCommandesAnnulees.clear();
+		listeCommandesAReexecuteer.clear();
+		listeCommandesEffectuees.clear();
+		return this;
 	}
 }
