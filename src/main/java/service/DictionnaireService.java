@@ -13,6 +13,7 @@ import modele.properties.CaselessProperties;
 public class DictionnaireService implements IService {
 
 	FileManager fm;
+	PropertiesService ps;
 
 	private File langue;
 
@@ -291,6 +292,7 @@ public class DictionnaireService implements IService {
 	@Override
 	public void init() {
 		fm = ServiceManager.getInstance(FileManager.class);
-		setLangue(fm.getFileFromResources("traductions/fr_FR.txt"));
+		ps = ServiceManager.getInstance(PropertiesService.class);
+		setLangue(fm.getFileFromResources("traductions/" + ps.get("default_language") + ".txt"));
 	}
 }
