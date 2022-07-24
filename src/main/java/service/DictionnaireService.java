@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import modele.langue.ILangue;
 import modele.properties.CaselessProperties;
 
 public class DictionnaireService implements IService {
