@@ -1,5 +1,8 @@
 package modele.event.clavier;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.event.EventHandler;
 import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
@@ -7,12 +10,13 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyCombination.Modifier;
 import javafx.scene.input.KeyEvent;
 import modele.event.eventaction.AddEvent;
+import modele.event.eventaction.AnnulerEvent;
 import modele.event.eventaction.CollerEvent;
 import modele.event.eventaction.DeleteEvent;
 import modele.event.eventaction.GetPseudoEvent;
+import modele.event.eventaction.ReexecuterEvent;
 import modele.event.eventaction.SwapDownEvent;
 import modele.event.eventaction.SwapUpEvent;
 import modele.joueur.JoueurFx;
@@ -25,68 +29,42 @@ import modele.joueur.Serveur;
  */
 public class ClavierEventHandler implements EventHandler<KeyEvent> {
 
-	public static final KeyCode KEY_CODE_COPIER = KeyCode.C,
-			KEY_CODE_COLLER = KeyCode.V,
-			KEY_CODE_SUPPRIMER = KeyCode.DELETE,
-			KEY_CODE_INVERSER_HAUT = KeyCode.UP,
-			KEY_CODE_INVERSER_BAS = KeyCode.DOWN;
-
-	public static final Modifier MODIFIER_COPIER = KeyCombination.CONTROL_DOWN,
-			MODIFIER_COLLER = KeyCombination.CONTROL_DOWN,
-			MODIFIER_SUPPRIMER = KeyCombination.META_ANY,
-			MODIFIER_INVERSER_HAUT = KeyCombination.ALT_DOWN,
-			MODIFIER_INVERSER_BAS = KeyCombination.ALT_DOWN;
-
-	private final KeyCombination copier = new KeyCodeCombination(ClavierEventHandler.KEY_CODE_COPIER, ClavierEventHandler.MODIFIER_COPIER);
-	private final KeyCombination coller = new KeyCodeCombination(ClavierEventHandler.KEY_CODE_COLLER, ClavierEventHandler.MODIFIER_COLLER);
-	private final KeyCombination supprimer = new KeyCodeCombination(ClavierEventHandler.KEY_CODE_SUPPRIMER, ClavierEventHandler.MODIFIER_SUPPRIMER);
-	private final KeyCombination inverserHaut = new KeyCodeCombination(ClavierEventHandler.KEY_CODE_INVERSER_HAUT, ClavierEventHandler.MODIFIER_INVERSER_HAUT);
-	private final KeyCombination inverserBas = new KeyCodeCombination(ClavierEventHandler.KEY_CODE_INVERSER_BAS, ClavierEventHandler.MODIFIER_INVERSER_BAS);
+	private static final KeyCombination COPIER = new KeyCodeCombination(KeyCodeCombinationEnum.COPIER.getKeyCode(), KeyCodeCombinationEnum.COPIER.getModifier());
+	private static final KeyCombination COLLER = new KeyCodeCombination(KeyCodeCombinationEnum.COLLER.getKeyCode(), KeyCodeCombinationEnum.COLLER.getModifier());
+	private static final KeyCombination SUPPRIMER = new KeyCodeCombination(KeyCodeCombinationEnum.SUPPRIMER.getKeyCode(), KeyCodeCombinationEnum.SUPPRIMER.getModifier());
+	private static final KeyCombination INVERSER_HAUT = new KeyCodeCombination(KeyCodeCombinationEnum.INVERSER_HAUT.getKeyCode(), KeyCodeCombinationEnum.INVERSER_HAUT.getModifier());
+	private static final KeyCombination INVERSER_BAS = new KeyCodeCombination(KeyCodeCombinationEnum.INVERSER_BAS.getKeyCode(), KeyCodeCombinationEnum.INVERSER_BAS.getModifier());
+	private static final KeyCombination ANNULER_ACTION = new KeyCodeCombination(KeyCodeCombinationEnum.ANNULER_ACTION.getKeyCode(), KeyCodeCombinationEnum.ANNULER_ACTION.getModifier());
+	private static final KeyCombination REEXECUTER_ACTION = new KeyCodeCombination(KeyCodeCombinationEnum.REEXECUTER_ACTION.getKeyCode(), KeyCodeCombinationEnum.REEXECUTER_ACTION.getModifier());
 
 	private final TableView<JoueurFx> table;
 
+	private final Map<KeyCombination, Runnable> keyFunctionMap = new HashMap<>();
+
 	public ClavierEventHandler(final TableView<JoueurFx> table) {
 		this.table = table;
+		keyFunctionMap.put(ClavierEventHandler.COPIER, this::copier);
+		keyFunctionMap.put(ClavierEventHandler.COLLER, this::coller);
+		keyFunctionMap.put(ClavierEventHandler.SUPPRIMER, this::supprimer);
+		keyFunctionMap.put(ClavierEventHandler.INVERSER_HAUT, this::swapUp);
+		keyFunctionMap.put(ClavierEventHandler.INVERSER_BAS, this::swapDown);
+		keyFunctionMap.put(ClavierEventHandler.ANNULER_ACTION, this::annuler);
+		keyFunctionMap.put(ClavierEventHandler.REEXECUTER_ACTION, this::reexecuter);
 	}
 
 	@Override
 	public void handle(final KeyEvent event) {
-		if(event.getEventType() != KeyEvent.KEY_PRESSED) {
-			return;
-		}
 		if(KeyCode.ALT.equals(event.getCode())) {
 			event.consume();
 			return;
 		}
-
-		if(copier.match(event)) {
-			copier();
-			event.consume();
-			return;
-		}
-
-		if(coller.match(event)) {
-			coller();
-			event.consume();
-			return;
-		}
-
-		if(supprimer.match(event)) {
-			supprimer();
-			event.consume();
-			return;
-		}
-
-		if(inverserHaut.match(event)) {
-			swapUp();
-			event.consume();
-			return;
-		}
-
-		if(inverserBas.match(event)) {
-			swapDown();
-			event.consume();
-		}
+		keyFunctionMap.entrySet()
+		.stream()
+		.filter(entry -> entry.getKey().match(event))
+		.findFirst()
+		.ifPresent(entry -> {
+			entry.getValue().run();
+		});
 	}
 
 	/**
@@ -143,6 +121,18 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 */
 	public void swapDown() {
 		final var th = new Thread(new SwapDownEvent<>(table));
+		th.setDaemon(true);
+		th.start();
+	}
+
+	public void annuler() {
+		final var th = new Thread(new AnnulerEvent());
+		th.setDaemon(true);
+		th.start();
+	}
+
+	public void reexecuter() {
+		final var th = new Thread(new ReexecuterEvent());
 		th.setDaemon(true);
 		th.start();
 	}

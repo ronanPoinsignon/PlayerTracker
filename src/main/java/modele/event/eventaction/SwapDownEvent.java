@@ -5,7 +5,7 @@ import modele.commande.CommandeInversion;
 import service.GestionnaireCommandeService;
 import service.ServiceManager;
 
-public class SwapDownEvent<T> extends RunnableEvent<T> {
+public class SwapDownEvent<T> extends RunnableEventWithTable<T> {
 
 	GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 
