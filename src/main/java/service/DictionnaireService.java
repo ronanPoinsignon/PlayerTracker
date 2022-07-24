@@ -25,6 +25,10 @@ public class DictionnaireService implements IService {
 	private final StringProperty dataLoadingExceptionMessage = new SimpleStringProperty();
 	private final StringProperty dataLoadingExceptionDescription = new SimpleStringProperty();
 
+	// BadOsExceptionMessage
+	private final StringProperty badOsExceptionMessage = new SimpleStringProperty();
+	private final StringProperty badOsExceptionDescription = new SimpleStringProperty();
+
 	// ControllerPagePrincipale
 	private final StringProperty menuItemAjouter = new SimpleStringProperty();
 	private final StringProperty menuItemModifier = new SimpleStringProperty();
@@ -131,6 +135,14 @@ public class DictionnaireService implements IService {
 
 	public StringProperty getApplicationDejaEnCoursExceptionDescription() {
 		return applicationDejaEnCoursExceptionDescription;
+	}
+
+	public StringProperty getBadOsExceptionMessage() {
+		return badOsExceptionMessage;
+	}
+
+	public StringProperty getBadOsExceptionDescription() {
+		return badOsExceptionDescription;
 	}
 
 	public StringProperty getDataLoadingExceptionMessage() {
