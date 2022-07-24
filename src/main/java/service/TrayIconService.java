@@ -33,7 +33,7 @@ public class TrayIconService implements IService {
 		this.stage = stage;
 		URL iconURL;
 		try {
-			iconURL = fm.getFileFromResources("images/loupe.PNG").toURI().toURL();
+			iconURL = fm.getFileFromResources("images/icon.png").toURI().toURL();
 			trayIcon = new FXTrayIcon.Builder(stage, iconURL).show().build();
 			miExit = new MenuItem();
 			miExit.textProperty().bind(dictionnaire.getTrayIconServiceQuitter());

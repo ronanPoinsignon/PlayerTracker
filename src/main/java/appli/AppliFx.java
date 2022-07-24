@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 
 import appli.exception.ApplicationDejaEnCoursException;
+import appli.exception.BadOsException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -31,11 +32,12 @@ public class AppliFx extends Application {
 		initService(stage);
 		try {
 			checkAlreadyRunning();
-		} catch (final ApplicationDejaEnCoursException e) {
+			checkOs();
+		} catch (final ApplicationDejaEnCoursException | BadOsException e) {
 			alertService.alert(e);
 			return;
 		}
-		stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
+		stage.getIcons().add(fm.getImageFromResource("images/icon.png"));
 		stage.setTitle(ps.get("application_name"));
 		final var file = fm.getFileFromResources("fxml/page_principale.fxml");
 		final var loader = new FXMLLoader(file.toURI().toURL());
@@ -53,13 +55,13 @@ public class AppliFx extends Application {
 	}
 
 	private void checkAlreadyRunning() throws ApplicationDejaEnCoursException {
-		try(var s = new ServerSocket(1044, 0, InetAddress.getByName("localhost"));) {
+		try(var s = new ServerSocket(1044, 0, InetAddress.getByName("localhost"))) {
 			// teste juste la possibilité d'ouvrir un serveur à cette adresse
 		} catch (final IOException e1) {
 			throw new ApplicationDejaEnCoursException();
 		}
 		final var t = new Thread(() -> {
-			try(var server = new ServerSocket(1044, 0, InetAddress.getByName("localhost"));) {
+			try(var server = new ServerSocket(1044, 0, InetAddress.getByName("localhost"))) {
 				server.accept();
 			} catch (final IOException e) {
 				alertService.alert(e);
@@ -67,6 +69,13 @@ public class AppliFx extends Application {
 		});
 		t.setDaemon(true);
 		t.start();
+	}
+
+	private void checkOs() {
+		final var os = System.getProperty("os.name");
+		if( os == null || !os.startsWith("Windows")) {
+			throw new BadOsException();
+		}
 	}
 
 }

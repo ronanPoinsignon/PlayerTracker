@@ -1,17 +1,18 @@
 package modele.event.eventaction;
 
-import javafx.scene.control.TableView;
+import service.AlertFxService;
+import service.ServiceManager;
 
-public abstract class RunnableEvent<T> extends EventAction<Void> implements Runnable {
+public abstract class RunnableEvent extends EventAction<Void> implements Runnable {
 
-	TableView<T> table;
-
-	protected RunnableEvent(final TableView<T> table) {
-		this.table = table;
-	}
+	AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 
 	@Override
 	public void run() {
-		execute();
+		try {
+			execute();
+		} catch (final Exception e) {
+			alerteService.alert(e);
+		}
 	}
 }

@@ -54,6 +54,7 @@ public class CommandeSuppression extends CommandeListe<JoueurFx> {
 				final var joueur = elements.get(i);
 				commandeUtil.add(table, joueur, index);
 				trayIconService.bind(joueur);
+				scheduler.executeNow(joueur);
 				scheduler.addJoueur(joueur);
 				saveService.addJoueur(joueur);
 			} catch (UnsupportedOperationException | ClassCastException
@@ -61,7 +62,6 @@ public class CommandeSuppression extends CommandeListe<JoueurFx> {
 				alerteService.alert(e);
 			}
 		}
-		scheduler.executeNow();
 		listeIndex = new ArrayList<>();
 		return !elements.isEmpty();
 	}

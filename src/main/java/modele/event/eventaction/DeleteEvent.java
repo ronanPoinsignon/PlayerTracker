@@ -6,7 +6,7 @@ import modele.joueur.JoueurFx;
 import service.GestionnaireCommandeService;
 import service.ServiceManager;
 
-public class DeleteEvent extends RunnableEvent<JoueurFx> {
+public class DeleteEvent extends RunnableEventWithTable<JoueurFx> {
 
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 

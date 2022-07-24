@@ -33,9 +33,9 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 		final var listeJoueursDejaPresentes = commandeUtil.addAll(table, elements);
 		elements.removeAll(listeJoueursDejaPresentes);
 		elements.forEach(trayIconService::bind);
+		elements.forEach(scheduler::executeNow);
 		elements.forEach(scheduler::addJoueur);
 		elements.forEach(saveService::addJoueur);
-		scheduler.executeNow();
 		return !elements.isEmpty(); //si cette liste est vide, aucun joueur n'a donc été ajouté et cette commande est donc inutile
 	}
 
