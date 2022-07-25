@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -104,7 +105,7 @@ public class DictionnaireService implements IService {
 		this.langue = langue;
 		final var fields = this.getClass().getDeclaredFields();
 		final var properties = new CaselessProperties();
-		try(var is = new InputStreamReader(new FileInputStream(langue))) {
+		try(var is = new InputStreamReader(new FileInputStream(langue), StandardCharsets.UTF_8)) {
 			properties.load(is);
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
