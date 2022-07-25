@@ -1,0 +1,40 @@
+applicationDejaEnCoursExceptionMessage:Die App laüft schon
+applicationDejaEnCoursExceptionDescription:Suchen Sie die App in Ihre Windows Ikone
+dataLoadingExceptionMessage:Unmöglich Daten zu laden
+dataLoadingExceptionDescription:Löschen Sie bitte die "joueurs.txt" Sicherungsdatei.
+menuItemAjouter:Hinzufügen
+menuItemModifier:Bearbeiten
+menuItemSupprimer:Löschen
+menuItemRegarder:Zuschauen
+colonneNomLegende:Name
+colonnePseudoLegende:Spitzname
+colonneIdLegende:Id
+colonneInGameLegende:Online
+colonneServeurLegende:Server
+nomPlaceHolder:Name
+pseudoPlaceHolder:Spitzname
+commandeNonTrouveeExceptionMessage:Unmöglich die gegebene Befehl zu laufen
+commandeNonTrouveeExceptionDescription:Die Befehl is in der Manager unfindbar
+playerNotFoundExceptionMessage:Spieler nicht gefunden
+playerNotFoundExceptionDescription:Der Spieler ist nicht in der Liste
+noLolInstallationFoundMessage:League of Legends ist auf diese Computer unfindbar
+noLolInstallationFoundDescription:Achten Sie darauf, dass den gegebene Ordner der League of Legends Ordner trifft.
+regarderProcessExceptionMessage:Der Spiel konnte nicht gelaufen werden.
+regarderProcessExceptionDescription:Achten Sie darauf, dass die League of Legends Installation korrekt ist, und wiederholen.\nDie Fehler kann auch aus League of Legends komment.
+joueurDejaPresentExceptionMessage:Der Spieler ist schon in der Liste
+joueurDejaPresentExceptionDescription:Sie können einemn Spieler nur einmal hinzufügen
+dataNotFoundExceptionMessage:Der Spieler existiert nicht.
+dataNotFoundExceptionDescription:Kein Ergebnis für den gegebene Spitzname
+sauvegardeCorrompueExceptionMessage:Unmöglich, die Datei zu laden
+sauvegardeCorrompueExceptionDescription:Datei konnte nicht geladen werden, weil sie leer oder fehlerhafte ist.
+serviceCreationFailedExceptionMessage:Eine Ausnahme ist geschehen.
+serviceCreationFailedExceptionDescription:Bitte die App neustarten.
+showAlertFromHeader:Eine Fehler ist geschehen.
+showAlertFromContext:Bitte die App neustarten.
+showWarningAlertJoueursDejaPresentsHeader:Einige Spieler sind schon in der Liste.
+showWarningAlertJoueursDejaPresentsListe:Die folgende Spieler sind schon anwesend
+getInputStreamFromResourceFileNotFound:Datei nicht gefunden
+trayIconServiceQuitter:Aussteigen
+trayIconServiceEnJeu:spielt
+BadOsExceptionDescription:Die App laüft nur mit Windows
+BadOsExceptionMessage:Unmöglich, die App zu starten
