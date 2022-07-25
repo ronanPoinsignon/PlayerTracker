@@ -18,9 +18,9 @@ commandeNonTrouveeExceptionDescription:La commande n'est pas dans le gestionnair
 playerNotFoundExceptionMessage:Joueur non trouvé
 playerNotFoundExceptionDescription:Le joueur n'est pas dans la liste.
 noLolInstallationFoundMessage:L'installation n'a pu être trouvée.
-noLolInstallationFoundDescription:Veuillez vérifier que le dossier donné coorespond bien à celui de League of Legends.
+noLolInstallationFoundDescription:Veuillez vérifier que le dossier donné correspond bien à celui de League of Legends.
 regarderProcessExceptionMessage:La partie n'a pu être lancée.
-regarderProcessExceptionDescription:Vérifiez que le dossier d'installation de league of Legends est correct et recommencez.\nIl est aussi possible que l'erreur vienne de League of Legends.
+regarderProcessExceptionDescription:Vérifiez que le dossier d'installation de League of Legends est correct et recommencez.\nIl est aussi possible que l'erreur vienne de League of Legends.
 joueurDejaPresentExceptionMessage:Le joueur est déjà présent dans la table
 joueurDejaPresentExceptionDescription:Vous ne pouvez ajouter plusieurs fois le même joueur.
 dataNotFoundExceptionMessage:Le joueur n'existe pas
