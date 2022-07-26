@@ -1,18 +1,19 @@
 package service.exception;
 
-public class ServiceCreationFailedException extends RuntimeException {
+import modele.exception.ARuntimeException;
 
-	private static final long serialVersionUID = 1537206221151886351L;
+public class ServiceCreationFailedException extends ARuntimeException {
 
-	public ServiceCreationFailedException() {
-		super("Une exception a eu lieu.");
+	private static final long serialVersionUID = 698581549249186029L;
+
+	@Override
+	public String getMessageError() {
+		return dictionnaire.getServiceCreationFailedExceptionMessage().getValue();
 	}
 
-	public ServiceCreationFailedException(final String msg) {
-		super(msg);
+	@Override
+	public String getDescription() {
+		return dictionnaire.getServiceCreationFailedExceptionDescription().getValue();
 	}
 
-	public ServiceCreationFailedException(final Exception e) {
-		super(e);
-	}
 }

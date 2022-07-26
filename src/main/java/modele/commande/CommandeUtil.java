@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.control.TableView;
-import modele.commande.exception.JoueurDejaPresentException;
 import modele.commande.exception.PlayerNotFoundException;
+import modele.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
 
 public class CommandeUtil<T> {
@@ -62,7 +62,7 @@ public class CommandeUtil<T> {
 	}
 
 	public List<T> removeAll(final TableView<T> table, final List<T> elements) {
-		final var elementsASuppr = new ArrayList<T>(elements);
+		final var elementsASuppr = new ArrayList<>(elements);
 		final var elementsNonPresents = new ArrayList<T>();
 		for(final T element : elementsASuppr) {
 			try {

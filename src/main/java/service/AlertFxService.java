@@ -16,7 +16,8 @@ public class AlertFxService implements IService {
 
 	TrayIconService trayIconService;
 	FileManager fm;
-	PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
+	PropertiesService ps;
+	DictionnaireService dictionnaire;
 
 	public void alert(final Exception exception) {
 		try {
@@ -32,7 +33,7 @@ public class AlertFxService implements IService {
 
 	private void showWarningAlert(final IException e) {
 		Platform.runLater(() -> {
-			createWarningAlert(e.getMessage(), e.getDescription()).showAndWait();
+			createWarningAlert(e.getMessageError(), e.getDescription()).showAndWait();
 			final var t = new Thread(e.next());
 			t.setDaemon(true);
 			t.start();
@@ -42,8 +43,8 @@ public class AlertFxService implements IService {
 	private void showAlertFrom(final Exception e) {
 		e.printStackTrace();
 		Platform.runLater(() -> {
-			final var header = "Une erreur s'est produite.";
-			final var context = "Veuillez redémarrer l'application.";
+			final var header = dictionnaire.getShowAlertFromHeader().getValue();
+			final var context = dictionnaire.getShowAlertFromContext().getValue();
 			final var alert = createErrorAlert(header, context);
 			alert.showAndWait();
 			trayIconService.quitter();
@@ -60,8 +61,8 @@ public class AlertFxService implements IService {
 			return;
 		}
 		Platform.runLater(() -> {
-			final var header = "Certains joueurs sont déjà présents dans la liste";
-			final var liste = new StringBuilder("Les joueurs suivants sont déjà présents :\n\t");
+			final var header = dictionnaire.getShowWarningAlertJoueursDejaPresentsHeader().getValue();
+			final var liste = new StringBuilder(dictionnaire.getShowWarningAlertJoueursDejaPresentsListe() + " :\n\t");
 			final var joueurs = listeJoueurs.stream().map(Joueur::getPseudo).collect(Collectors.joining("\n\t- "));
 			liste.append(joueurs);
 			final var alert = createWarningAlert(header, liste.toString());
@@ -91,5 +92,7 @@ public class AlertFxService implements IService {
 	public void init() {
 		trayIconService = ServiceManager.getInstance(TrayIconService.class);
 		fm = ServiceManager.getInstance(FileManager.class);
+		ps = ServiceManager.getInstance(PropertiesService.class);
+		dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	}
 }

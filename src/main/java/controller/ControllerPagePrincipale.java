@@ -34,6 +34,7 @@ import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import modele.observer.ObservateurInterface;
+import service.DictionnaireService;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.LoadService;
@@ -70,9 +71,9 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	@FXML
 	private Button modifier;
 
-	private final MenuItem editItem = new MenuItem("Modifier");
-	private final MenuItem removeItem = new MenuItem("Supprimer");
-	private final MenuItem lookItem = new MenuItem("Regarder");
+	private final MenuItem editItem = new MenuItem();
+	private final MenuItem removeItem = new MenuItem();
+	private final MenuItem lookItem = new MenuItem();
 
 	final ContextMenu rowMenu = new ContextMenu();
 
@@ -82,6 +83,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	private final InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
 	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
+	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
@@ -197,6 +199,20 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 			lookItem.visibleProperty().bind(newV.getIsConnecteProperty());
 			lookItem.setOnAction(new ActionEventRegarder(newV));
 		});
+
+		colonneNom.textProperty().bind(dictionnaire.getColonneNomLegende());
+		colonnePseudo.textProperty().bind(dictionnaire.getColonnePseudoLegende());
+		colonneId.textProperty().bind(dictionnaire.getColonneIdLegende());
+		colonneInGame.textProperty().bind(dictionnaire.getColonneInGameLegende());
+		colonneServeur.textProperty().bind(dictionnaire.getColonneServeurLegende());
+
+		ajouter.textProperty().bind(dictionnaire.getMenuItemAjouter());
+		modifier.textProperty().bind(dictionnaire.getMenuItemModifier());
+		editItem.textProperty().bind(dictionnaire.getMenuItemModifier());
+		removeItem.textProperty().bind(dictionnaire.getMenuItemSupprimer());
+		lookItem.textProperty().bind(dictionnaire.getMenuItemRegarder());
+		nom.promptTextProperty().bind(dictionnaire.getNomPlaceHolder());
+		pseudo.promptTextProperty().bind(dictionnaire.getPseudoPlaceHolder());
 	}
 
 	@FXML

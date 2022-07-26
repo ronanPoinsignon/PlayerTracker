@@ -16,14 +16,19 @@ public class BadOsException extends ARuntimeException {
 	}
 
 	@Override
-	public String getDescription() {
-		return "L'application ne fonctionne que sous Windows";
-	}
-
-	@Override
 	public Runnable next() {
 		return () -> {
 			ts.quitter();
 		};
+	}
+
+	@Override
+	public String getDescription() {
+		return dictionnaire.getBadOsExceptionDescription().getValue();
+	}
+
+	@Override
+	public String getMessageError() {
+		return dictionnaire.getBadOsExceptionMessage().getValue();
 	}
 }

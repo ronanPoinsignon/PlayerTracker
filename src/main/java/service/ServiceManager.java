@@ -29,7 +29,7 @@ public abstract class ServiceManager {
 				ServiceManager.services.put(clazz, service);
 				service.init();
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				throw new ServiceCreationFailedException(e);
+				throw new ServiceCreationFailedException();
 			}
 		}
 		return service;

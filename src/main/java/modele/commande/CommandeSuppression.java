@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.scene.control.TableView;
-import modele.commande.exception.JoueurDejaPresentException;
+import modele.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
 import service.AlertFxService;
 import service.ServiceManager;
