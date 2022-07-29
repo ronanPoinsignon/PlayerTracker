@@ -26,7 +26,7 @@ public class CommandeInversion<T> extends CommandeTable<T> {
 			Collections.swap(table.getItems(), inv1, inv2);
 			return true;
 		}
-		catch(ArrayIndexOutOfBoundsException e) {
+		catch(final ArrayIndexOutOfBoundsException e) {
 			return false;
 		}
 	}
@@ -37,7 +37,7 @@ public class CommandeInversion<T> extends CommandeTable<T> {
 			Collections.swap(table.getItems(), inv2, inv1);
 			return true;
 		}
-		catch(ArrayIndexOutOfBoundsException e) {
+		catch(final ArrayIndexOutOfBoundsException e) {
 			return false;
 		}
 	}

@@ -12,26 +12,27 @@ public class WebService implements IService {
 
 	PropertiesService propertiesService;
 
-	private static final String GET_SUMMONER_BY_ID = "api/summoner/getById/";
-	private static final String GET_SUMMONER_BY_NAME = "api/summoner/getByName/";
-	private static final String GET_SUMMONER_GAME = "api/summoner/getGame/";
+	private static final String API = "api/";
+	private static final String GET_SUMMONER_BY_ID = "/summoner/getById/";
+	private static final String GET_SUMMONER_BY_NAME = "/summoner/getByName/";
+	private static final String GET_SUMMONER_GAME = "/summoner/getGame/";
 
 	private String baseUrl;
 
-	public SummonerDataResult getSummonerByName(String name) {
+	public SummonerDataResult getSummonerByName(String name, final String serverName) {
 		name = URLEncoder.encode(name, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-		return getValue(SummonerDataResult.class, baseUrl + WebService.GET_SUMMONER_BY_NAME + name);
+		return getValue(SummonerDataResult.class, baseUrl + WebService.API + serverName + WebService.GET_SUMMONER_BY_NAME + name);
 	}
 
-	public SummonerDataResult getSummonerBySummonerId(String id) {
-		return getValue(SummonerDataResult.class, baseUrl + WebService.GET_SUMMONER_BY_ID + id);
+	public SummonerDataResult getSummonerBySummonerId(final String id, final String serverName) {
+		return getValue(SummonerDataResult.class, baseUrl + WebService.API + serverName + WebService.GET_SUMMONER_BY_ID + id);
 	}
 
-	public SummonerInGameResult getSummonerGame(String id) {
-		return getValue(SummonerInGameResult.class, baseUrl + WebService.GET_SUMMONER_GAME + id);
+	public SummonerInGameResult getSummonerGame(final String id, final String serverName) {
+		return getValue(SummonerInGameResult.class, baseUrl + WebService.API + serverName + WebService.GET_SUMMONER_GAME + id);
 	}
 
-	private <T> T getValue(Class<T> clazz, String url) {
+	private <T> T getValue(final Class<T> clazz, final String url) {
 		try {
 			return getClient(clazz).get(url);
 		} catch (IOException | InterruptedException e) {
@@ -39,7 +40,7 @@ public class WebService implements IService {
 		}
 	}
 
-	private <T> ClientWeb<T> getClient(Class<T> clazz){
+	private <T> ClientWeb<T> getClient(final Class<T> clazz){
 		return new ClientWeb<>(clazz);
 	}
 

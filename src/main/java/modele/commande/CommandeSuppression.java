@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import modele.affichage.ViewElement;
+import modele.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
 import service.AlertFxService;
 import service.ServiceManager;
@@ -12,15 +13,15 @@ import service.TrayIconService;
 import service.WebRequestScheduler;
 
 /**
- * Classe permettant la suppression de vidéos de la liste.
+ * Classe permettant la suppression de joueurs de la liste.
  * @author ronan
  *
  */
 public class CommandeSuppression extends CommandeListe<JoueurFx> {
 
-	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
+	private final TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
 	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
-	private AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
+	private final AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 
 	private List<Integer> listeIndex = new ArrayList<>();
 
@@ -34,25 +35,26 @@ public class CommandeSuppression extends CommandeListe<JoueurFx> {
 
 	@Override
 	public boolean executer() {
-		for(JoueurFx joueur : elements) {
+		for(final JoueurFx joueur : elements) {
 			listeIndex.add(table.getItems().indexOf(joueur));
 			trayIconService.unbind(joueur);
 			scheduler.removeJoueur(joueur);
 			saveService.removeJoueur(joueur);
 		}
-		List<JoueurFx> listeVideosNonPresentes = commandeUtil.removeAll(table, elements);
-		elements.removeAll(listeVideosNonPresentes);
+		final var listeJoueursNonPresents = commandeUtil.removeAll(table, elements);
+		elements.removeAll(listeJoueursNonPresents);
 		return !elements.isEmpty();
 	}
 
 	@Override
 	public boolean annuler() {
 		for(var i = 0; i < elements.size(); i++) {
-			int index = listeIndex.get(i);
+			final int index = listeIndex.get(i);
 			try {
-				JoueurFx joueur = elements.get(i);
+				final var joueur = elements.get(i);
 				commandeUtil.add(table, joueur, index);
 				trayIconService.bind(joueur);
+				scheduler.executeNow(joueur);
 				scheduler.addJoueur(joueur);
 				saveService.addJoueur(joueur);
 			} catch (UnsupportedOperationException | ClassCastException
@@ -60,7 +62,6 @@ public class CommandeSuppression extends CommandeListe<JoueurFx> {
 				alerteService.alert(e);
 			}
 		}
-		scheduler.executeNow();
 		listeIndex = new ArrayList<>();
 		return !elements.isEmpty();
 	}

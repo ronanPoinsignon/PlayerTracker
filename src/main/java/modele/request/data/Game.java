@@ -11,7 +11,7 @@ public class Game {
 
 	}
 
-	public Game(boolean success, SummonerInGame[] summoners) {
+	public Game(final boolean success, final SummonerInGame[] summoners) {
 		this.success = success;
 		this.summoners = summoners;
 	}

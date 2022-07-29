@@ -6,9 +6,9 @@ import modele.joueur.JoueurFx;
 import service.GestionnaireCommandeService;
 import service.ServiceManager;
 
-public class DeleteEvent extends RunnableEvent<JoueurFx> {
+public class DeleteEvent extends RunnableEventWithTable<JoueurFx> {
 
-	private GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
+	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 
 	public DeleteEvent(ViewElement<JoueurFx> table) {
 		super(table);
@@ -20,7 +20,7 @@ public class DeleteEvent extends RunnableEvent<JoueurFx> {
 		if (selectedIndex < 0) {
 			return null;
 		}
-		JoueurFx element = table.getItems().get(selectedIndex);
+		final var element = table.getItems().get(selectedIndex);
 		gestionnaireCommandeService.addCommande(new CommandeSuppression(table, element)).executer();
 		return null;
 	}

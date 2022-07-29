@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -15,41 +16,36 @@ public class AlertFxService implements IService {
 
 	TrayIconService trayIconService;
 	FileManager fm;
+	PropertiesService ps;
+	DictionnaireService dictionnaire;
 
-	public void alert(Exception exception) {
+	public void alert(final Throwable exception) {
 		try {
 			throw exception;
 		}
 		catch(AException | ARuntimeException e) {
 			showWarningAlert(e);
 		}
-		catch (Exception e) {
+		catch (final Throwable e) {
 			showAlertFrom(e);
 		}
 	}
 
-	private void showWarningAlert(IException e) {
+	private void showWarningAlert(final IException e) {
 		Platform.runLater(() -> {
-			var alert = new Alert(AlertType.WARNING);
-			alert.setTitle("PlayerTracker");
-			alert.setHeaderText(e.getMessage());
-			alert.setContentText(e.getDescription());
-			var stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
-
-			alert.showAndWait();
+			createWarningAlert(e.getMessageError(), e.getDescription()).showAndWait();
+			final var t = new Thread(e.next());
+			t.setDaemon(true);
+			t.start();
 		});
 	}
 
-	private void showAlertFrom(Exception e) {
+	private void showAlertFrom(final Throwable e) {
+		e.printStackTrace();
 		Platform.runLater(() -> {
-			var alert = new Alert(AlertType.ERROR);
-			alert.setTitle("PlayerTracker");
-			alert.setHeaderText("Une erreur s'est produite.");
-			alert.setContentText("Veuillez redémarrer l'application.");
-			var stage = (Stage) alert.getDialogPane().getScene().getWindow();
-			stage.getIcons().add(fm.getImageFromResource("images/loupe.PNG"));
-
+			final var header = dictionnaire.getShowAlertFromHeader().getValue();
+			final var context = dictionnaire.getShowAlertFromContext().getValue();
+			final var alert = createErrorAlert(header, context);
 			alert.showAndWait();
 			trayIconService.quitter();
 		});
@@ -60,29 +56,43 @@ public class AlertFxService implements IService {
 	 * qu'il souhaite ajouter à la liste sont déjà présents.
 	 * @param listeJoueurs
 	 */
-	public void showWarningAlertJoueursDejaPresents(List<Joueur> listeJoueurs) {
+	public void showWarningAlertJoueursDejaPresents(final List<Joueur> listeJoueurs) {
 		if(listeJoueurs.isEmpty()) {
 			return;
 		}
 		Platform.runLater(() -> {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Joueurs déjà présents");
-
-			alert.setHeaderText("Certains joueurs sont déjà présents dans la liste");
-			StringBuilder liste = new StringBuilder("Les joueurs suivants sont déjà présents :");
-			for(Joueur video : listeJoueurs) {
-				liste.append("\n\t- " + video.getPseudo());
-			}
-
-			alert.setContentText(liste.toString());
-
+			final var header = dictionnaire.getShowWarningAlertJoueursDejaPresentsHeader().getValue();
+			final var liste = new StringBuilder(dictionnaire.getShowWarningAlertJoueursDejaPresentsListe() + " :\n\t");
+			final var joueurs = listeJoueurs.stream().map(Joueur::getPseudo).collect(Collectors.joining("\n\t- "));
+			liste.append(joueurs);
+			final var alert = createWarningAlert(header, liste.toString());
 			alert.showAndWait();
 		});
+	}
+
+	private Alert createWarningAlert(final String header, final String contexte) {
+		return createAlert(AlertType.WARNING, header, contexte);
+	}
+
+	private Alert createErrorAlert(final String header, final String contexte) {
+		return createAlert(AlertType.ERROR, header, contexte);
+	}
+
+	private Alert createAlert(final AlertType type, final String header, final String contexte) {
+		final var alert = new Alert(type);
+		alert.setTitle(ps.get("application_name"));
+		alert.setHeaderText(header);
+		alert.setContentText(contexte);
+		final var stage = (Stage) alert.getDialogPane().getScene().getWindow();
+		stage.getIcons().add(fm.getImageFromResource("images/icon.png"));
+		return alert;
 	}
 
 	@Override
 	public void init() {
 		trayIconService = ServiceManager.getInstance(TrayIconService.class);
 		fm = ServiceManager.getInstance(FileManager.class);
+		ps = ServiceManager.getInstance(PropertiesService.class);
+		dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	}
 }

@@ -14,8 +14,8 @@ public class ActionEventSupprimer extends ActionEventHandler {
 	}
 
 	@Override
-	public void handle(ActionEvent event) {
-		Thread th = new Thread(new DeleteEvent(table));
+	public void handle(final ActionEvent event) {
+		final var th = new Thread(new DeleteEvent(table));
 		th.setDaemon(true);
 		th.start();
 	}

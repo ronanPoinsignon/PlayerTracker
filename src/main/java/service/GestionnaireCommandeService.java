@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import modele.commande.Commande;
 import modele.commande.CommandeInterface;
-import modele.commande.CommandeNonTrouveeException;
+import modele.commande.exception.CommandeNonTrouveeException;
 
 /**
  * Classe permettant de gérer les différentes commandes à effectuer.
@@ -13,16 +13,16 @@ import modele.commande.CommandeNonTrouveeException;
  */
 public class GestionnaireCommandeService implements IService {
 
-	private ArrayList<CommandeInterface> listeCommandes = new ArrayList<>();
-	private ArrayList<CommandeInterface> listeCommandesEffectuees = new ArrayList<>();
-	private ArrayList<CommandeInterface> listeCommandesAnnulees = new ArrayList<>();
-	private ArrayList<CommandeInterface> listeCommandesAReexecuteer = new ArrayList<>();
+	private final ArrayList<CommandeInterface> listeCommandes = new ArrayList<>();
+	private final ArrayList<CommandeInterface> listeCommandesEffectuees = new ArrayList<>();
+	private final ArrayList<CommandeInterface> listeCommandesAnnulees = new ArrayList<>();
+	private final ArrayList<CommandeInterface> listeCommandesAReexecuteer = new ArrayList<>();
 
 	/**
 	 * Ajoute une commande à la liste des commandes devant être effectuées.
 	 * @param commande
 	 */
-	public GestionnaireCommandeService addCommande(Commande<?> commande) {
+	public GestionnaireCommandeService addCommande(final Commande<?> commande) {
 		listeCommandes.add(commande);
 		return this;
 	}
@@ -31,7 +31,7 @@ public class GestionnaireCommandeService implements IService {
 	 * Exécute la prochaine commande de la liste des commandes à faire.
 	 */
 	public GestionnaireCommandeService executer() {
-		CommandeInterface commande = listeCommandes.remove(0);
+		final var commande = listeCommandes.remove(0);
 		if(commande.executer()) {
 			listeCommandesEffectuees.add(commande);
 			listeCommandesAReexecuteer.clear();
@@ -43,7 +43,7 @@ public class GestionnaireCommandeService implements IService {
 	 * Exécute toute les commandes de la liste des commandes à faire.
 	 */
 	public GestionnaireCommandeService executerAll() {
-		for(CommandeInterface commande : listeCommandes) {
+		for(final CommandeInterface commande : listeCommandes) {
 			if(commande.executer()) {
 				listeCommandesEffectuees.add(commande);
 				listeCommandes.remove(commande);
@@ -59,7 +59,7 @@ public class GestionnaireCommandeService implements IService {
 	 * @param commande
 	 * @throws CommandeNonTrouveeException
 	 */
-	public GestionnaireCommandeService executer(Commande<?> commande) throws CommandeNonTrouveeException {
+	public GestionnaireCommandeService executer(final Commande<?> commande) throws CommandeNonTrouveeException {
 		if(!listeCommandes.contains(commande)) {
 			throw new CommandeNonTrouveeException();
 		}
@@ -72,7 +72,7 @@ public class GestionnaireCommandeService implements IService {
 		return this;
 	}
 
-	public GestionnaireCommandeService executerInstant(Commande<?> commande) {
+	public GestionnaireCommandeService executerInstant(final Commande<?> commande) {
 		commande.executer();
 		return this;
 	}
@@ -81,7 +81,11 @@ public class GestionnaireCommandeService implements IService {
 	 * Annule la dernière commande effectuée.
 	 */
 	public GestionnaireCommandeService annuler() {
-		CommandeInterface commande = listeCommandesEffectuees.remove(listeCommandesEffectuees.size() - 1);
+		final var index = listeCommandesEffectuees.size() - 1;
+		if(index < 0) {
+			return this;
+		}
+		final var commande = listeCommandesEffectuees.remove(index);
 		if(commande.annuler()) {
 			listeCommandesAnnulees.add(commande);
 			listeCommandesAReexecuteer.add(commande);
@@ -93,7 +97,11 @@ public class GestionnaireCommandeService implements IService {
 	 * Réexécute la commande annulée.
 	 */
 	public GestionnaireCommandeService reexecuter() {
-		CommandeInterface commande = listeCommandesAReexecuteer.remove(listeCommandesAReexecuteer.size() - 1);
+		final var index = listeCommandesAReexecuteer.size() - 1;
+		if(index < 0) {
+			return this;
+		}
+		final var commande = listeCommandesAReexecuteer.remove(index);
 		if(commande.reexecuter()) {
 			listeCommandesEffectuees.add(commande);
 		}
@@ -121,5 +129,13 @@ public class GestionnaireCommandeService implements IService {
 	 */
 	public boolean canReexecuter() {
 		return !listeCommandesAReexecuteer.isEmpty();
+	}
+
+	public GestionnaireCommandeService viderCommandes() {
+		listeCommandes.clear();
+		listeCommandesAnnulees.clear();
+		listeCommandesAReexecuteer.clear();
+		listeCommandesEffectuees.clear();
+		return this;
 	}
 }

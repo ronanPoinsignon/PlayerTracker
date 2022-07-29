@@ -12,15 +12,15 @@ import modele.joueur.JoueurFx;
 
 public class SaveService implements IService {
 
-	private List<Joueur> joueurs = new ArrayList<>();
-	private AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
+	private final List<Joueur> joueurs = new ArrayList<>();
+	private final AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
 
-	public void addJoueur(Joueur joueur) {
+	public void addJoueur(final Joueur joueur) {
 		joueurs.add(joueur);
 		save();
 	}
 
-	public void removeJoueur(Joueur joueur) {
+	public void removeJoueur(final Joueur joueur) {
 		joueurs.remove(joueur);
 		save();
 	}
@@ -31,7 +31,7 @@ public class SaveService implements IService {
 		fichier = new File("joueurs.txt");
 		try {
 			fichier.createNewFile();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			alertService.alert(e);
 		}
 
@@ -45,10 +45,9 @@ public class SaveService implements IService {
 
 				oos.writeObject(joueur);
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			alertService.alert(e);
 		}
-
 	}
 
 }

@@ -5,16 +5,16 @@ public class Champion {
 	private String championName;
 	private String base64ChampionImage;
 
-	public Champion(String championName, String championImage) {
+	public Champion(final String championName, final String championImage) {
 		this.championName = championName;
-		this.base64ChampionImage = championImage;
+		base64ChampionImage = championImage;
 	}
 
 	public String getChampionName() {
 		return championName;
 	}
 
-	public void setChampionName(String championName) {
+	public void setChampionName(final String championName) {
 		this.championName = championName;
 	}
 
@@ -22,8 +22,8 @@ public class Champion {
 		return base64ChampionImage;
 	}
 
-	public void setBase64ChampionImage(String championImage) {
-		this.base64ChampionImage = championImage;
+	public void setBase64ChampionImage(final String championImage) {
+		base64ChampionImage = championImage;
 	}
 
 }

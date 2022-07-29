@@ -10,15 +10,15 @@ import service.TrayIconService;
 import service.WebRequestScheduler;
 
 /**
- * Classe permettant l'ajout de vidéos à la liste.
+ * Classe permettant l'ajout de joueurs à la liste.
  * @author ronan
  *
  */
 public class CommandeAjout extends CommandeListe<JoueurFx> {
 
-	private TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
-	private WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
-	private SaveService saveService = ServiceManager.getInstance(SaveService.class);
+	private final TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
+	private final WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
+	private final SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
 	public CommandeAjout(ViewElement<JoueurFx> table, List<JoueurFx> listeJoueurs) {
 		super(table, listeJoueurs);
@@ -30,12 +30,12 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 
 	@Override
 	public boolean executer() {
-		List<JoueurFx> listeJoueursDejaPresentes = commandeUtil.addAll(table, elements);
+		final var listeJoueursDejaPresentes = commandeUtil.addAll(table, elements);
 		elements.removeAll(listeJoueursDejaPresentes);
 		elements.forEach(trayIconService::bind);
+		elements.forEach(scheduler::executeNow);
 		elements.forEach(scheduler::addJoueur);
 		elements.forEach(saveService::addJoueur);
-		scheduler.executeNow();
 		return !elements.isEmpty(); //si cette liste est vide, aucun joueur n'a donc été ajouté et cette commande est donc inutile
 	}
 

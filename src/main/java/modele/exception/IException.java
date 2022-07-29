@@ -2,6 +2,11 @@ package modele.exception;
 
 public interface IException {
 
-	String getMessage();
+	String getMessageError();
 	String getDescription();
+	default Runnable next() {
+		return () -> {
+
+		};
+	}
 }

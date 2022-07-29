@@ -17,14 +17,14 @@ public class EventTacheUpdateMessage extends EventTacheUpdated {
 	public static final EventType<EventTacheUpdateMessage> EVENT_UPDATE_MESSAGE =
 			new EventType<>(EventTacheUpdated.EVENT_UPDATE, "UPDATE_MESSAGE");
 
-	private String message;
+	private final String message;
 
-	public EventTacheUpdateMessage(String message) {
+	public EventTacheUpdateMessage(final String message) {
 		super(EventTacheUpdateMessage.EVENT_UPDATE_MESSAGE);
 		this.message = message;
 	}
 
-	public void invokeHandler(EventHandlerTacheUpdateMessage handler) {
+	public void invokeHandler(final EventHandlerTacheUpdateMessage handler) {
 		handler.onUpdateMessage(message);
 	}
 }

@@ -35,7 +35,7 @@ public class CommandeUtil<T> {
 		for(T element : elements) {
 			try {
 				this.add(table, element);
-			} catch (JoueurDejaPresentException e) {
+			} catch (final JoueurDejaPresentException e) {
 				elementsDejaPresents.add(element);
 			}
 		}
@@ -65,7 +65,7 @@ public class CommandeUtil<T> {
 		for(T element : elementsASuppr) {
 			try {
 				this.remove(table, element);
-			} catch (PlayerNotFoundException e) {
+			} catch (final PlayerNotFoundException e) {
 				elementsNonPresents.add(element);
 			}
 		}

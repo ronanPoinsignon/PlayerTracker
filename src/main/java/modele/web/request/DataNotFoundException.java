@@ -4,23 +4,15 @@ import modele.exception.ARuntimeException;
 
 public class DataNotFoundException extends ARuntimeException {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -5115305139178777898L;
-
-	private static final String MESSAGE = "Le joueur n'existe pas";
-
-	public DataNotFoundException() {
-		super(DataNotFoundException.MESSAGE);
-	}
-
-	public DataNotFoundException(String msg) {
-		super(msg);
-	}
+	private static final long serialVersionUID = 3798955127623618929L;
 
 	@Override
 	public String getDescription() {
-		return "Aucun résultat pour le pseudo donné.";
+		return dictionnaire.getDataNotFoundExceptionDescription().getValue();
+	}
+
+	@Override
+	public String getMessageError() {
+		return dictionnaire.getDataNotFoundExceptionMessage().getValue();
 	}
 }

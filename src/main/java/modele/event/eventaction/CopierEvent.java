@@ -18,13 +18,13 @@ public class CopierEvent extends EventAction<Void> {
 		if(table.getItems().isEmpty()) {
 			return null;
 		}
-		var clipboard = Clipboard.getSystemClipboard();
-		var content = new ClipboardContent();
+		final var clipboard = Clipboard.getSystemClipboard();
+		final var content = new ClipboardContent();
 		try {
 			content.putString(new GetPseudoEvent(table).execute());
 			clipboard.setContent(content);
 		}
-		catch(ArrayIndexOutOfBoundsException e) {
+		catch(final ArrayIndexOutOfBoundsException e) {
 			// le copier collé rate, pas grave
 		}
 		return null;

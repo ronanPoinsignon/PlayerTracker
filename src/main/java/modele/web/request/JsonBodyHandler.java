@@ -16,30 +16,30 @@ public class JsonBodyHandler<T> implements BodyHandler<Supplier<T>> {
 
 	private final Class<T> targetClass;
 
-	public JsonBodyHandler(Class<T> targetClass) {
+	public JsonBodyHandler(final Class<T> targetClass) {
 		this.targetClass = targetClass;
 	}
 
 	@Override
-	public BodySubscriber<Supplier<T>> apply(ResponseInfo responseInfo) {
+	public BodySubscriber<Supplier<T>> apply(final ResponseInfo responseInfo) {
 		return JsonBodyHandler.asJSON(this.targetClass);
 	}
 
 
-	public static <W> BodySubscriber<Supplier<W>> asJSON(Class<W> targetType) {
-		BodySubscriber<InputStream> upstream = BodySubscribers.ofInputStream();
+	public static <W> BodySubscriber<Supplier<W>> asJSON(final Class<W> targetType) {
+		final var upstream = BodySubscribers.ofInputStream();
 
 		return BodySubscribers.mapping(
 				upstream,
 				inputStream -> JsonBodyHandler.toSupplierOfType(inputStream, targetType));
 	}
 
-	public static <W> Supplier<W> toSupplierOfType(InputStream inputStream, Class<W> targetType) {
+	public static <W> Supplier<W> toSupplierOfType(final InputStream inputStream, final Class<W> targetType) {
 		return () -> {
 			try (var stream = inputStream) {
-				var objectMapper = new ObjectMapper();
+				final var objectMapper = new ObjectMapper();
 				return objectMapper.readValue(stream, targetType);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				throw new UncheckedIOException(e);
 			}
 		};

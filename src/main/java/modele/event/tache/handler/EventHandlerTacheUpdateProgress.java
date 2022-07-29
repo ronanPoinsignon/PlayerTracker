@@ -11,7 +11,7 @@ import modele.event.tache.event.EventTacheUpdateProgress;
 public abstract class EventHandlerTacheUpdateProgress implements EventHandler<EventTacheUpdateProgress> {
 
 	@Override
-	public void handle(EventTacheUpdateProgress event) {
+	public void handle(final EventTacheUpdateProgress event) {
 		event.invokeHandler(this);
 	}
 

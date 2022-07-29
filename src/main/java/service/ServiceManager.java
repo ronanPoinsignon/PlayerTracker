@@ -20,16 +20,16 @@ public abstract class ServiceManager {
 
 	}
 
-	public static final <T extends IService> T getInstance(Class<T> clazz) {
+	public static final <T extends IService> T getInstance(final Class<T> clazz) {
 		@SuppressWarnings("unchecked")
-		T service = (T) ServiceManager.services.get(clazz);
+		var service = (T) ServiceManager.services.get(clazz);
 		if(service == null) {
 			try {
 				service = clazz.getDeclaredConstructor().newInstance();
 				ServiceManager.services.put(clazz, service);
 				service.init();
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				throw new ServiceCreationFailedException(e);
+				throw new ServiceCreationFailedException();
 			}
 		}
 		return service;

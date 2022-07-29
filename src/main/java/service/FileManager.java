@@ -11,10 +11,12 @@ import javafx.scene.image.Image;
 
 public class FileManager implements IService {
 
-	private Map<String, File> fileMap = new HashMap<>();
-	private Map<String, Image> imageMap = new HashMap<>();
+	DictionnaireService dictionnaire;
 
-	public File getFileFromResources(String fileName) {
+	private final Map<String, File> fileMap = new HashMap<>();
+	private final Map<String, Image> imageMap = new HashMap<>();
+
+	public File getFileFromResources(final String fileName) {
 		var file = fileMap.get(fileName);
 		if(file != null) {
 			return file;
@@ -24,7 +26,7 @@ public class FileManager implements IService {
 		return file;
 	}
 
-	public Image getImageFromResource(String imageName) {
+	public Image getImageFromResource(final String imageName) {
 		var image = imageMap.get(imageName);
 		if(image != null) {
 			return image;
@@ -34,21 +36,21 @@ public class FileManager implements IService {
 		return image;
 	}
 
-	private File getFileFromResource(String fileName) {
+	private File getFileFromResource(final String fileName) {
 		File f = null;
 		try {
 			f = File.createTempFile("file", "");
 			f.deleteOnExit();
 			copyInputStreamToFile(getInputStreamFromResource(fileName), f);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 		return f;
 	}
 
-	private void copyInputStreamToFile(InputStream inputStream, File file) throws IOException {
+	private void copyInputStreamToFile(final InputStream inputStream, final File file) throws IOException {
 		try (var outputStream = new FileOutputStream(file, false)) {
-			var bytes = new byte[2048];
+			final var bytes = new byte[2048];
 			int read;
 			while ((read = inputStream.read(bytes)) != -1) {
 				outputStream.write(bytes, 0, read);
@@ -56,13 +58,18 @@ public class FileManager implements IService {
 		}
 	}
 
-	private InputStream getInputStreamFromResource(String fileName) {
-		var classLoader = this.getClass().getClassLoader();
-		var inputStream = classLoader.getResourceAsStream(fileName);
+	private InputStream getInputStreamFromResource(final String fileName) {
+		final var classLoader = this.getClass().getClassLoader();
+		final var inputStream = classLoader.getResourceAsStream(fileName);
 		if (inputStream == null) {
-			throw new IllegalArgumentException("file not found! " + fileName);
+			throw new IllegalArgumentException(dictionnaire.getGetInputStreamFromResourceFileNotFound().getValue() + " : " + fileName);
 		} else {
 			return inputStream;
 		}
+	}
+
+	@Override
+	public void init() {
+		dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	}
 }

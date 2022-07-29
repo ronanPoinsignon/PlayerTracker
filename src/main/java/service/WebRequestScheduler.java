@@ -5,12 +5,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import modele.joueur.Joueur;
-import modele.scheduler.WebRequestRunnable;
+import modele.webrequestrunnable.WebRequestOnePlayerRunnable;
+import modele.webrequestrunnable.WebRequestRunnable;
 
 public class WebRequestScheduler implements IService {
 
-	private ScheduledExecutorService scheduler;
-	private WebRequestRunnable runnable;
+	private final ScheduledExecutorService scheduler;
+	private final WebRequestRunnable runnable;
 
 	public WebRequestScheduler() {
 		scheduler = Executors.newScheduledThreadPool(1);
@@ -18,11 +19,11 @@ public class WebRequestScheduler implements IService {
 		scheduler.scheduleWithFixedDelay(runnable, 0, 1, TimeUnit.MINUTES);
 	}
 
-	public void addJoueur(Joueur joueur) {
+	public void addJoueur(final Joueur joueur) {
 		runnable.add(joueur);
 	}
 
-	public void removeJoueur(Joueur joueur) {
+	public void removeJoueur(final Joueur joueur) {
 		runnable.remove(joueur);
 	}
 
@@ -32,5 +33,9 @@ public class WebRequestScheduler implements IService {
 
 	public void executeNow() {
 		scheduler.execute(runnable);
+	}
+
+	public void executeNow(final Joueur joueur) {
+		scheduler.execute(new WebRequestOnePlayerRunnable(joueur));
 	}
 }
