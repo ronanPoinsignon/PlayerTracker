@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modele.affichage.ViewElement;
+import modele.commande.exception.PlayerNotFoundException;
+import modele.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
 
 public class CommandeUtil<T> {
 
-	public boolean add(ViewElement<T> table, T element) throws JoueurDejaPresentException {
+	public boolean add(final ViewElement<T> table, final T element) throws JoueurDejaPresentException {
 		if(element == null) {
 			return false;
 		}
@@ -18,7 +20,7 @@ public class CommandeUtil<T> {
 		return table.getItems().add(element);
 	}
 
-	public boolean add(ViewElement<T> table, T element, int index) throws JoueurDejaPresentException, UnsupportedOperationException,
+	public boolean add(final ViewElement<T> table, final T element, final int index) throws JoueurDejaPresentException, UnsupportedOperationException,
 	ClassCastException, NullPointerException, IllegalArgumentException {
 		if(element == null) {
 			return false;
@@ -30,9 +32,9 @@ public class CommandeUtil<T> {
 		return true;
 	}
 
-	public List<T> addAll(ViewElement<T> table, List<T> elements) {
-		ArrayList<T> elementsDejaPresents = new ArrayList<>();
-		for(T element : elements) {
+	public List<T> addAll(final ViewElement<T> table, final List<T> elements) {
+		final var elementsDejaPresents = new ArrayList<T>();
+		for(final T element : elements) {
 			try {
 				this.add(table, element);
 			} catch (final JoueurDejaPresentException e) {
@@ -42,27 +44,27 @@ public class CommandeUtil<T> {
 		return elementsDejaPresents;
 	}
 
-	public T remove(ViewElement<T> table, int index) {
+	public T remove(final ViewElement<T> table, final int index) {
 		return table.getItems().remove(index);
 	}
 
-	public boolean remove(ViewElement<T> table, T element) throws PlayerNotFoundException {
+	public boolean remove(final ViewElement<T> table, final T element) throws PlayerNotFoundException {
 		if(!table.getItems().contains(element)) {
 			throw new PlayerNotFoundException();
 		}
 		return table.getItems().remove(element);
 	}
 
-	public List<JoueurFx> removeAll(ViewElement<JoueurFx> table) {
-		List<JoueurFx> listeVideosRm = new ArrayList<>(table.getItems());
+	public List<JoueurFx> removeAll(final ViewElement<JoueurFx> table) {
+		final List<JoueurFx> listeVideosRm = new ArrayList<>(table.getItems());
 		table.getItems().removeAll(listeVideosRm);
 		return listeVideosRm;
 	}
 
-	public List<T> removeAll(ViewElement<T> table, List<T> elements) {
-		ArrayList<T> elementsASuppr = new ArrayList<>(elements);
-		ArrayList<T> elementsNonPresents = new ArrayList<>();
-		for(T element : elementsASuppr) {
+	public List<T> removeAll(final ViewElement<T> table, final List<T> elements) {
+		final var elementsASuppr = new ArrayList<T>(elements);
+		final var elementsNonPresents = new ArrayList<T>();
+		for(final T element : elementsASuppr) {
 			try {
 				this.remove(table, element);
 			} catch (final PlayerNotFoundException e) {

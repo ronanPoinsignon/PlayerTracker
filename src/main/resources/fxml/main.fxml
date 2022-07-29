@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="scrollpane" minHeight="700.0" prefHeight="700.0" prefWidth="1060.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<ScrollPane fx:id="scrollpane" minHeight="700.0" prefHeight="700.0" prefWidth="1060.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
   <content>
     <AnchorPane fx:id="anchor" minHeight="700.0" prefWidth="1060.0">
          <children>

@@ -16,13 +16,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.util.StringConverter;
 import modele.affichage.TableViewElement;
 import modele.commande.CommandeAjout;
 import modele.commande.CommandeModifier;
@@ -35,6 +35,7 @@ import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import modele.observer.ObservateurInterface;
+import service.DictionnaireService;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.LoadService;
@@ -86,7 +87,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	public void initialize(final URL location, final ResourceBundle resources) {
 		table = new TableViewElement<>();
 		table.prefHeight(400);
 		table.prefWidth(600);
@@ -97,7 +98,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		colonneInGame = new TableColumn<>("En jeu");
 		table.getColumns().addAll(colonneNom, colonnePseudo, colonneId, colonneInGame);
 		paneCenter.add(table, 0, 0);
-		List<Joueur> joueurs = loadService.load();
+		final var joueurs = loadService.load();
 		joueurs.stream().map(JoueurFx::new)
 		.map(joueur -> new CommandeAjout(table, joueur))
 		.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());

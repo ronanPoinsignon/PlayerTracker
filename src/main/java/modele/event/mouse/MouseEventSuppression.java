@@ -12,7 +12,7 @@ import modele.joueur.JoueurFx;
  */
 public class MouseEventSuppression extends MouseEventHandler {
 
-	public MouseEventSuppression(final TableView<JoueurFx> table) {
+	public MouseEventSuppression(final ViewElement<JoueurFx> table) {
 		super(table);
 	}
 

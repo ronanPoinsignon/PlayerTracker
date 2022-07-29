@@ -21,7 +21,7 @@ public class MouseEventAjout extends MouseEventHandler {
 	private final String pseudo;
 	private final Serveur serveur;
 
-	public MouseEventAjout(final TableView<JoueurFx> table, final String nom, final String pseudo, final Serveur serveur) {
+	public MouseEventAjout(final ViewElement<JoueurFx> table, final String nom, final String pseudo, final Serveur serveur) {
 		super(table);
 		this.nom = nom;
 		this.pseudo = pseudo;

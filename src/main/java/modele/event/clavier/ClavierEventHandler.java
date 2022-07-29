@@ -37,12 +37,11 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	private static final KeyCombination ANNULER_ACTION = new KeyCodeCombination(KeyCodeCombinationEnum.ANNULER_ACTION.getKeyCode(), KeyCodeCombinationEnum.ANNULER_ACTION.getModifier());
 	private static final KeyCombination REEXECUTER_ACTION = new KeyCodeCombination(KeyCodeCombinationEnum.REEXECUTER_ACTION.getKeyCode(), KeyCodeCombinationEnum.REEXECUTER_ACTION.getModifier());
 
-	private final TableView<JoueurFx> table;
+	private final ViewElement<JoueurFx> table;
 
 	private final Map<KeyCombination, Runnable> keyFunctionMap = new HashMap<>();
 
-	private ViewElement<JoueurFx> table;
-	public ClavierEventHandler(ViewElement<JoueurFx> table) {
+	public ClavierEventHandler(final ViewElement<JoueurFx> table) {
 		this.table = table;
 		keyFunctionMap.put(ClavierEventHandler.COPIER, this::copier);
 		keyFunctionMap.put(ClavierEventHandler.COLLER, this::coller);

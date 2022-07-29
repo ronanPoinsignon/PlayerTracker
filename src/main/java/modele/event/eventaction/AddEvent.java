@@ -23,7 +23,7 @@ public class AddEvent extends RunnableEventWithTable<JoueurFx> {
 	private final String pseudo;
 	private final Serveur serveur;
 
-	public AddEvent(ViewElement<JoueurFx> table, String nom, String pseudo) {
+	public AddEvent(final ViewElement<JoueurFx> table, final String nom, final String pseudo, final Serveur serveur) {
 		super(table);
 		this.nom = nom;
 		this.pseudo = pseudo;
