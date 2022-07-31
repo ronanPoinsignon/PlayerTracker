@@ -117,7 +117,8 @@ public class FileManager implements IService {
 		final List<T> elements = new ArrayList<>();
 		try (var ois = new ObjectInputStream(new FileInputStream(file))) {
 
-			for(var i = 1; i <= ois.readInt(); i++) {
+			final var size = ois.readInt();
+			for(var i = 1; i <= size; i++) {
 				elements.add((T) ois.readObject());
 			}
 
