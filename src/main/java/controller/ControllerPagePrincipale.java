@@ -25,7 +25,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
 import modele.commande.CommandeAjout;
 import modele.commande.CommandeModifier;
-import modele.commande.CommandeSuppression;
 import modele.event.action.ActionEventRegarder;
 import modele.event.action.ActionEventSupprimer;
 import modele.event.clavier.ClavierEventHandler;
@@ -77,7 +76,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	final ContextMenu rowMenu = new ContextMenu();
 
-	private SimpleObjectProperty<JoueurFx> joueurCourant = new SimpleObjectProperty<>();
+	private final SimpleObjectProperty<JoueurFx> joueurCourant = new SimpleObjectProperty<>();
 
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private final InterfaceManager interfaceManager = ServiceManager.getInstance(InterfaceManager.class);
@@ -138,16 +137,17 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		});
 
 		joueurCourant.addListener((obs, oldValue, newValue) -> {
-			if(newValue != null) {
-				interfaceManager.setDisableModifierProperty(false);
-				interfaceManager.setDisableAjoutProperty(true);
-				interfaceManager.setNomValue(newValue.getNom());
-				interfaceManager.setPseudoValue(newValue.getPseudo());
-				interfaceManager.setDisablePseudoProperty(true);
-				interfaceManager.setVisibleModifierProperty();
-				interfaceManager.setServerValue(newValue.getServer());
-				interfaceManager.setDisableServerProperty(true);
+			if(newValue == null) {
+				return;
 			}
+			interfaceManager.setDisableModifierProperty(false);
+			interfaceManager.setDisableAjoutProperty(true);
+			interfaceManager.setNomValue(newValue.getNom());
+			interfaceManager.setPseudoValue(newValue.getPseudo());
+			interfaceManager.setDisablePseudoProperty(true);
+			interfaceManager.setVisibleModifierProperty();
+			interfaceManager.setServerValue(newValue.getServer());
+			interfaceManager.setDisableServerProperty(true);
 		});
 
 		nom.setAlignment(Pos.CENTER_LEFT);
@@ -240,11 +240,6 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 
 	public void onEdit(final JoueurFx joueur) {
 		joueurCourant.set(joueur);
-	}
-
-	public void removePLayerFromTable(final JoueurFx joueur) {
-		gestionnaireCommandeService.addCommande(new CommandeSuppression(table, joueur)).executer();
-		joueurCourant = null;
 	}
 
 	public void reset() {
