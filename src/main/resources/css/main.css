@@ -1,13 +1,13 @@
 * {
-	-fx-main-color: #e74076;
-	-fx-secondary-color: #191937;
+	-fx-main-color: #efb30e;
+	-fx-secondary-color: #00b0ff;
 	-fx-font-family: "Verdana";
 	font-family: "Verdana";
 }
 
 #anchor {
-	-fx-background-color: #070720;
-	background-color: #070720;
+	-fx-background-color: #01579b;
+	background-color: #01579b;
 }
 
 #joueursContainer {
@@ -15,9 +15,32 @@
 	-fx-padding: 40px;
 }
 
+.loading-spinner {
+	-fx-progress-color: #efb30e;
+}
+
+#open_modal, #text_circle {
+	position: fixed;
+}
+
+#open_modal:hover {
+	-fx-cursor: hand;
+	cursor: hand;
+}
+
+#text_circle {
+	-fx-font-size: 48px;
+}
+
 .float-button {
 	-fx-fill: -fx-main-color;
 	fill: -fx-main-color;
+}
+
+#modalAdd {
+	-fx-background-color: #00b0ff;
+	-fx-border-color: #eee;
+	-fx-border-width: 1px;
 }
 
 .joueur-card {
@@ -27,9 +50,9 @@
 	border-color: -fx-secondary-color;
 	-fx-border-width: 1px;
 	border-width: 1px;
-	-fx-border-radius: 15px;
-	border-radius: 15px;
-	-fx-background-radius: 15px;
+	-fx-border-radius: 8px;
+	border-radius: 8px;
+	-fx-background-radius: 8px;
 	-fx-font-size: 16px;
 	font-size: 16px;
 }

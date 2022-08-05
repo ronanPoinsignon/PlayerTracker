@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane fx:id="scrollpane" minHeight="700.0" prefHeight="700.0" prefWidth="1060.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
-  <content>
-    <AnchorPane fx:id="anchor" minHeight="700.0" prefWidth="1060.0">
-         <children>
-            <Circle id="open_modal" fx:id="open_modal" onMouseClicked="#openModal" radius="27.0" styleClass="float-button" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
-            <Text fill="WHITE" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="open-modal-text" text="+" textAlignment="CENTER" wrappingWidth="60.0" AnchorPane.bottomAnchor="21.921875" AnchorPane.rightAnchor="17.0">
-               <font>
-                  <Font name="Verdana" size="48.0" />
-               </font>
-            </Text>
-         </children>
-      </AnchorPane>
-  </content>
-</ScrollPane>
+<StackPane fx:id="mainContainer" prefHeight="700.0" prefWidth="1060.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+   <children>
+      <ScrollPane fx:id="scrollpane" minHeight="700.0" prefHeight="700.0" prefWidth="1060.0">
+        <content>
+          <AnchorPane fx:id="anchor" minHeight="700.0" prefWidth="1060.0" />
+        </content>
+      </ScrollPane>
+      <Circle id="open_modal" fx:id="open_modal" accessibleRole="BUTTON" onMouseClicked="#openModal" radius="28.0" styleClass="float-button" translateX="480.0" translateY="300.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </Circle>
+      <Text fx:id="text_circle" accessibleRole="BUTTON" fill="WHITE" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="open-modal-text" text="+" textAlignment="CENTER" translateX="480.0" translateY="298.0" wrappingWidth="60.0">
+         <font>
+            <Font name="Verdana" size="48.0" />
+         </font>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </Text>
+      <ProgressIndicator fx:id="loading" styleClass="loading-spinner" />
+      <GridPane id="modalAdd" fx:id="modalAdd" layoutX="300.0" maxWidth="300.0" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" translateX="300.0" StackPane.alignment="CENTER_RIGHT">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="229.0" minHeight="0.0" prefHeight="60.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="620.0" minHeight="10.0" prefHeight="560.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+   </children>
+</StackPane>

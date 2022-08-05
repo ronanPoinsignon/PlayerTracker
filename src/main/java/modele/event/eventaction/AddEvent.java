@@ -44,9 +44,8 @@ public class AddEvent extends RunnableEventWithTable<JoueurFx> {
 			}
 			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur)).executer();
 		});
-		final var t = new Thread(tache);
-		t.setDaemon(true);
-		t.start();
+		tache.run();
+		
 		return null;
 	}
 }
