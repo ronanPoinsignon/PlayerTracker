@@ -7,6 +7,7 @@ import modele.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import modele.tache.TacheCharger;
+import service.AlertFxService;
 import service.GestionnaireCommandeService;
 import service.ServiceManager;
 import service.WebRequestScheduler;
@@ -14,6 +15,8 @@ import service.WebRequestScheduler;
 public class AddEvent extends RunnableEventWithTable<JoueurFx> {
 
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
+	private final AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
+
 	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 
 	private final String nom;
@@ -32,12 +35,13 @@ public class AddEvent extends RunnableEventWithTable<JoueurFx> {
 		if(pseudo == null || pseudo.isBlank()) {
 			return null;
 		}
-		if(table.getItems().stream().anyMatch(joueur -> pseudo.equals(joueur.getPseudo()))) {
-			throw new JoueurDejaPresentException();
-		}
 		final var tache = new TacheCharger(nom, pseudo, serveur);
 		tache.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> {
 			final var joueur = tache.getValue();
+			if(table.getItems().stream().anyMatch(items -> joueur.getPlayerId().equals(items.getPlayerId()))) {
+				alerteService.alert(new JoueurDejaPresentException());
+				return;
+			}
 			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur)).executer();
 		});
 		final var t = new Thread(tache);

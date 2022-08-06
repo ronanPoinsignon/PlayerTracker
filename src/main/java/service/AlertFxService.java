@@ -19,14 +19,14 @@ public class AlertFxService implements IService {
 	PropertiesService ps;
 	DictionnaireService dictionnaire;
 
-	public void alert(final Exception exception) {
+	public void alert(final Throwable exception) {
 		try {
 			throw exception;
 		}
 		catch(AException | ARuntimeException e) {
 			showWarningAlert(e);
 		}
-		catch (final Exception e) {
+		catch (final Throwable e) {
 			showAlertFrom(e);
 		}
 	}
@@ -40,7 +40,7 @@ public class AlertFxService implements IService {
 		});
 	}
 
-	private void showAlertFrom(final Exception e) {
+	private void showAlertFrom(final Throwable e) {
 		e.printStackTrace();
 		Platform.runLater(() -> {
 			final var header = dictionnaire.getText("showAlertFromHeader").getValue();

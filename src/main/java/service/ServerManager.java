@@ -9,7 +9,7 @@ public class ServerManager implements IService {
 
 	private PropertiesService ps;
 
-	private final String[][] serverNames = { { "br1", "BR" }, { "eun1", "EUNE" }, { "euw1", "EUW" }, { "j1", "JP" }, { "kr", "KR" }, { "la1", "LAN" }, { "la2", "LAS"}, { "na1", "NA" }, { "oc1", "OCE" }, { "ru", "RU" }, { "tr1", "TR" } };
+	private final String[][] serverNames = { { "br1", "BR" }, { "eun1", "EUNE" }, { "euw1", "EUW" }, { "jp1", "JP" }, { "kr", "KR" }, { "la1", "LAN" }, { "la2", "LAS"}, { "na1", "NA" }, { "oc1", "OCE" }, { "ru", "RU" }, { "tr1", "TR" } };
 
 	List<Serveur> servers = new ArrayList<>();
 
