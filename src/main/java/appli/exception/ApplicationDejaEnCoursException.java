@@ -17,12 +17,12 @@ public class ApplicationDejaEnCoursException extends AException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getApplicationDejaEnCoursExceptionDescription().getValue();
+		return dictionnaire.getText("applicationDejaEnCoursExceptionDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getApplicationDejaEnCoursExceptionMessage().getValue();
+		return dictionnaire.getText("applicationDejaEnCoursExceptionMessage").getValue();
 	}
 
 	@Override

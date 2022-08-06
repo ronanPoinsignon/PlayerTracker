@@ -200,19 +200,19 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 			lookItem.setOnAction(new ActionEventRegarder(newV));
 		});
 
-		colonneNom.textProperty().bind(dictionnaire.getColonneNomLegende());
-		colonnePseudo.textProperty().bind(dictionnaire.getColonnePseudoLegende());
-		colonneId.textProperty().bind(dictionnaire.getColonneIdLegende());
-		colonneInGame.textProperty().bind(dictionnaire.getColonneInGameLegende());
-		colonneServeur.textProperty().bind(dictionnaire.getColonneServeurLegende());
+		colonneNom.textProperty().bind(dictionnaire.getText("colonneNomLegende"));
+		colonnePseudo.textProperty().bind(dictionnaire.getText("colonnePseudoLegende"));
+		colonneId.textProperty().bind(dictionnaire.getText("colonneIdLegende"));
+		colonneInGame.textProperty().bind(dictionnaire.getText("colonneInGameLegende"));
+		colonneServeur.textProperty().bind(dictionnaire.getText("colonneServeurLegende"));
 
-		ajouter.textProperty().bind(dictionnaire.getMenuItemAjouter());
-		modifier.textProperty().bind(dictionnaire.getMenuItemModifier());
-		editItem.textProperty().bind(dictionnaire.getMenuItemModifier());
-		removeItem.textProperty().bind(dictionnaire.getMenuItemSupprimer());
-		lookItem.textProperty().bind(dictionnaire.getMenuItemRegarder());
-		nom.promptTextProperty().bind(dictionnaire.getNomPlaceHolder());
-		pseudo.promptTextProperty().bind(dictionnaire.getPseudoPlaceHolder());
+		ajouter.textProperty().bind(dictionnaire.getText("menuItemAjouter"));
+		modifier.textProperty().bind(dictionnaire.getText("menuItemModifier"));
+		editItem.textProperty().bind(dictionnaire.getText("menuItemModifier"));
+		removeItem.textProperty().bind(dictionnaire.getText("menuItemSupprimer"));
+		lookItem.textProperty().bind(dictionnaire.getText("menuItemRegarder"));
+		nom.promptTextProperty().bind(dictionnaire.getText("nomPlaceHolder"));
+		pseudo.promptTextProperty().bind(dictionnaire.getText("pseudoPlaceHolder"));
 	}
 
 	@FXML

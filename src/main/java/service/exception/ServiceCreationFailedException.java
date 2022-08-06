@@ -8,12 +8,12 @@ public class ServiceCreationFailedException extends ARuntimeException {
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getServiceCreationFailedExceptionMessage().getValue();
+		return dictionnaire.getText("serviceCreationFailedExceptionMessage").getValue();
 	}
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getServiceCreationFailedExceptionDescription().getValue();
+		return dictionnaire.getText("serviceCreationFailedExceptionDescription").getValue();
 	}
 
 }

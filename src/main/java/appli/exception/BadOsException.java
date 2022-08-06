@@ -24,11 +24,11 @@ public class BadOsException extends ARuntimeException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getBadOsExceptionDescription().getValue();
+		return dictionnaire.getText("BadOsExceptionDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getBadOsExceptionMessage().getValue();
+		return dictionnaire.getText("BadOsExceptionMessage").getValue();
 	}
 }

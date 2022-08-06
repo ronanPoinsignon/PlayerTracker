@@ -12,12 +12,12 @@ public class DataLoadingException extends ARuntimeException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getDataLoadingExceptionDescription().getValue();
+		return dictionnaire.getText("dataLoadingExceptionDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getDataLoadingExceptionMessage().getValue();
+		return dictionnaire.getText("dataLoadingExceptionMessage").getValue();
 	}
 
 	@Override

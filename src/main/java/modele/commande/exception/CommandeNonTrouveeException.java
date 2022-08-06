@@ -8,12 +8,12 @@ public class CommandeNonTrouveeException extends AException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getCommandeNonTrouveeExceptionDescription().getValue();
+		return dictionnaire.getText("commandeNonTrouveeExceptionDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getCommandeNonTrouveeExceptionMessage().getValue();
+		return dictionnaire.getText("commandeNonTrouveeExceptionMessage").getValue();
 	}
 
 }

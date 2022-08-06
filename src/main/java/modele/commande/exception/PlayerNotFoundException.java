@@ -8,12 +8,12 @@ public class PlayerNotFoundException extends AException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getPlayerNotFoundExceptionDescription().getValue();
+		return dictionnaire.getText("playerNotFoundExceptionDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getPlayerNotFoundExceptionMessage().getValue();
+		return dictionnaire.getText("playerNotFoundExceptionMessage").getValue();
 	}
 
 }
