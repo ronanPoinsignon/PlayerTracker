@@ -25,6 +25,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 import modele.affichage.PaneViewElement;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.Serveur;
@@ -57,33 +58,33 @@ public class MainController implements Initializable {
 
 	@FXML
 	private ProgressIndicator loading;
-	
+
 	/* Formulaire d'ajout */
 
 	@FXML
 	private GridPane modalAdd;
-	
+
 	@FXML
 	private Label modalAddTitle;
-	
+
 	@FXML
 	private Label nameLabel;
-	
+
 	@FXML
 	private TextField nameInput;
-	
+
 	@FXML
 	private Label pseudoLabel;
-	
+
 	@FXML
 	private TextField pseudoInput;
-	
+
 	@FXML
 	private Label serverLabel;
-	
+
 	@FXML
-	private ChoiceBox<String> serverInput;
-	
+	private ChoiceBox<Serveur> serverInput;
+
 	@FXML
 	private Button addButton;
 
@@ -91,7 +92,7 @@ public class MainController implements Initializable {
 	private final TranslateTransition closeTransition = new TranslateTransition(Duration.millis(MainController.TRANSITION_TIME));
 
 	private final BooleanBinding isTransitionRunningProperty = openTransition.statusProperty().isEqualTo(Status.RUNNING).or(closeTransition.statusProperty().isEqualTo(Status.RUNNING));
-	
+
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	private final PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
@@ -99,11 +100,18 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
 
-		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
-
 		joueursContainer = new PaneViewElement();
 		joueursContainer.setVisible(false);
-		
+
+		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollpane.setOnMousePressed(event -> {
+			if(!MouseButton.PRIMARY.equals(event.getButton()) || !modalAdd.isVisible()) {
+				return;
+			}
+			closeModal();
+			event.consume();
+		});
+
 		// Transitions
 
 		openTransition.setNode(modalAdd);
@@ -112,7 +120,7 @@ public class MainController implements Initializable {
 		closeTransition.setOnFinished(evt -> {
 			modalAdd.setVisible(false);
 		});
-		
+
 		// Modal
 
 		modalAdd.setVisible(false);
@@ -120,18 +128,10 @@ public class MainController implements Initializable {
 			openTransition.setByX(-newV.doubleValue());
 			closeTransition.setByX(newV.doubleValue());
 		});
-		modalAdd.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+		modalAdd.setOnMousePressed(event -> {
 			event.consume();
 		});
 
-		mainContainer.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-			if(!MouseButton.PRIMARY.equals(event.getButton()) || !modalAdd.isVisible()) {
-				return;
-			}
-			closeModal();
-			event.consume();
-		});
-		
 		//Scrollbar
 
 		anchor.getChildren().add(joueursContainer);
@@ -146,24 +146,33 @@ public class MainController implements Initializable {
 		joueursContainer.heightProperty().addListener((obs, oldValue, newValue) -> {
 			anchor.setPrefHeight(newValue.doubleValue());
 		});
-		
+
 		// Formulaire d'ajout
-		
+
 		modalAddTitle.textProperty().bind(dictionnaire.getText("menuItemAjouter"));
-		
+
 		nameLabel.textProperty().bind(dictionnaire.getText("nomPlaceHolder"));
 		pseudoLabel.textProperty().bind(dictionnaire.getText("pseudoPlaceHolder"));
 		serverLabel.textProperty().bind(dictionnaire.getText("colonneServeurLegende"));
-		
+
 		addButton.textProperty().bind(dictionnaire.getText("menuItemAjouter"));
-		
-		serverInput.setItems(
-			FXCollections.observableList(serverManager.getServers().stream().map(Serveur::getLabel).toList())
-		);
-		serverInput.setValue(serverManager.getServerById(ps.get("default_server")).getLabel());
-		
+
+		serverInput.setItems(FXCollections.observableList(serverManager.getServers()));
+		serverInput.setValue(serverManager.getServerById(ps.get("default_server")));
+		serverInput.setConverter(new StringConverter<Serveur>() {
+			@Override
+			public String toString(final Serveur object) {
+				return object.getLabel();
+			}
+			@Override
+			public Serveur fromString(final String string) {
+				return serverInput.getItems().stream().filter(ap ->
+				ap.getServerId().equals(string)).findFirst().orElse(null);
+			}
+		});
+
 		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::addJoueur);
-		
+
 		// Chargement
 
 		//final String[] nom = {"Théo", "Test", "Théo", "Test", "Théo", "Test", "Théo", "Test", "Théo", "Test", "Théo", "Test"};
@@ -216,33 +225,25 @@ public class MainController implements Initializable {
 		}
 		closeTransition.play();
 	}
-	
-	public void addJoueur(MouseEvent event) {
+
+	public void addJoueur(final MouseEvent event) {
 		final var nom = nameInput.getText();
 		final var pseudo = pseudoInput.getText();
-		final var serverName = serverInput.getValue();
-		
-		if(nom.isEmpty() || pseudo.isEmpty() || serverName == null)
+		final var server = serverInput.getValue();
+
+		if(nom.isEmpty() || pseudo.isEmpty() || server == null) {
 			return;
-				
-		final var serverId = serverManager.getServers()
-								.stream()
-								.filter(server -> server.getLabel().equals(serverName))
-								.findFirst()
-								.orElse(null);
-		
-		if(serverId == null)
-			return;
-		
-		Thread t = new Thread(new AddEvent(joueursContainer, nom, pseudo, serverId));
+		}
+
+		final var t = new Thread(new AddEvent(joueursContainer, nom, pseudo, server));
 		t.setDaemon(true);
 		t.start();
-		
+
 		nameInput.setText("");
 		pseudoInput.setText("");
-		
+
 		closeModal();
-		
+
 	}
 
 }
