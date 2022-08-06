@@ -43,8 +43,8 @@ public class AlertFxService implements IService {
 	private void showAlertFrom(final Throwable e) {
 		e.printStackTrace();
 		Platform.runLater(() -> {
-			final var header = dictionnaire.getShowAlertFromHeader().getValue();
-			final var context = dictionnaire.getShowAlertFromContext().getValue();
+			final var header = dictionnaire.getText("showAlertFromHeader").getValue();
+			final var context = dictionnaire.getText("showAlertFromContext").getValue();
 			final var alert = createErrorAlert(header, context);
 			alert.showAndWait();
 			trayIconService.quitter();
@@ -61,8 +61,8 @@ public class AlertFxService implements IService {
 			return;
 		}
 		Platform.runLater(() -> {
-			final var header = dictionnaire.getShowWarningAlertJoueursDejaPresentsHeader().getValue();
-			final var liste = new StringBuilder(dictionnaire.getShowWarningAlertJoueursDejaPresentsListe() + " :\n\t");
+			final var header = dictionnaire.getText("showWarningAlertJoueursDejaPresentsHeader").getValue();
+			final var liste = new StringBuilder(dictionnaire.getText("showWarningAlertJoueursDejaPresentsListe") + " :\n\t");
 			final var joueurs = listeJoueurs.stream().map(Joueur::getPseudo).collect(Collectors.joining("\n\t- "));
 			liste.append(joueurs);
 			final var alert = createWarningAlert(header, liste.toString());

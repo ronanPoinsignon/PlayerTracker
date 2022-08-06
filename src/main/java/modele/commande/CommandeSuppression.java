@@ -35,12 +35,12 @@ public class CommandeSuppression extends CommandeListe<JoueurFx> {
 
 	@Override
 	public boolean executer() {
-		for(final JoueurFx joueur : elements) {
-			listeIndex.add(table.getItems().indexOf(joueur));
-			trayIconService.unbind(joueur);
-			scheduler.removeJoueur(joueur);
-			saveService.removeJoueur(joueur);
-		}
+		elements.forEach(joueurFx -> {
+			listeIndex.add(table.getItems().indexOf(joueurFx));
+			trayIconService.unbind(joueurFx);
+			scheduler.removeJoueur(joueurFx);
+			saveService.removeJoueur(joueurFx.getJoueur());
+		});
 		final var listeJoueursNonPresents = commandeUtil.removeAll(table, elements);
 		elements.removeAll(listeJoueursNonPresents);
 		return !elements.isEmpty();
@@ -51,12 +51,12 @@ public class CommandeSuppression extends CommandeListe<JoueurFx> {
 		for(var i = 0; i < elements.size(); i++) {
 			final int index = listeIndex.get(i);
 			try {
-				final var joueur = elements.get(i);
-				commandeUtil.add(table, joueur, index);
-				trayIconService.bind(joueur);
-				scheduler.executeNow(joueur);
-				scheduler.addJoueur(joueur);
-				saveService.addJoueur(joueur);
+				final var joueurFx = elements.get(i);
+				commandeUtil.add(table, joueurFx, index);
+				trayIconService.bind(joueurFx);
+				scheduler.executeNow(joueurFx);
+				scheduler.addJoueur(joueurFx);
+				saveService.addJoueur(joueurFx.getJoueur());
 			} catch (UnsupportedOperationException | ClassCastException
 					| IllegalArgumentException | JoueurDejaPresentException e) {
 				alerteService.alert(e);

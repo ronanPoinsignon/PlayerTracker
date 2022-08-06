@@ -19,11 +19,12 @@ public class CollerEvent extends EventAction<Void> {
 	public Void execute() {
 		final var clipboard = Clipboard.getSystemClipboard();
 		final var pseudo = clipboard.getString();
-		if(pseudo != null && !pseudo.isEmpty()) {
-			final var th = new Thread(new AddEvent(table, "", pseudo, sm.getDefaultServer()));
-			th.setDaemon(true);
-			th.start();
+		if(pseudo == null || pseudo.isEmpty()) {
+			return null;
 		}
+		final var th = new Thread(new AddEvent(table, "", pseudo, sm.getDefaultServer()));
+		th.setDaemon(true);
+		th.start();
 		return null;
 	}
 

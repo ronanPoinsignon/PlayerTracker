@@ -32,27 +32,34 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 	public boolean executer() {
 		final var listeJoueursDejaPresentes = commandeUtil.addAll(table, elements);
 		elements.removeAll(listeJoueursDejaPresentes);
-		elements.forEach(trayIconService::bind);
-		elements.forEach(scheduler::executeNow);
-		elements.forEach(scheduler::addJoueur);
-		elements.forEach(saveService::addJoueur);
+		elements.stream().forEach(joueurFx -> {
+			trayIconService.bind(joueurFx);
+			scheduler.executeNow(joueurFx);
+			scheduler.addJoueur(joueurFx);
+			saveService.addJoueur(joueurFx.getJoueur());
+		});
 		return !elements.isEmpty(); //si cette liste est vide, aucun joueur n'a donc été ajouté et cette commande est donc inutile
 	}
 
 	@Override
 	public boolean annuler() {
 		commandeUtil.removeAll(table, elements);
-		elements.forEach(trayIconService::unbind);
-		elements.forEach(scheduler::removeJoueur);
-		elements.forEach(saveService::removeJoueur);
+		elements.forEach(joueurFx -> {
+			trayIconService.unbind(joueurFx);
+			scheduler.removeJoueur(joueurFx);
+			saveService.removeJoueur(joueurFx.getJoueur());
+		});
 		return !elements.isEmpty();
 	}
 
 	@Override
 	public boolean reexecuter() {
 		commandeUtil.addAll(table, elements);
-		elements.forEach(trayIconService::bind);
-		elements.forEach(saveService::addJoueur);
+		elements.forEach(joueurFx -> {
+			trayIconService.bind(joueurFx);
+			scheduler.addJoueur(joueurFx);
+			saveService.addJoueur(joueurFx.getJoueur());
+		});
 		return !elements.isEmpty();
 	}
 }

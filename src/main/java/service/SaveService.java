@@ -1,19 +1,17 @@
 package service;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import modele.joueur.Joueur;
-import modele.joueur.JoueurFx;
 
 public class SaveService implements IService {
 
 	private final List<Joueur> joueurs = new ArrayList<>();
-	private final AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
+	private AlertFxService alertService;
+	private FileManager fm;
 
 	public void addJoueur(final Joueur joueur) {
 		joueurs.add(joueur);
@@ -26,28 +24,17 @@ public class SaveService implements IService {
 	}
 
 	public void save() {
-		File fichier = null;
-
-		fichier = new File("joueurs.txt");
 		try {
-			fichier.createNewFile();
+			fm.writeInto(new File("joueurs.txt"), joueurs);
 		} catch (final IOException e) {
 			alertService.alert(e);
 		}
+	}
 
-		try (var oos = new ObjectOutputStream(new FileOutputStream(fichier))) {
-			oos.writeInt(joueurs.size());
-
-			for(Joueur joueur : joueurs) {
-				if(joueur instanceof JoueurFx) {
-					joueur = ((JoueurFx) joueur).getJoueur();
-				}
-
-				oos.writeObject(joueur);
-			}
-		} catch (final IOException e) {
-			alertService.alert(e);
-		}
+	@Override
+	public void init() {
+		fm = ServiceManager.getInstance(FileManager.class);
+		alertService = ServiceManager.getInstance(AlertFxService.class);
 	}
 
 }

@@ -6,12 +6,12 @@ public class JoueurDejaPresentException extends ARuntimeException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getJoueurDejaPresentExceptionDescription().getValue();
+		return dictionnaire.getText("joueurDejaPresentExceptionDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getJoueurDejaPresentExceptionMessage().getValue();
+		return dictionnaire.getText("joueurDejaPresentExceptionMessage").getValue();
 	}
 
 }

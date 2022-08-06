@@ -32,9 +32,11 @@ public class CommandeReset extends CommandeListe<JoueurFx> {
 		}
 		listeJoueursSupprimes = commandeUtil.removeAll(table);
 		commandeUtil.addAll(table, elements);
-		listeJoueursSupprimes.forEach(trayIconService::unbind);
-		listeJoueursSupprimes.forEach(scheduler::removeJoueur);
-		listeJoueursSupprimes.forEach(saveService::removeJoueur);
+		listeJoueursSupprimes.forEach(joueurFx -> {
+			trayIconService.unbind(joueurFx);
+			scheduler.removeJoueur(joueurFx);
+			saveService.removeJoueur(joueurFx.getJoueur());
+		});
 		return !elements.isEmpty();
 	}
 
@@ -42,9 +44,11 @@ public class CommandeReset extends CommandeListe<JoueurFx> {
 	public boolean annuler() {
 		commandeUtil.removeAll(table);
 		commandeUtil.addAll(table, listeJoueursSupprimes);
-		listeJoueursSupprimes.forEach(trayIconService::bind);
-		listeJoueursSupprimes.forEach(scheduler::addJoueur);
-		listeJoueursSupprimes.forEach(saveService::addJoueur);
+		listeJoueursSupprimes.forEach(joueurFx -> {
+			trayIconService.bind(joueurFx);
+			scheduler.addJoueur(joueurFx);
+			saveService.addJoueur(joueurFx.getJoueur());
+		});
 		return !elements.isEmpty();
 	}
 

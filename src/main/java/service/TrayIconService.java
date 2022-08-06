@@ -36,7 +36,7 @@ public class TrayIconService implements IService {
 			iconURL = fm.getFileFromResources("images/icon.png").toURI().toURL();
 			trayIcon = new FXTrayIcon.Builder(stage, iconURL).show().build();
 			miExit = new MenuItem();
-			miExit.textProperty().bind(dictionnaire.getTrayIconServiceQuitter());
+			miExit.textProperty().bind(dictionnaire.getText("trayIconServiceQuitter"));
 			miExit.setOnAction(e -> quitter());
 			trayIcon.addMenuItem(miExit);
 		} catch (final IOException e1) {
@@ -82,7 +82,7 @@ public class TrayIconService implements IService {
 		if(!SystemTray.isSupported()) {
 			return;
 		}
-		final var t = new Thread(() -> trayIcon.showMessage(ps.get("application_name"), joueur.getAppellation() + " " + dictionnaire.getTrayIconServiceEnJeu().getValue()));
+		final var t = new Thread(() -> trayIcon.showMessage(ps.get("application_name"), joueur.getAppellation() + " " + dictionnaire.getText("trayIconServiceEnJeu").getValue()));
 		t.setDaemon(true);
 		t.start();
 	}

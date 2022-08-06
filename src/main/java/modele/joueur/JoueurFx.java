@@ -1,5 +1,10 @@
 package modele.joueur;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -29,7 +34,12 @@ public class JoueurFx extends Joueur {
 		super(joueur.nom, joueur.pseudo, joueur.server);
 		this.joueur = joueur;
 		playerId = joueur.playerId;
+		nom = joueur.nom;
+		pseudo = joueur.pseudo;
 		inGame = joueur.inGame;
+		partie = joueur.partie;
+		server = joueur.server;
+
 		idProperty = new SimpleStringProperty(joueur.getPlayerId());
 		nomProperty = new SimpleStringProperty(joueur.nom);
 		pseudoProperty = new SimpleStringProperty(joueur.pseudo);
@@ -105,5 +115,13 @@ public class JoueurFx extends Joueur {
 	public void setServer(final Serveur server) {
 		super.setServer(server);
 		serverNameProperty.set(server != null ? server.getServerId() : "");
+	}
+
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException();
+	}
+
+	private void readObject(final ObjectInputStream in) throws IOException {
+		throw new NotSerializableException();
 	}
 }
