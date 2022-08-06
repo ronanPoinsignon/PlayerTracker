@@ -30,6 +30,7 @@ import modele.event.eventaction.AddEvent;
 import modele.joueur.Serveur;
 import service.AlertFxService;
 import service.DictionnaireService;
+import service.PropertiesService;
 import service.ServerManager;
 import service.ServiceManager;
 
@@ -93,6 +94,7 @@ public class MainController implements Initializable {
 	
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
+	private final PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
@@ -147,17 +149,18 @@ public class MainController implements Initializable {
 		
 		// Formulaire d'ajout
 		
-		modalAddTitle.setText(dictionnaire.getMenuItemAjouter().get());
+		modalAddTitle.textProperty().bind(dictionnaire.getText("menuItemAjouter"));
 		
-		nameLabel.setText(dictionnaire.getNomPlaceHolder().get());
-		pseudoLabel.setText(dictionnaire.getPseudoPlaceHolder().get());
-		serverLabel.setText(dictionnaire.getColonneServeurLegende().get());
+		nameLabel.textProperty().bind(dictionnaire.getText("nomPlaceHolder"));
+		pseudoLabel.textProperty().bind(dictionnaire.getText("pseudoPlaceHolder"));
+		serverLabel.textProperty().bind(dictionnaire.getText("colonneServeurLegende"));
 		
-		addButton.setText(dictionnaire.getMenuItemAjouter().get());
+		addButton.textProperty().bind(dictionnaire.getText("menuItemAjouter"));
 		
 		serverInput.setItems(
 			FXCollections.observableList(serverManager.getServers().stream().map(Serveur::getLabel).toList())
 		);
+		serverInput.setValue(serverManager.getServerById(ps.get("default_server")).getLabel());
 		
 		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::addJoueur);
 		
@@ -222,12 +225,14 @@ public class MainController implements Initializable {
 		if(nom.isEmpty() || pseudo.isEmpty() || serverName == null)
 			return;
 				
-		final var serverMatches = serverManager.getServers().stream().filter(server -> server.getLabel().equals(serverName)).toList();
+		final var serverId = serverManager.getServers()
+								.stream()
+								.filter(server -> server.getLabel().equals(serverName))
+								.findFirst()
+								.orElse(null);
 		
-		if(serverMatches.size() == 0)
+		if(serverId == null)
 			return;
-				
-		final var serverId = serverMatches.get(0);
 		
 		Thread t = new Thread(new AddEvent(joueursContainer, nom, pseudo, serverId));
 		t.setDaemon(true);
