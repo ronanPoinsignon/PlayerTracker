@@ -8,11 +8,11 @@ public class SauvegardeCorrompueException extends AException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getSauvegardeCorrompueExceptionDescription().getValue();
+		return dictionnaire.getText("sauvegardeCorrompueExceptionDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getSauvegardeCorrompueExceptionMessage().getValue();
+		return dictionnaire.getText("sauvegardeCorrompueExceptionMessage").getValue();
 	}
 }

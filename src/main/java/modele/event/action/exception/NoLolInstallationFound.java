@@ -8,12 +8,12 @@ public class NoLolInstallationFound extends AException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getNoLolInstallationFoundDescription().getValue();
+		return dictionnaire.getText("noLolInstallationFoundDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getNoLolInstallationFoundMessage().getValue();
+		return dictionnaire.getText("noLolInstallationFoundMessage").getValue();
 	}
 
 }

@@ -62,7 +62,7 @@ public class FileManager implements IService {
 		final var classLoader = this.getClass().getClassLoader();
 		final var inputStream = classLoader.getResourceAsStream(fileName);
 		if (inputStream == null) {
-			throw new IllegalArgumentException(dictionnaire.getGetInputStreamFromResourceFileNotFound().getValue() + " : " + fileName);
+			throw new IllegalArgumentException(dictionnaire.getText("getInputStreamFromResourceFileNotFound").getValue() + " : " + fileName);
 		} else {
 			return inputStream;
 		}

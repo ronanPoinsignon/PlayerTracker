@@ -8,12 +8,12 @@ public class RegarderProcessException extends AException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getRegarderProcessExceptionDescription().getValue();
+		return dictionnaire.getText("regarderProcessExceptionDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getRegarderProcessExceptionMessage().getValue();
+		return dictionnaire.getText("regarderProcessExceptionMessage").getValue();
 	}
 
 }

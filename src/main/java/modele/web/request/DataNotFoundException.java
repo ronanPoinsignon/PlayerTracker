@@ -8,11 +8,11 @@ public class DataNotFoundException extends ARuntimeException {
 
 	@Override
 	public String getDescription() {
-		return dictionnaire.getDataNotFoundExceptionDescription().getValue();
+		return dictionnaire.getText("dataNotFoundExceptionDescription").getValue();
 	}
 
 	@Override
 	public String getMessageError() {
-		return dictionnaire.getDataNotFoundExceptionMessage().getValue();
+		return dictionnaire.getText("dataNotFoundExceptionMessage").getValue();
 	}
 }
