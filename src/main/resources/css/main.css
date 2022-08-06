@@ -5,6 +5,12 @@
 	font-family: "Verdana";
 }
 
+.button {
+	-fx-background-color: -fx-main-color;
+	-fx-border-color: -fx-main-color;
+	-fx-text-fill: #FFF;
+}
+
 #anchor {
 	-fx-background-color: #01579b;
 	background-color: #01579b;
