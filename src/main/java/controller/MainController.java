@@ -196,9 +196,9 @@ public class MainController implements Initializable {
 		// Chargement
 		
 		final var loadTask = loadService.asyncLoad();
-		loadTask.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, task -> {
-			final var joueurs = loadService.load();
-			
+		loadTask.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, workerStateEvent -> {
+			final var joueurs = loadTask.getValue();
+						
 			joueurs.stream()
 			.map(JoueurFx::new)
 			.map(joueur -> new CommandeAjout(joueursContainer, joueur))

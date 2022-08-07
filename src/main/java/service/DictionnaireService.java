@@ -19,7 +19,7 @@ public class DictionnaireService implements IService {
 
 	private File langue;
 
-	private Map<String, SimpleStringProperty> textProperties = new HashMap<>();
+	private final Map<String, SimpleStringProperty> textProperties = new HashMap<>();
 
 	public DictionnaireService() {
 
@@ -37,33 +37,34 @@ public class DictionnaireService implements IService {
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
-				
+
 		properties.forEach((k, v) -> {
 			final var key = (String) k;
 			final var value = (String) v;
-			
-			var property = textProperties.get(key);
-			
+
+			final var property = textProperties.get(key);
+
 			if(property == null) {
 				textProperties.put(key, new SimpleStringProperty(value));
 			}
 			else {
 				property.set(value);
-			}			
-				
+			}
+
 		});
 	}
 
 	public File getLangue() {
 		return langue;
 	}
-	
-	public StringProperty getText(String name) {
-		var property = textProperties.get(name.toLowerCase());
-		
-		if(property == null)
+
+	public StringProperty getText(final String name) {
+		final var property = textProperties.get(name.toLowerCase());
+
+		if(property == null) {
 			throw new RuntimeException();
-		
+		}
+
 		return property;
 	}
 
