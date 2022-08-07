@@ -1,7 +1,10 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
@@ -33,12 +36,14 @@ import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import modele.observer.ObservateurInterface;
+import service.AlertFxService;
 import service.DictionnaireService;
 import service.GestionnaireCommandeService;
 import service.InterfaceManager;
 import service.LoadService;
 import service.ServerManager;
 import service.ServiceManager;
+import service.exception.SauvegardeCorrompueException;
 
 public class ControllerPagePrincipale implements Initializable, ObservateurInterface {
 
@@ -83,11 +88,22 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
+	private final AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
 
-		final var joueurs = loadService.load();
+		List<Joueur> joueurs = null;
+		try {
+			joueurs = loadService.load();
+		} catch (final SauvegardeCorrompueException e) {
+			alerteService.alert(e);
+			joueurs = new ArrayList<>();
+		} catch (final IOException e) {
+			alerteService.alert(e);
+			return;
+		}
+
 		joueurs.stream().map(JoueurFx::new)
 		.map(joueur -> new CommandeAjout(table, joueur))
 		.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
