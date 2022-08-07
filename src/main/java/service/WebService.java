@@ -15,6 +15,7 @@ import modele.request.result.SummonerInGameResult;
 import modele.request.result.SummonersDataResult;
 import modele.request.result.SummonersInGameResult;
 import modele.web.request.ClientWeb;
+import modele.web.request.StringConverter;
 
 public class WebService implements IService {
 
@@ -29,6 +30,7 @@ public class WebService implements IService {
 	private static final String GET_SUMMONER_BY_NAMES = "/summoner/getByNames/";
 	private static final String GET_SUMMONER_GAMES = "/summoner/getGames/";
 
+	private final StringConverter converter = liste -> new Gson().toJsonTree(liste).getAsJsonArray().toString();
 	private String baseUrl;
 
 	public SummonerDataResult getSummonerByName(String name, final String serverName) {
@@ -47,19 +49,19 @@ public class WebService implements IService {
 	public SummonersDataResult getSummonerByNames(final List<String> names, final String serverName) {
 		final List<String> newNames = names.stream().map(name -> URLEncoder.encode(name, StandardCharsets.UTF_8).replaceAll("\\+", "%20")).collect(Collectors.toList());
 		final var nameMap = new HashMap<>();
-		nameMap.put("names", new Gson().toJsonTree(newNames).getAsJsonArray().toString());
+		nameMap.put("names", converter.convert(newNames));
 		return postValue(SummonersDataResult.class, baseUrl + WebService.API + serverName + WebService.GET_SUMMONER_BY_NAMES, nameMap);
 	}
 
 	public SummonersDataResult getSummonerBySummonerIds(final List<String> ids, final String serverName) {
 		final var idMap = new HashMap<>();
-		idMap.put("ids", new Gson().toJsonTree(ids).getAsJsonArray().toString());
+		idMap.put("ids", converter.convert(ids));
 		return postValue(SummonersDataResult.class, baseUrl + WebService.API + serverName + WebService.GET_SUMMONER_BY_IDS, idMap);
 	}
 
 	public SummonersInGameResult getSummonerGames(final List<String> ids, final String serverName) {
 		final var idMap = new HashMap<>();
-		idMap.put("ids", new Gson().toJsonTree(ids).getAsJsonArray().toString());
+		idMap.put("ids", converter.convert(ids));
 		return postValue(SummonersInGameResult.class, baseUrl + WebService.API + serverName + WebService.GET_SUMMONER_GAMES, idMap);
 	}
 
