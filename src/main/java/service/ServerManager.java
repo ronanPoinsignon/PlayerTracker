@@ -31,9 +31,9 @@ public class ServerManager implements IService {
 				.orElse(getServerById("euw1"));
 	}
 
-	public Serveur getServerById(final String name) {
+	public Serveur getServerById(final String id) {
 		return servers.stream()
-				.filter(server -> server.getServerId().equals(name))
+				.filter(server -> server.getServerId().equals(id))
 				.findFirst()
 				.orElse(null);
 	}

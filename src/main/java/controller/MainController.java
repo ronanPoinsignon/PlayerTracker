@@ -5,9 +5,9 @@ import java.util.ResourceBundle;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.TranslateTransition;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -126,6 +126,10 @@ public class MainController implements Initializable {
 			closeModal();
 			event.consume();
 		});
+		scrollpane.vbarPolicyProperty().bind(
+				Bindings.when(anchor.heightProperty().greaterThan(scrollpane.minHeightProperty()))
+				.then(ScrollBarPolicy.ALWAYS)
+				.otherwise(ScrollBarPolicy.NEVER));
 
 		// Transitions
 
@@ -139,24 +143,14 @@ public class MainController implements Initializable {
 		// Modal
 
 		modalAdd.setVisible(false);
-		modalAdd.widthProperty().addListener((obs, oldV, newV) -> {
-			openTransition.setByX(-newV.doubleValue());
-			closeTransition.setByX(newV.doubleValue());
-		});
-		modalAdd.setOnMousePressed(event -> {
-			event.consume();
-		});
+		openTransition.byXProperty().bind(modalAdd.widthProperty().multiply(-1));
+		closeTransition.byXProperty().bind(modalAdd.widthProperty());
+
+		modalAdd.setOnMousePressed(MouseEvent::consume);
 
 		//Scrollbar
 
 		anchor.getChildren().add(joueursContainer);
-		anchor.heightProperty().greaterThan(scrollpane.minHeightProperty()).addListener((obs, oldV, newV) -> {
-			if(newV.booleanValue()) {
-				scrollpane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-			} else {
-				scrollpane.setVbarPolicy(ScrollBarPolicy.NEVER);
-			}
-		});
 
 		anchor.prefHeightProperty().bind(joueursContainer.prefHeightProperty());
 
@@ -192,17 +186,17 @@ public class MainController implements Initializable {
 		addButton.setOnMousePressed(this::addJoueur);
 
 		// Chargement
-		
+
 		final var loadTask = loadService.asyncLoad();
-		loadTask.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, workerStateEvent -> {
+		loadTask.setOnSucceeded(workerStateEvent -> {
 			final var joueurs = loadTask.getValue();
-						
+
 			joueurs.stream()
 			.map(JoueurFx::new)
 			.map(joueur -> new CommandeAjout(joueursContainer, joueur))
 			.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
 			gestionnaireCommandeService.viderCommandes();
-			
+
 			mainContainer.getChildren().remove(loading);
 			joueursContainer.setVisible(true);
 		});
