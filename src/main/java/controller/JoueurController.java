@@ -42,20 +42,18 @@ public class JoueurController implements Initializable {
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
+		imageJoueur.imageProperty().bind(imageProperty);
+		statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
 
 		joueur.addListener((obs, oldV, newV) -> {
 			isConnecte.unbind();
 			imageStatut.imageProperty().unbind();
-			imageJoueur.imageProperty().unbind();
 			nom.textProperty().unbind();
-			statut.textProperty().unbind();
 
 			isConnecte.bind(newV.getIsConnecteProperty());
 			imageStatut.imageProperty().bind(newV.getImageConnexion());
-			imageJoueur.imageProperty().bind(imageProperty);
 
 			nom.textProperty().bind(Bindings.when(newV.getNomProperty().isNull().or(newV.getNomProperty().isEmpty())).then(newV.getPseudo()).otherwise(newV.getNom() + " (" + newV.getPseudo() + ")"));
-			statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
 		});
 
 		isConnecte.addListener((obs, oldV, newV) -> {
