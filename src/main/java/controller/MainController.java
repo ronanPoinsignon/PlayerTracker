@@ -93,6 +93,9 @@ public class MainController implements Initializable {
 
 	private final BooleanBinding isTransitionRunningProperty = openTransition.statusProperty().isEqualTo(Status.RUNNING).or(closeTransition.statusProperty().isEqualTo(Status.RUNNING));
 
+	private BooleanBinding openModalBinding;
+	private BooleanBinding closeModalBinding;
+
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	private final PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
@@ -100,14 +103,21 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
 
+		openModalBinding = isTransitionRunningProperty.or(modalAdd.visibleProperty());
+		closeModalBinding = isTransitionRunningProperty.or(modalAdd.visibleProperty().not());
+
 		joueursContainer = new PaneViewElement();
 		joueursContainer.setVisible(false);
 
+		addButton.disableProperty().bind(openModalBinding.not());
+
 		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
-		scrollpane.setOnMousePressed(event -> {
-			if(!MouseButton.PRIMARY.equals(event.getButton()) || !modalAdd.isVisible()) {
-				return;
+		scrollpane.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> {
+			if (!MouseButton.PRIMARY.equals(evt.getButton()) || closeModalBinding.getValue()) {
+				evt.consume();
 			}
+		});
+		scrollpane.setOnMousePressed(event -> {
 			closeModal();
 			event.consume();
 		});
@@ -171,7 +181,12 @@ public class MainController implements Initializable {
 			}
 		});
 
-		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::addJoueur);
+		addButton.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> {
+			if (!MouseButton.PRIMARY.equals(evt.getButton())) {
+				evt.consume();
+			}
+		});
+		addButton.setOnMousePressed(this::addJoueur);
 
 		// Chargement
 
@@ -212,17 +227,11 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void openModal() {
-		if(modalAdd.isVisible() || isTransitionRunningProperty.getValue()) {
-			return;
-		}
 		modalAdd.setVisible(true);
 		openTransition.play();
 	}
 
 	public void closeModal() {
-		if(!modalAdd.isVisible() || isTransitionRunningProperty.getValue()) {
-			return;
-		}
 		closeTransition.play();
 	}
 
