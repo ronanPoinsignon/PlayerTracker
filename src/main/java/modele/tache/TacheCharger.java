@@ -6,6 +6,7 @@ import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import modele.request.data.SummonerData;
+import modele.request.data.player.PlayerByName;
 import modele.web.request.DataNotFoundException;
 import service.GestionnaireCommandeService;
 import service.ServiceManager;
@@ -36,7 +37,7 @@ public class TacheCharger extends Tache<JoueurFx> {
 		final var joueur = new Joueur(nom, pseudo, serveur);
 		updateMessage("chargement de " + joueur.getAppellation());
 		try {
-			final var summoner = webService.getSummonerByName(joueur.getPseudo(), joueur.getServer().getServerId()).getData();
+			final var summoner = webService.getSummonerByName(new PlayerByName(joueur.getPseudo(), joueur.getServer().getServerId())).getData();
 			setInfo(joueur, summoner);
 		} catch (DataNotFoundException | UncheckedIOException e) {
 			updateMessage("");

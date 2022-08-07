@@ -6,6 +6,7 @@ import modele.joueur.Champion;
 import modele.joueur.Joueur;
 import modele.joueur.Partie;
 import modele.request.data.SummonerInGame;
+import modele.request.data.player.PlayerById;
 import service.ServiceManager;
 import service.WebService;
 
@@ -16,7 +17,7 @@ public abstract class RequestPlayerData implements Runnable {
 	public void request(final Joueur joueur) {
 		try {
 			try {
-				final var sumIG = webService.getSummonerGame(joueur.getPlayerId(), joueur.getServer().getServerId()).getData();
+				final var sumIG = webService.getSummonerGame(new PlayerById(joueur.getPlayerId(), joueur.getServer().getServerId())).getData();
 				setInfo(joueur, sumIG);
 			} catch (final RuntimeException e) {
 				final var cause = e.getCause();
