@@ -5,9 +5,9 @@ import java.util.ResourceBundle;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -27,10 +27,13 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import modele.affichage.PaneViewElement;
+import modele.commande.CommandeAjout;
 import modele.event.eventaction.AddEvent;
+import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
-import service.AlertFxService;
 import service.DictionnaireService;
+import service.GestionnaireCommandeService;
+import service.LoadService;
 import service.PropertiesService;
 import service.ServerManager;
 import service.ServiceManager;
@@ -96,6 +99,8 @@ public class MainController implements Initializable {
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	private final PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
+	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
+	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
@@ -174,40 +179,24 @@ public class MainController implements Initializable {
 		addButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::addJoueur);
 
 		// Chargement
-
-		//final String[] nom = {"Théo", "Test", "Théo", "Test", "Théo", "Test", "Théo", "Test", "Théo", "Test", "Théo", "Test"};
-		final String[] nom = {"Théo", "Test", "Théo"};
-		final var serveur = new Serveur("euw1","euw");
-		final String[] pseudo = {"paindemie14", "Guerinoob", "ronan3290", "TheYoloToto", "Makishimu M", "Pléxi", "sanchodecubah", "65 ms player", "deathkay", "Hazyl14", "Tregum", "LALPAGA MOE"};
-
-		final var th = new Thread(() -> {
-			final var size = nom.length;
-			final var threads = new Thread[size];
-			Thread t;
-
-			for(var i = 0; i < size; i++) {
-				t = new Thread(new AddEvent(joueursContainer, nom[i], pseudo[i], serveur));
-				t.setDaemon(true);
-				t.start();
-				threads[i] = t;
-			}
-
-			try {
-				for(final Thread thread : threads) {
-					thread.join();
-				}
-
-				Platform.runLater(() -> {
-					mainContainer.getChildren().remove(loading);
-					joueursContainer.setVisible(true);
-				});
-			}
-			catch(final InterruptedException e) {
-				ServiceManager.getInstance(AlertFxService.class).alert(e);
-			}
+		
+		final var loadTask = loadService.asyncLoad();
+		loadTask.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, task -> {
+			final var joueurs = loadService.load();
+			
+			joueurs.stream()
+			.map(JoueurFx::new)
+			.map(joueur -> new CommandeAjout(joueursContainer, joueur))
+			.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
+			gestionnaireCommandeService.viderCommandes();
+			
+			mainContainer.getChildren().remove(loading);
+			joueursContainer.setVisible(true);
 		});
-		th.setDaemon(true);
-		th.start();
+
+		final var thread = new Thread(loadTask);
+		thread.setDaemon(true);
+		thread.start();
 	}
 
 	@FXML

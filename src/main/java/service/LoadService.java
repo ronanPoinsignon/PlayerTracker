@@ -12,6 +12,7 @@ import java.util.List;
 
 import appli.exception.DataLoadingException;
 import modele.joueur.Joueur;
+import modele.tache.Tache;
 import service.exception.SauvegardeCorrompueException;
 
 public class LoadService implements IService {
@@ -51,6 +52,15 @@ public class LoadService implements IService {
 			alertService.alert(e);
 			return new ArrayList<>();
 		}
+	}
+	
+	public Tache<List<Joueur>> asyncLoad() {
+		return new Tache<List<Joueur>>() {
+			@Override
+			protected List<Joueur> call() throws Exception {
+				return LoadService.this.load();
+			}
+		};
 	}
 
 	@Override
