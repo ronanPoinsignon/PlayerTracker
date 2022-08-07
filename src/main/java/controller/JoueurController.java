@@ -3,11 +3,12 @@ package controller;
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.Base64;
-import java.util.Base64.Decoder;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -35,43 +36,51 @@ public class JoueurController implements Initializable {
 	@FXML
 	private ImageView imageStatut;
 
-	private SimpleObjectProperty<JoueurFx> joueur = new SimpleObjectProperty<>();
-	private BooleanProperty isConnecte = new SimpleBooleanProperty();
+	private final SimpleObjectProperty<JoueurFx> joueur = new SimpleObjectProperty<>();
+	private final BooleanProperty isConnecte = new SimpleBooleanProperty();
+	private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {		
-		joueur.addListener((obs, oldV, newV) -> {
-			nom.setText(newV.getNom() + " (" + newV.getPseudo() + ")");
+	public void initialize(final URL location, final ResourceBundle resources) {
 
+		joueur.addListener((obs, oldV, newV) -> {
+			isConnecte.unbind();
+			imageStatut.imageProperty().unbind();
+			imageJoueur.imageProperty().unbind();
+			nom.textProperty().unbind();
+			statut.textProperty().unbind();
+
+			isConnecte.bind(newV.getIsConnecteProperty());
 			imageStatut.imageProperty().bind(newV.getImageConnexion());
+			imageJoueur.imageProperty().bind(imageProperty);
+
+			nom.textProperty().bind(Bindings.when(newV.getNomProperty().isNull().or(newV.getNomProperty().isEmpty())).then(newV.getPseudo()).otherwise(newV.getNom() + " (" + newV.getPseudo() + ")"));
+			statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
 		});
 
 		isConnecte.addListener((obs, oldV, newV) -> {
+			if(joueur.getValue() == null) {
+				return;
+			}
+
 			Image tempImage = null;
-			
-			if(newV.booleanValue()) {
-				Decoder decoder = Base64.getDecoder();
-				byte[] imageBytes = decoder.decode(joueur.get().getPartie().getChampion().getBase64ChampionImage());
-				ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+
+			if(joueur.getValue().isInGame()) {
+				final var decoder = Base64.getDecoder();
+				final var imageBytes = decoder.decode(joueur.get().getPartie().getChampion().getBase64ChampionImage());
+				final var bis = new ByteArrayInputStream(imageBytes);
 				tempImage = new Image(bis);
 			}
-			
-			final Image image = tempImage;
-			
+
+			final var image = tempImage;
 			Platform.runLater(() ->	{
-				statut.setText(Boolean.TRUE.equals(newV) ? "En jeu" : "Déconnecté");
-				imageJoueur.setImage(newV.booleanValue() ? image : null);
+				imageProperty.setValue(joueur.getValue().isInGame() ? image : null);
 			});
 		});
 	}
 
-	public void setJoueur(JoueurFx joueur) {
+	public void setJoueur(final JoueurFx joueur) {
 		this.joueur.set(joueur);
-
-		isConnecte.unbind();
-		isConnecte.bind(joueur.getIsConnecteProperty());
-
-		Platform.runLater(() -> statut.setText(joueur.isInGame() ? "En jeu" : "Déconnecté"));
 	}
 
 }

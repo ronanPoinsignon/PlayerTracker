@@ -5,6 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -90,31 +91,31 @@ public class JoueurFx extends Joueur {
 	@Override
 	public void setNom(final String nom) {
 		super.setNom(nom);
-		nomProperty.set(nom);
+		Platform.runLater(() -> nomProperty.set(nom));
 	}
 
 	@Override
 	public void setPseudo(final String pseudo) {
 		super.setPseudo(pseudo);
-		pseudoProperty.set(pseudo);
+		Platform.runLater(() -> pseudoProperty.set(pseudo));
 	}
 
 	@Override
 	public void setPlayerId(final String playerId) {
 		super.setPlayerId(playerId);
-		idProperty.set(playerId);
+		Platform.runLater(() -> idProperty.set(playerId));
 	}
 
 	@Override
 	public void setInGame(final boolean connected) {
 		super.setInGame(connected);
-		isConnecteProperty.set(connected);
+		Platform.runLater(() -> isConnecteProperty.set(connected));
 	}
 
 	@Override
 	public void setServer(final Serveur server) {
 		super.setServer(server);
-		serverNameProperty.set(server != null ? server.getServerId() : "");
+		Platform.runLater(() -> serverNameProperty.set(server != null ? server.getServerId() : ""));
 	}
 
 	private void writeObject(final ObjectOutputStream out) throws IOException {
