@@ -158,7 +158,7 @@ public class MainController implements Initializable {
 			}
 		});
 
-		joueursContainer.heightProperty().addListener((obs, oldValue, newValue) -> {
+		joueursContainer.prefHeightProperty().addListener((obs, oldValue, newValue) -> {
 			anchor.setPrefHeight(newValue.doubleValue());
 		});
 
