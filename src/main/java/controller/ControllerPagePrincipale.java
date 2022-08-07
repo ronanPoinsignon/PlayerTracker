@@ -90,7 +90,6 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	private final AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
 

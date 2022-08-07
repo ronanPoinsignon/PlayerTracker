@@ -17,58 +17,59 @@ import service.FileManager;
 import service.ServiceManager;
 
 public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
-	
-	private ObservableList<JoueurFx> elements = FXCollections.observableArrayList(new ArrayList<>());
-	private FileManager fm = ServiceManager.getInstance(FileManager.class);
-	
+
+	private final ObservableList<JoueurFx> elements = FXCollections.observableArrayList(new ArrayList<>());
+	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
+
 	public PaneViewElement() {
-		this.setId("joueursContainer");
-		
-		elements.addListener((ListChangeListener.Change<? extends JoueurFx> change) -> {
+		setId("joueursContainer");
+
+		elements.addListener((final ListChangeListener.Change<? extends JoueurFx> change) -> {
 			change.next();
-			
-			if(change.wasAdded()) {
-				var template = fm.getFileFromResources("fxml/joueur.fxml");
-				
-				for(JoueurFx joueur : change.getAddedSubList()) {
-					FXMLLoader loader;
-					
-					try {
-						loader = new FXMLLoader(template.toURI().toURL());
-						Pane paneJoueur = loader.load();
-						
-						JoueurController controller = loader.getController();
-						
-						controller.setJoueur(joueur);
-						
-						int[] position = calculateNextPosition();
-						
-						this.getChildren().add(paneJoueur);
-												
-						paneJoueur.setTranslateX(position[0]);
-						paneJoueur.setTranslateY(position[1]);
-						
-						this.setPrefHeight(position[1] + 240);
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					}
-					
+
+			if(!change.wasAdded()) {
+				return;
+			}
+
+			final var template = fm.getFileFromResources("fxml/joueur.fxml");
+
+			for(final JoueurFx joueur : change.getAddedSubList()) {
+				FXMLLoader loader;
+				Pane paneJoueur;
+				final JoueurController controller;
+
+				try {
+					loader = new FXMLLoader(template.toURI().toURL());
+					paneJoueur = loader.load();
+				} catch (final IOException e) {
+					throw new RuntimeException(e);
 				}
-				
+
+				controller = loader.getController();
+				controller.setJoueur(joueur);
+
+				final var position = calculateNextPosition();
+
+				getChildren().add(paneJoueur);
+
+				paneJoueur.setTranslateX(position[0]);
+				paneJoueur.setTranslateY(position[1]);
+
+				setPrefHeight(position[1] + 240);
 			}
 		});
-		
+
 	}
-	
+
 	public int[] calculateNextPosition() {
-		int size = elements.size() - 1;
-		
-		int rowPosition = size % 3;
-		int rowNumber = size / 3;
-		
-		int x = rowPosition * (300 + 40);
-		int y= rowNumber * 200;
-		
+		final var size = elements.size() - 1;
+
+		final var rowPosition = size % 3;
+		final var rowNumber = size / 3;
+
+		final var x = rowPosition * (300 + 40);
+		final var y= rowNumber * 200;
+
 		return new int[] {x, y};
 	}
 
