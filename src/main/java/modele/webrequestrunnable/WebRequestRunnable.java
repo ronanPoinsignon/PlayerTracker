@@ -5,16 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import modele.joueur.Joueur;
 import modele.request.data.SummonerInGame;
 import modele.request.data.player.PlayerById;
+import modele.request.data.player.PlayerRequest;
 
 public class WebRequestRunnable extends RequestPlayerData {
 
 	private List<Joueur> joueurs = new ArrayList<>();
-	private FilterRequest filter;
+	private Predicate<List<? extends PlayerRequest>> filter;
 
 	public WebRequestRunnable() {
 
@@ -34,7 +36,7 @@ public class WebRequestRunnable extends RequestPlayerData {
 
 		// Une liste vide à donner au webService entraine une erreur dans JsonBodyHandler#toSupplierOfType
 		// Le mapper prendra alors la map vide pour une liste et n'arrivera pas à faire la conversion
-		if(filter.accept(data)) {
+		if(filter.test(data)) {
 			return map;
 		}
 
@@ -52,7 +54,7 @@ public class WebRequestRunnable extends RequestPlayerData {
 		return map;
 	}
 
-	public void setFilter(final FilterRequest filter) {
+	public void setFilter(final Predicate<List<? extends PlayerRequest>> filter) {
 		this.filter = filter;
 	}
 
