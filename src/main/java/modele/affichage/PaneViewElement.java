@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.JoueurController;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -20,6 +22,9 @@ public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
 
 	private final ObservableList<JoueurFx> elements = FXCollections.observableArrayList(new ArrayList<>());
 	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
+
+	private int index;
+	private final ObjectProperty<JoueurFx> joueurProperty = new SimpleObjectProperty<>();
 
 	public PaneViewElement() {
 		setId("joueursContainer");
@@ -56,6 +61,11 @@ public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
 				paneJoueur.setTranslateY(position[1]);
 
 				setPrefHeight(position[1] + 240);
+
+				paneJoueur.setOnMouseClicked(evt -> {
+					joueurProperty.set(joueur);
+					index = getChildren().indexOf(paneJoueur);
+				});
 			}
 		});
 
@@ -75,14 +85,12 @@ public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
 
 	@Override
 	public ReadOnlyObjectProperty<JoueurFx> selectedItemProperty() {
-		// TODO Auto-generated method stub
-		return null;
+		return joueurProperty;
 	}
 
 	@Override
 	public int getSelectedIndex() {
-		// TODO Auto-generated method stub
-		return 0;
+		return index;
 	}
 
 	@Override
