@@ -225,12 +225,16 @@ public class MainController implements Initializable {
 	}
 
 	public void addJoueur(final MouseEvent event) {
-		final var nom = nameInput.getText();
+		var nom = nameInput.getText();
 		final var pseudo = pseudoInput.getText();
 		final var server = serverInput.getValue();
 
-		if(nom.isEmpty() || pseudo.isEmpty() || server == null) {
+		if(pseudo.isEmpty() || server == null) {
 			return;
+		}
+		
+		if(nom.isEmpty()) {
+			nom = pseudo;
 		}
 
 		final var t = new Thread(new AddEvent(joueursContainer, nom, pseudo, server));
