@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import modele.joueur.Joueur;
 import modele.webrequestrunnable.WebRequestOnePlayerRunnable;
 import modele.webrequestrunnable.WebRequestRunnable;
+import modele.webrequestrunnable.builder.WebRequestBuilder;
 
 public class WebRequestScheduler implements IService {
 
@@ -15,7 +16,7 @@ public class WebRequestScheduler implements IService {
 
 	public WebRequestScheduler() {
 		scheduler = Executors.newScheduledThreadPool(1);
-		runnable = new WebRequestRunnable();
+		runnable = WebRequestBuilder.withPlayerList().build();
 		scheduler.scheduleWithFixedDelay(runnable, 0, 1, TimeUnit.MINUTES);
 	}
 

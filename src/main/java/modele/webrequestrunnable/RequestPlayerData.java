@@ -1,24 +1,43 @@
 package modele.webrequestrunnable;
 
 import java.net.ConnectException;
+import java.util.Map;
 
 import modele.joueur.Champion;
 import modele.joueur.Joueur;
 import modele.joueur.Partie;
 import modele.request.data.SummonerInGame;
-import modele.request.data.player.PlayerById;
 import service.ServiceManager;
 import service.WebService;
 
 public abstract class RequestPlayerData implements Runnable {
 
-	private final WebService webService = ServiceManager.getInstance(WebService.class);
+	protected final WebService webService = ServiceManager.getInstance(WebService.class);
 
-	public void request(final Joueur joueur) {
+	protected RequestPlayerData() {
+
+	}
+
+	public abstract Map<Joueur, SummonerInGame> request();
+
+	protected void setInfo(final Joueur joueur, final SummonerInGame summoner) {
+		if(joueur == null || summoner == null) {
+			return;
+		}
+		joueur.setPseudo(summoner.getSummoner_name());
+		if(summoner.isIn_game()) {
+			joueur.setPartie(new Partie(summoner.getGame_id(), summoner.getEncryption_key(), new Champion(summoner.getChampion_name(), summoner.getChampion_image())));
+		}
+		// à faire en dernier pour ne déclencher le service de notification uniquement lorsque
+		// toutes les informations du joueurs ont été mises à jour
+		joueur.setInGame(summoner.isIn_game());
+	}
+
+	@Override
+	public void run() {
 		try {
 			try {
-				final var sumIG = webService.getSummonerGame(new PlayerById(joueur.getPlayerId(), joueur.getServer().getServerId())).getData();
-				setInfo(joueur, sumIG);
+				request().forEach(this::setInfo);
 			} catch (final RuntimeException e) {
 				final var cause = e.getCause();
 				if(cause != null) {
@@ -33,19 +52,6 @@ public abstract class RequestPlayerData implements Runnable {
 		} catch(final Throwable e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private void setInfo(final Joueur joueur, final SummonerInGame summoner) {
-		if(joueur == null || summoner == null) {
-			return;
-		}
-		joueur.setPseudo(summoner.getSummoner_name());
-		if(summoner.isIn_game()) {
-			joueur.setPartie(new Partie(summoner.getGame_id(), summoner.getEncryption_key(), new Champion(summoner.getChampion_name(), summoner.getChampion_image())));
-		}
-		// à faire en dernier pour ne déclencher le service de notification uniquement lorsque
-		// toutes les informations du joueurs ont été mises à jour
-		joueur.setInGame(summoner.isIn_game());
 	}
 
 }
