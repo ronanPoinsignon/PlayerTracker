@@ -11,6 +11,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -19,14 +20,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import modele.joueur.JoueurFx;
 
-public class JoueurController implements Initializable {
+public class JoueurController extends ElementController<JoueurFx> implements Initializable {
 
 	@FXML
 	private Pane pane;
 
 	@FXML
 	private Label nom;
-	
+
 	@FXML
 	private Label pseudo;
 
@@ -39,7 +40,6 @@ public class JoueurController implements Initializable {
 	@FXML
 	private ImageView imageStatut;
 
-	private final SimpleObjectProperty<JoueurFx> joueur = new SimpleObjectProperty<>();
 	private final BooleanProperty isConnecte = new SimpleBooleanProperty();
 	private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
 
@@ -47,11 +47,34 @@ public class JoueurController implements Initializable {
 	public void initialize(final URL location, final ResourceBundle resources) {
 		imageJoueur.imageProperty().bind(imageProperty);
 		statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
-		
+
 		nom.setMaxWidth(pane.getPrefWidth() - nom.getLayoutX() - 40);
 		pseudo.setMaxWidth(pane.getPrefWidth() - pseudo.getLayoutX() - 40);
 
-		joueur.addListener((obs, oldV, newV) -> {
+		isConnecte.addListener((obs, oldV, newV) -> {
+			if(element.getValue() == null) {
+				return;
+			}
+
+			Image tempImage = null;
+
+			if(element.getValue().isInGame()) {
+				final var decoder = Base64.getDecoder();
+				final var imageBytes = decoder.decode(element.get().getPartie().getChampion().getBase64ChampionImage());
+				final var bis = new ByteArrayInputStream(imageBytes);
+				tempImage = new Image(bis);
+			}
+
+			final var image = tempImage;
+			Platform.runLater(() ->	{
+				imageProperty.setValue(element.getValue().isInGame() ? image : null);
+			});
+		});
+	}
+
+	@Override
+	public ChangeListener<JoueurFx> getOnChangeListenerEvent() {
+		return (obs, oldV, newV) -> {
 			isConnecte.unbind();
 			imageStatut.imageProperty().unbind();
 			nom.textProperty().unbind();
@@ -61,31 +84,8 @@ public class JoueurController implements Initializable {
 
 			nom.textProperty().bind(newV.getNomProperty());
 			pseudo.textProperty().bind(newV.getPseudoProperty());
-		});
-
-		isConnecte.addListener((obs, oldV, newV) -> {
-			if(joueur.getValue() == null) {
-				return;
-			}
-
-			Image tempImage = null;
-
-			if(joueur.getValue().isInGame()) {
-				final var decoder = Base64.getDecoder();
-				final var imageBytes = decoder.decode(joueur.get().getPartie().getChampion().getBase64ChampionImage());
-				final var bis = new ByteArrayInputStream(imageBytes);
-				tempImage = new Image(bis);
-			}
-
-			final var image = tempImage;
-			Platform.runLater(() ->	{
-				imageProperty.setValue(joueur.getValue().isInGame() ? image : null);
-			});
-		});
-	}
-
-	public void setJoueur(final JoueurFx joueur) {
-		this.joueur.set(joueur);
+			System.out.println("oui");
+		};
 	}
 
 }

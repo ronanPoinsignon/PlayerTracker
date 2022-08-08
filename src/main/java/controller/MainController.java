@@ -26,7 +26,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-import modele.affichage.PaneViewElement;
+import modele.affichage.PaneViewJoueurFx;
 import modele.commande.CommandeAjout;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.JoueurFx;
@@ -51,7 +51,7 @@ public class MainController implements Initializable {
 	@FXML
 	private ScrollPane scrollpane;
 
-	private PaneViewElement joueursContainer;
+	private PaneViewJoueurFx joueursContainer;
 
 	@FXML
 	private Circle open_modal;
@@ -104,7 +104,7 @@ public class MainController implements Initializable {
 	private final PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
 	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
-	
+
 	private final static double SCROLL_SPEED = 10;
 
 	@Override
@@ -113,11 +113,11 @@ public class MainController implements Initializable {
 		openModalBinding = isTransitionRunningProperty.or(modalAdd.visibleProperty());
 		closeModalBinding = isTransitionRunningProperty.or(modalAdd.visibleProperty().not());
 
-		joueursContainer = new PaneViewElement();
+		joueursContainer = new PaneViewJoueurFx();
 		joueursContainer.setVisible(false);
 
 		addButton.disableProperty().bind(openModalBinding.not());
-		
+
 		//Scrollbar
 
 		anchor.getChildren().add(joueursContainer);
@@ -138,11 +138,11 @@ public class MainController implements Initializable {
 				Bindings.when(anchor.heightProperty().greaterThan(scrollpane.minHeightProperty()))
 				.then(ScrollBarPolicy.ALWAYS)
 				.otherwise(ScrollBarPolicy.NEVER));
-		
+
 		scrollpane.getContent().setOnScroll(event -> {
-			final var delta = event.getDeltaY() * SCROLL_SPEED;
+			final var delta = event.getDeltaY() * MainController.SCROLL_SPEED;
 			final var height = scrollpane.getContent().getBoundsInLocal().getHeight();
-			scrollpane.setVvalue(scrollpane.getVvalue() - (delta / height));
+			scrollpane.setVvalue(scrollpane.getVvalue() - delta / height);
 		});
 
 		// Transitions
@@ -232,7 +232,7 @@ public class MainController implements Initializable {
 		if(pseudo.isEmpty() || server == null) {
 			return;
 		}
-		
+
 		if(nom.isEmpty()) {
 			nom = pseudo;
 		}

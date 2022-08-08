@@ -1,74 +1,88 @@
 package modele.affichage;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import controller.JoueurController;
+import controller.ElementController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
+import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import modele.joueur.JoueurFx;
+import modele.affichage.sort.SortedInsert;
 import service.FileManager;
 import service.ServiceManager;
 
-public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
+public abstract class PaneViewElement<T> extends GridPane implements ViewElement<T> {
 
-	private final ObservableList<JoueurFx> elements = FXCollections.observableArrayList(new ArrayList<>());
-	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
+	protected final FileManager fm = ServiceManager.getInstance(FileManager.class);
 
 	private int index;
-	private final ObjectProperty<JoueurFx> joueurProperty = new SimpleObjectProperty<>();
+	private final Map<Pane, T> paneMap = new HashMap<>();
+	private final SortedInsert<Node> sort = new SortedInsert<>();
+	private final ObjectProperty<T> elementProperty = new SimpleObjectProperty<>();
+	private final ObservableList<T> elements = FXCollections.observableArrayList(new ArrayList<>());
 
 	public PaneViewElement() {
-		setId("joueursContainer");
+		elements.addListener(this::setOnChangeEvent);
+	}
 
-		elements.addListener((final ListChangeListener.Change<? extends JoueurFx> change) -> {
-			change.next();
+	public abstract FXMLLoader createLoader() throws MalformedURLException;
 
-			if(!change.wasAdded()) {
-				return;
+
+	private void setOnChangeEvent(final Change<? extends T> change) {
+		change.next();
+
+		if(!change.wasAdded()) {
+			return;
+		}
+
+		for(final T element : change.getAddedSubList()) {
+
+			final Pane paneElement;
+			final FXMLLoader loader;
+			final ElementController<T> controller;
+
+			try {
+				loader = createLoader();
+				paneElement = loader.load();
+			} catch (final IOException e) {
+				throw new RuntimeException(e);
 			}
 
-			final var template = fm.getFileFromResources("fxml/joueur.fxml");
+			controller = loader.getController();
+			controller.setElement(element);
 
-			for(final JoueurFx joueur : change.getAddedSubList()) {
-				FXMLLoader loader;
-				Pane paneJoueur;
-				final JoueurController controller;
+			final var position = calculateNextPosition();
 
-				try {
-					loader = new FXMLLoader(template.toURI().toURL());
-					paneJoueur = loader.load();
-				} catch (final IOException e) {
-					throw new RuntimeException(e);
-				}
+			paneMap.put(paneElement, element);
+			insertValueBasedOnSort(paneElement);
 
-				controller = loader.getController();
-				controller.setJoueur(joueur);
+			paneElement.setTranslateX(position[0]);
+			paneElement.setTranslateY(position[1]);
 
-				final var position = calculateNextPosition();
+			setPrefHeight(position[1] + 240);
 
-				getChildren().add(paneJoueur);
+			paneElement.setOnMouseClicked(evt -> {
+				elementProperty.set(element);
+				index = getChildren().indexOf(paneElement);
+			});
+		}
+	}
 
-				paneJoueur.setTranslateX(position[0]);
-				paneJoueur.setTranslateY(position[1]);
-
-				setPrefHeight(position[1] + 240);
-
-				paneJoueur.setOnMouseClicked(evt -> {
-					joueurProperty.set(joueur);
-					index = getChildren().indexOf(paneJoueur);
-				});
-			}
-		});
-
+	private void insertValueBasedOnSort(final Pane paneElement) {
+		final var index = sort.getIndexInsertFromSort(getChildren(), paneElement);
+		getChildren().add(index, paneElement);
 	}
 
 	public int[] calculateNextPosition() {
@@ -84,8 +98,8 @@ public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
 	}
 
 	@Override
-	public ReadOnlyObjectProperty<JoueurFx> selectedItemProperty() {
-		return joueurProperty;
+	public ReadOnlyObjectProperty<T> selectedItemProperty() {
+		return elementProperty;
 	}
 
 	@Override
@@ -94,8 +108,25 @@ public class PaneViewElement extends GridPane implements ViewElement<JoueurFx> {
 	}
 
 	@Override
-	public List<JoueurFx> getItems() {
+	public List<T> getItems() {
 		return elements;
+	}
+
+	public void setSort(final Comparator<Node> sort) {
+		this.sort.setComparator(sort);
+		updateSort();
+	}
+
+	public void updateSort() {
+		if(sort == null) {
+			return;
+		}
+		getChildren().clear();
+		paneMap.keySet().stream().forEach(this::insertValueBasedOnSort);
+	}
+
+	public Map<Pane, T> getPaneMap() {
+		return paneMap;
 	}
 
 }
