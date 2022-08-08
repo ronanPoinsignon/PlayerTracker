@@ -26,6 +26,9 @@ public class JoueurController implements Initializable {
 
 	@FXML
 	private Label nom;
+	
+	@FXML
+	private Label pseudo;
 
 	@FXML
 	private ImageView imageJoueur;
@@ -44,6 +47,9 @@ public class JoueurController implements Initializable {
 	public void initialize(final URL location, final ResourceBundle resources) {
 		imageJoueur.imageProperty().bind(imageProperty);
 		statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
+		
+		nom.setMaxWidth(pane.getPrefWidth() - nom.getLayoutX() - 40);
+		pseudo.setMaxWidth(pane.getPrefWidth() - pseudo.getLayoutX() - 40);
 
 		joueur.addListener((obs, oldV, newV) -> {
 			isConnecte.unbind();
@@ -53,7 +59,8 @@ public class JoueurController implements Initializable {
 			isConnecte.bind(newV.getIsConnecteProperty());
 			imageStatut.imageProperty().bind(newV.getImageConnexion());
 
-			nom.textProperty().bind(Bindings.when(newV.getNomProperty().isNull().or(newV.getNomProperty().isEmpty())).then(newV.getPseudo()).otherwise(newV.getNom() + " (" + newV.getPseudo() + ")"));
+			nom.textProperty().bind(newV.getNomProperty());
+			pseudo.textProperty().bind(newV.getPseudoProperty());
 		});
 
 		isConnecte.addListener((obs, oldV, newV) -> {

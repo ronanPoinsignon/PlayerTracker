@@ -2,7 +2,6 @@
 	-fx-main-color: #efb30e;
 	-fx-secondary-color: #00b0ff;
 	-fx-font-family: "Verdana";
-	font-family: "Verdana";
 }
 
 .button {
@@ -13,11 +12,9 @@
 
 #anchor {
 	-fx-background-color: #01579b;
-	background-color: #01579b;
 }
 
 #joueursContainer {
-	padding: 40px;
 	-fx-padding: 40px;
 }
 
@@ -31,7 +28,6 @@
 
 #open_modal:hover {
 	-fx-cursor: hand;
-	cursor: hand;
 }
 
 #text_circle {
@@ -40,7 +36,6 @@
 
 .float-button {
 	-fx-fill: -fx-main-color;
-	fill: -fx-main-color;
 }
 
 #modalAdd {
@@ -53,30 +48,29 @@
 	-fx-background-color: -fx-secondary-color;
 	background-color: -fx-secondary-color;
 	-fx-border-color: -fx-secondary-color;
-	border-color: -fx-secondary-color;
 	-fx-border-width: 1px;
-	border-width: 1px;
 	-fx-border-radius: 8px;
-	border-radius: 8px;
 	-fx-background-radius: 8px;
 	-fx-font-size: 16px;
-	font-size: 16px;
 }
 
 .joueur-card .options .options-circle {
 	-fx-fill: #fff;
-	fill: #fff;
 }
 
 .joueur-card .options:hover {
 	-fx-cursor: hand;
-	cursor: hand;
 }
 
 .joueur-card #nom {
 	-fx-text-fill: #FFF;
-	-fx-font-size: 20px;
-	font-size: 20px;
+	-fx-font-weight: 700;
+	-fx-font-size: 16px;
+}
+
+.joueur-card #pseudo {
+	-fx-text-fill: #FFF;
+	-fx-font-size: 14px;
 }
 
 .joueur-card #statut {
