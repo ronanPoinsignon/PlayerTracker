@@ -104,6 +104,8 @@ public class MainController implements Initializable {
 	private final PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
 	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
+	
+	private final static double SCROLL_SPEED = 10;
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
@@ -115,6 +117,12 @@ public class MainController implements Initializable {
 		joueursContainer.setVisible(false);
 
 		addButton.disableProperty().bind(openModalBinding.not());
+		
+		//Scrollbar
+
+		anchor.getChildren().add(joueursContainer);
+
+		anchor.prefHeightProperty().bind(joueursContainer.prefHeightProperty());
 
 		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scrollpane.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> {
@@ -130,6 +138,12 @@ public class MainController implements Initializable {
 				Bindings.when(anchor.heightProperty().greaterThan(scrollpane.minHeightProperty()))
 				.then(ScrollBarPolicy.ALWAYS)
 				.otherwise(ScrollBarPolicy.NEVER));
+		
+		scrollpane.getContent().setOnScroll(event -> {
+			final var delta = event.getDeltaY() * SCROLL_SPEED;
+			final var height = scrollpane.getContent().getBoundsInLocal().getHeight();
+			scrollpane.setVvalue(scrollpane.getVvalue() - (delta / height));
+		});
 
 		// Transitions
 
@@ -147,12 +161,6 @@ public class MainController implements Initializable {
 		closeTransition.byXProperty().bind(modalAdd.widthProperty());
 
 		modalAdd.setOnMousePressed(MouseEvent::consume);
-
-		//Scrollbar
-
-		anchor.getChildren().add(joueursContainer);
-
-		anchor.prefHeightProperty().bind(joueursContainer.prefHeightProperty());
 
 		// Formulaire d'ajout
 
