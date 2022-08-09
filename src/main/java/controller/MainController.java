@@ -8,6 +8,7 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -191,7 +192,7 @@ public class MainController implements Initializable {
 				evt.consume();
 			}
 		});
-		addButton.setOnMousePressed(this::addJoueur);
+		addButton.setOnAction(this::addJoueur);
 
 		// Chargement
 
@@ -224,7 +225,7 @@ public class MainController implements Initializable {
 		closeTransition.play();
 	}
 
-	public void addJoueur(final MouseEvent event) {
+	public void addJoueur(final ActionEvent event) {
 		var nom = nameInput.getText();
 		final var pseudo = pseudoInput.getText();
 		final var server = serverInput.getValue();

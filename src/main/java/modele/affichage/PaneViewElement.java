@@ -1,6 +1,5 @@
 package modele.affichage;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,10 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import controller.ElementController;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
@@ -26,6 +21,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import modele.affichage.sort.SortedInsert;
+import modele.affichage.strategie.IStrategiePaneViewElement;
+import modele.affichage.strategie.StrategieAjout;
+import modele.affichage.strategie.StrategieSuppression;
 import service.FileManager;
 import service.ServiceManager;
 
@@ -36,7 +34,6 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	private int index;
 	private final Map<Pane, T> paneMap = new HashMap<>();
 	private final SortedInsert<Node> sort = new SortedInsert<>();
-	private final ObjectProperty<T> elementProperty = new SimpleObjectProperty<>();
 	private final ObservableList<T> elements = FXCollections.observableArrayList(new ArrayList<>());
 	private final List<Pane> sortedPane = new ArrayList<>();
 	
@@ -65,38 +62,24 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 
 	private void setOnChangeEvent(final Change<? extends T> change) {
 		change.next();
-
-		if(!change.wasAdded()) {
-			return;
+		
+		IStrategiePaneViewElement<T> strategie;
+		
+		if(change.wasAdded()) {
+			strategie = new StrategieAjout<T>(this);
+			
+			change.getAddedSubList().stream().forEach(strategie::execute);
 		}
 
-		for(final T element : change.getAddedSubList()) {
+		if(change.wasRemoved()) {
+			strategie = new StrategieSuppression<T>(this);
 
-			final Pane paneElement;
-			final FXMLLoader loader;
-			final ElementController<T> controller;
-
-			try {
-				loader = createLoader();
-				paneElement = loader.load();
-			} catch (final IOException e) {
-				throw new RuntimeException(e);
-			}
-
-			controller = loader.getController();
-			controller.setElement(element);
-
-			paneMap.put(paneElement, element);
-			insertValueBasedOnSort(paneElement);
-
-			paneElement.setOnMouseClicked(evt -> {
-				elementProperty.set(element);
-				index = getChildren().indexOf(paneElement);
-			});
+			change.getRemoved().stream().forEach(strategie::execute);
 		}
+		
 	}
 
-	private void insertValueBasedOnSort(final Pane paneElement) {
+	public void insertValueBasedOnSort(final Pane paneElement) {
 		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(pane -> (Node) pane).collect(Collectors.toList()), paneElement);
 
 		final var oldChild = (Pane) setChild(paneElement, index);
@@ -138,11 +121,6 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	}
 
 	@Override
-	public ReadOnlyObjectProperty<T> selectedItemProperty() {
-		return elementProperty;
-	}
-
-	@Override
 	public int getSelectedIndex() {
 		return index;
 	}
@@ -150,6 +128,10 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	@Override
 	public List<T> getItems() {
 		return elements;
+	}
+	
+	public void selectItem(final Pane pane) {
+		index = elements.indexOf(paneMap.get(pane));
 	}
 
 	public void setSort(final Comparator<Node> sort) {
@@ -167,6 +149,10 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 
 	public Map<Pane, T> getPaneMap() {
 		return paneMap;
+	}
+	
+	public List<Pane> getSortedPane() {
+		return sortedPane;
 	}
 
 }
