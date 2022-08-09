@@ -39,7 +39,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	private final ObjectProperty<T> elementProperty = new SimpleObjectProperty<>();
 	private final ObservableList<T> elements = FXCollections.observableArrayList(new ArrayList<>());
 	private final List<Pane> sortedPane = new ArrayList<>();
-	
+
 	protected static final int WIDTH = 300;
 	protected static final int HEIGHT = 200;
 	protected static final int WIDTH_PADDING = 40;
@@ -50,7 +50,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 		elements.addListener(this::setOnChangeEvent);
 		getChildren().addListener((ListChangeListener<? super Node>) change -> {
 			change.next();
-			
+
 			if(change.wasAdded()) {
 				sortedPane.addAll(change.getAddedSubList().stream().map(element -> (Pane) element).collect(Collectors.toList()));
 			}
@@ -100,40 +100,42 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(pane -> (Node) pane).collect(Collectors.toList()), paneElement);
 
 		final var oldChild = (Pane) setChild(paneElement, index);
-		
+
 		sortedPane.sort(sort.getComparator());
-		
-		if(oldChild == null || oldChild == paneElement)
+
+		if(oldChild == null || oldChild == paneElement) {
 			return;
-		
+		}
+
 		insertValueBasedOnSort(oldChild);
 	}
-	
-	public Node setChild(final Pane paneElement, int index) {	
-		final var column = index % ELEMENTS_PER_ROW;
-		final var row = index / ELEMENTS_PER_ROW;
-		
+
+	public Node setChild(final Pane paneElement, final int index) {
+		final var column = index % PaneViewElement.ELEMENTS_PER_ROW;
+		final var row = index / PaneViewElement.ELEMENTS_PER_ROW;
+
 		final var old = getChildren().stream()
-				.filter(child -> getColumnIndex(child) == column && getRowIndex(child) == row)
+				.filter(child -> GridPane.getColumnIndex(child) == column && GridPane.getRowIndex(child) == row)
 				.findFirst();
-		
+
 		if(old.isPresent()) {
 			getChildren().remove(old.get());
 		}
-				
+
 		add(paneElement, column, row);
-		
+
 		if(getRowConstraints().size() == row) {
-			getRowConstraints().add(new RowConstraints(0, HEIGHT + HEIGHT_PADDING, HEIGHT + HEIGHT_PADDING, null, VPos.CENTER, false));
+			getRowConstraints().add(new RowConstraints(0, PaneViewElement.HEIGHT + PaneViewElement.HEIGHT_PADDING, PaneViewElement.HEIGHT + PaneViewElement.HEIGHT_PADDING, null, VPos.CENTER, false));
 		}
-		
+
 		if(getColumnConstraints().size() == column) {
-			getColumnConstraints().add(new ColumnConstraints(0, WIDTH + WIDTH_PADDING, WIDTH + WIDTH_PADDING, null, HPos.LEFT, false));
+			getColumnConstraints().add(new ColumnConstraints(0, PaneViewElement.WIDTH + PaneViewElement.WIDTH_PADDING, PaneViewElement.WIDTH + PaneViewElement.WIDTH_PADDING, null, HPos.LEFT, false));
 		}
-		
-		if(old.isEmpty())
+
+		if(old.isEmpty()) {
 			return null;
-				
+		}
+
 		return old.get();
 	}
 
