@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import controller.ElementController;
 import javafx.beans.property.ObjectProperty;
@@ -51,13 +52,11 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 			change.next();
 			
 			if(change.wasAdded()) {
-				sortedPane.addAll(change.getAddedSubList().stream().map(element -> (Pane) element).toList());
+				sortedPane.addAll(change.getAddedSubList().stream().map(element -> (Pane) element).collect(Collectors.toList()));
 			}
 			else if(change.wasRemoved()) {
-				sortedPane.removeAll(change.getRemoved().stream().map(element -> (Pane) element).toList());
+				sortedPane.removeAll(change.getRemoved().stream().map(element -> (Pane) element).collect(Collectors.toList()));
 			}
-			
-			System.out.println(sortedPane.size());
 		});
 	}
 
@@ -98,7 +97,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	}
 
 	private void insertValueBasedOnSort(final Pane paneElement) {
-		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(pane -> (Node) pane).toList(), paneElement);
+		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(pane -> (Node) pane).collect(Collectors.toList()), paneElement);
 
 		final var oldChild = (Pane) setChild(paneElement, index);
 		
