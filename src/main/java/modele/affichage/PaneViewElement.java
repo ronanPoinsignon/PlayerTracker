@@ -32,6 +32,12 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	private final SortedInsert<Node> sort = new SortedInsert<>();
 	private final ObjectProperty<T> elementProperty = new SimpleObjectProperty<>();
 	private final ObservableList<T> elements = FXCollections.observableArrayList(new ArrayList<>());
+	
+	protected static final int WIDTH = 300;
+	protected static final int HEIGHT = 200;
+	protected static final int WIDTH_PADDING = 40;
+	protected static final int HEIGHT_PADDING = 30;
+	protected static final int ELEMENTS_PER_ROW = 3;
 
 	public PaneViewElement() {
 		elements.addListener(this::setOnChangeEvent);
@@ -71,7 +77,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 			paneElement.setTranslateX(position[0]);
 			paneElement.setTranslateY(position[1]);
 
-			setPrefHeight(position[1] + 240);
+			setPrefHeight(position[1] + (HEIGHT + HEIGHT_PADDING * 2));
 
 			paneElement.setOnMouseClicked(evt -> {
 				elementProperty.set(element);
@@ -88,11 +94,11 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	public int[] calculateNextPosition() {
 		final var size = elements.size() - 1;
 
-		final var rowPosition = size % 3;
-		final var rowNumber = size / 3;
+		final var rowPosition = size % ELEMENTS_PER_ROW;
+		final var rowNumber = size / ELEMENTS_PER_ROW;
 
-		final var x = rowPosition * (300 + 40);
-		final var y= rowNumber * 200;
+		final var x = rowPosition * (WIDTH + WIDTH_PADDING);
+		final var y= rowNumber * (HEIGHT + HEIGHT_PADDING);
 
 		return new int[] {x, y};
 	}
