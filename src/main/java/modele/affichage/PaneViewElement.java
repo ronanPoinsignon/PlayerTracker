@@ -13,12 +13,17 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.RowConstraints;
 import modele.affichage.sort.SortedInsert;
 import service.FileManager;
 import service.ServiceManager;
@@ -32,6 +37,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	private final SortedInsert<Node> sort = new SortedInsert<>();
 	private final ObjectProperty<T> elementProperty = new SimpleObjectProperty<>();
 	private final ObservableList<T> elements = FXCollections.observableArrayList(new ArrayList<>());
+	private final List<Pane> sortedPane = new ArrayList<>();
 	
 	protected static final int WIDTH = 300;
 	protected static final int HEIGHT = 200;
@@ -41,6 +47,18 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 
 	public PaneViewElement() {
 		elements.addListener(this::setOnChangeEvent);
+		getChildren().addListener((ListChangeListener<? super Node>) change -> {
+			change.next();
+			
+			if(change.wasAdded()) {
+				sortedPane.addAll(change.getAddedSubList().stream().map(element -> (Pane) element).toList());
+			}
+			else if(change.wasRemoved()) {
+				sortedPane.removeAll(change.getRemoved().stream().map(element -> (Pane) element).toList());
+			}
+			
+			System.out.println(sortedPane.size());
+		});
 	}
 
 	public abstract FXMLLoader createLoader() throws MalformedURLException;
@@ -69,15 +87,8 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 			controller = loader.getController();
 			controller.setElement(element);
 
-			final var position = calculateNextPosition();
-
 			paneMap.put(paneElement, element);
 			insertValueBasedOnSort(paneElement);
-
-			paneElement.setTranslateX(position[0]);
-			paneElement.setTranslateY(position[1]);
-
-			setPrefHeight(position[1] + (HEIGHT + HEIGHT_PADDING * 2));
 
 			paneElement.setOnMouseClicked(evt -> {
 				elementProperty.set(element);
@@ -87,20 +98,44 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	}
 
 	private void insertValueBasedOnSort(final Pane paneElement) {
-		final var index = sort.getIndexInsertFromSort(getChildren(), paneElement);
-		getChildren().add(index, paneElement);
+		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(pane -> (Node) pane).toList(), paneElement);
+
+		final var oldChild = (Pane) setChild(paneElement, index);
+		
+		sortedPane.sort(sort.getComparator());
+		
+		if(oldChild == null || oldChild == paneElement)
+			return;
+		
+		insertValueBasedOnSort(oldChild);
 	}
-
-	public int[] calculateNextPosition() {
-		final var size = elements.size() - 1;
-
-		final var rowPosition = size % ELEMENTS_PER_ROW;
-		final var rowNumber = size / ELEMENTS_PER_ROW;
-
-		final var x = rowPosition * (WIDTH + WIDTH_PADDING);
-		final var y= rowNumber * (HEIGHT + HEIGHT_PADDING);
-
-		return new int[] {x, y};
+	
+	public Node setChild(final Pane paneElement, int index) {	
+		final var column = index % ELEMENTS_PER_ROW;
+		final var row = index / ELEMENTS_PER_ROW;
+		
+		final var old = getChildren().stream()
+				.filter(child -> getColumnIndex(child) == column && getRowIndex(child) == row)
+				.findFirst();
+		
+		if(old.isPresent()) {
+			getChildren().remove(old.get());
+		}
+				
+		add(paneElement, column, row);
+		
+		if(getRowConstraints().size() == row) {
+			getRowConstraints().add(new RowConstraints(0, HEIGHT + HEIGHT_PADDING, HEIGHT + HEIGHT_PADDING, null, VPos.CENTER, false));
+		}
+		
+		if(getColumnConstraints().size() == column) {
+			getColumnConstraints().add(new ColumnConstraints(0, WIDTH + WIDTH_PADDING, WIDTH + WIDTH_PADDING, null, HPos.LEFT, false));
+		}
+		
+		if(old.isEmpty())
+			return null;
+				
+		return old.get();
 	}
 
 	@Override
