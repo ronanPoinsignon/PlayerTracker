@@ -1,6 +1,8 @@
 * {
 	-fx-main-color: #efb30e;
 	-fx-secondary-color: #00b0ff;
+	-fx-secondary-mid: #0277bd;
+	-fx-secondary-dark: #01579b;
 	-fx-font-family: "Verdana";
 }
 
@@ -11,7 +13,7 @@
 }
 
 #anchor {
-	-fx-background-color: #01579b;
+	-fx-background-color: -fx-secondary-dark;
 }
 
 #joueursContainer {
@@ -19,7 +21,7 @@
 }
 
 .loading-spinner {
-	-fx-progress-color: #efb30e;
+	-fx-progress-color: -fx-main-color;
 }
 
 #open_modal, #text_circle {
@@ -39,7 +41,7 @@
 }
 
 #modalAdd {
-	-fx-background-color: #00b0ff;
+	-fx-background-color: -fx-secondary-color;
 	-fx-border-color: #eee;
 	-fx-border-width: 1px;
 }
@@ -52,14 +54,6 @@
 	-fx-border-radius: 8px;
 	-fx-background-radius: 8px;
 	-fx-font-size: 16px;
-}
-
-.joueur-card .options .options-circle {
-	-fx-fill: #fff;
-}
-
-.joueur-card .options:hover {
-	-fx-cursor: hand;
 }
 
 .joueur-card #nom {
@@ -75,4 +69,12 @@
 
 .joueur-card #statut {
 	-fx-text-fill: #FFF;
+}
+
+.joueur-card .buttons .button {
+	-fx-cursor: hand;
+	-fx-border-radius: 50px;
+	-fx-background-radius: 50px;
+	-fx-background-color: -fx-secondary-mid;
+	-fx-border-color: -fx-secondary-mid;
 }

@@ -14,11 +14,15 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import modele.joueur.JoueurFx;
+import service.FileManager;
+import service.ServiceManager;
 
 public class JoueurController extends ElementController<JoueurFx> implements Initializable {
 
@@ -39,14 +43,46 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 	@FXML
 	private ImageView imageStatut;
+	
+	@FXML
+	private GridPane buttons;
+	
+	@FXML
+	private Button spectate;
+	
+	@FXML
+	private Button edit;
+	
+	@FXML
+	private Button delete;
 
 	private final BooleanProperty isConnecte = new SimpleBooleanProperty();
 	private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
-
+	
+	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
+	
+	private static final int ICON_SIZE = 24;
+	
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
+		final var viewImage = new ImageView(fm.getImageFromResource("images/view.png"));
+		final var editImage = new ImageView(fm.getImageFromResource("images/edit.png"));
+		final var deleteImage = new ImageView(fm.getImageFromResource("images/delete.png"));
+		
+		viewImage.setFitWidth(ICON_SIZE);
+		viewImage.setFitHeight(ICON_SIZE);
+		editImage.setFitWidth(ICON_SIZE);
+		editImage.setFitHeight(ICON_SIZE);
+		deleteImage.setFitWidth(ICON_SIZE);
+		deleteImage.setFitHeight(ICON_SIZE);
+		
+		spectate.setGraphic(viewImage);
+		edit.setGraphic(editImage);
+		delete.setGraphic(deleteImage);
+		
 		imageJoueur.imageProperty().bind(imageProperty);
 		statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
+		spectate.disableProperty().bind(isConnecte.not());
 
 		nom.setMaxWidth(pane.getPrefWidth() - nom.getLayoutX() - 40);
 		pseudo.setMaxWidth(pane.getPrefWidth() - pseudo.getLayoutX() - 40);
