@@ -7,6 +7,10 @@ public class WebRequestBuilderForPlayer extends WebRequestBuilder<WebRequestOneP
 
 	private Joueur joueur;
 
+	public WebRequestBuilderForPlayer(final Joueur joueur) {
+		this.joueur = joueur;
+	}
+
 	public WebRequestBuilderForPlayer setPlayer(final Joueur joueur) {
 		this.joueur = joueur;
 		return this;

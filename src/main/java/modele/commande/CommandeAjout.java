@@ -1,7 +1,6 @@
 package modele.commande;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
@@ -38,8 +37,7 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 			scheduler.addJoueur(joueurFx);
 			saveService.addJoueur(joueurFx.getJoueur());
 		});
-		final var joueurs = elements.stream().map(JoueurFx::getJoueur).collect(Collectors.toList());
-		scheduler.executeNow(joueurs);
+		scheduler.executeNow(elements);
 		return !elements.isEmpty(); //si cette liste est vide, aucun joueur n'a donc été ajouté et cette commande est donc inutile
 	}
 
