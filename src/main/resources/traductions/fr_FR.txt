@@ -11,6 +11,7 @@ colonnePseudoLegende:Pseudo
 colonneIdLegende:Id
 colonneInGameLegende:Connecté
 colonneServeurLegende:Serveur
+colonneGameTypeLegend:Type de partie
 nomPlaceHolder:nom
 pseudoPlaceHolder:pseudo
 commandeNonTrouveeExceptionMessage:Impossible d'exécuter la commande voulue
