@@ -28,7 +28,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import modele.affichage.PaneViewJoueurFx;
-import modele.affichage.propertyutil.StringMajusculeBinding;
+import modele.affichage.propertyutil.impl.StringMajusculeBinding;
 import modele.commande.CommandeAjout;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.JoueurFx;

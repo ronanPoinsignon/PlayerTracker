@@ -1,6 +1,8 @@
-package modele.affichage.propertyutil;
+package modele.affichage.propertyutil.impl;
 
 import javafx.beans.property.StringProperty;
+import modele.affichage.propertyutil.FormatableString;
+import modele.affichage.propertyutil.StringBindingFormat;
 
 /**
  * Retourne un nouveau binding en ayant mis une majuscule sur la première lettre de la valeur de la property
