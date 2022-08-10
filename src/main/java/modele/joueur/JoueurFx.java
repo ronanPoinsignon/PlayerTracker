@@ -26,6 +26,7 @@ public class JoueurFx extends Joueur {
 	private transient StringProperty pseudoProperty;
 	private transient BooleanProperty isConnecteProperty;
 	private transient StringProperty serverNameProperty;
+	private transient ObjectProperty<Serveur> serverProperty;
 
 	private transient Joueur joueur;
 	private transient IEtat etat;
@@ -45,6 +46,7 @@ public class JoueurFx extends Joueur {
 		nomProperty = new SimpleStringProperty(joueur.nom);
 		pseudoProperty = new SimpleStringProperty(joueur.pseudo);
 		isConnecteProperty = new SimpleBooleanProperty(joueur.inGame);
+		serverProperty = new SimpleObjectProperty<>(joueur.server);
 		serverNameProperty = new SimpleStringProperty(joueur.server != null ? joueur.server.getServerId() : "");
 		if(isConnecteProperty.get()) {
 			etat = new Connecte();
@@ -78,6 +80,10 @@ public class JoueurFx extends Joueur {
 
 	public BooleanProperty getIsConnecteProperty() {
 		return isConnecteProperty;
+	}
+	
+	public ObjectProperty<Serveur> getServerProperty() {
+		return serverProperty;
 	}
 
 	public StringProperty getServerNameProperty() {

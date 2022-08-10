@@ -38,6 +38,9 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 	@FXML
 	private Label pseudo;
+	
+	@FXML
+	private Label serveur;
 
 	@FXML
 	private ImageView imageJoueur;
@@ -96,8 +99,8 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
 		spectate.disableProperty().bind(isConnecte.not());
 
-		nom.setMaxWidth(pane.getPrefWidth() - nom.getLayoutX() - 40);
-		pseudo.setMaxWidth(pane.getPrefWidth() - pseudo.getLayoutX() - 40);
+		nom.setMaxWidth(pane.getPrefWidth() - nom.getLayoutX() - 80);
+		pseudo.setMaxWidth(pane.getPrefWidth() - pseudo.getLayoutX() - 80);
 
 		isConnecte.addListener((obs, oldV, newV) -> {
 			if(element.getValue() == null) {
@@ -132,6 +135,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 			nom.textProperty().bind(newV.getNomProperty());
 			pseudo.textProperty().bind(newV.getPseudoProperty());
+			serveur.textProperty().bind(Bindings.when(newV.getServerProperty().isNotNull()).then(newV.getServer().getLabel()).otherwise(""));
 		};
 	}
 
