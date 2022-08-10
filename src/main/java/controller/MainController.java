@@ -28,6 +28,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import modele.affichage.PaneViewJoueurFx;
+import modele.affichage.propertyutil.StringMajusculeBinding;
 import modele.commande.CommandeAjout;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.JoueurFx;
@@ -164,12 +165,10 @@ public class MainController implements Initializable {
 		modalAdd.setOnMousePressed(MouseEvent::consume);
 
 		// Formulaire d'ajout
-
-		modalAddTitle.textProperty().bind(dictionnaire.getText("menuItemAjouter"));
-
-		nameLabel.textProperty().bind(dictionnaire.getText("nomPlaceHolder"));
-		pseudoLabel.textProperty().bind(dictionnaire.getText("pseudoPlaceHolder"));
-		serverLabel.textProperty().bind(dictionnaire.getText("colonneServeurLegende"));
+		modalAddTitle.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("menuItemAjouter")));
+		nameLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("nomPlaceHolder")));
+		pseudoLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("pseudoPlaceHolder")));
+		serverLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("colonneServeurLegende")));
 
 		addButton.textProperty().bind(dictionnaire.getText("menuItemAjouter"));
 
@@ -250,3 +249,4 @@ public class MainController implements Initializable {
 	}
 
 }
+
