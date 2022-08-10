@@ -11,11 +11,12 @@ import modele.webrequestrunnable.WebRequestRunnable;
 public class WebRequestBuilderForPlayerList extends WebRequestBuilder<WebRequestRunnable> {
 
 	// valeurs par défaut
-	private List<Joueur> joueurs = new ArrayList<>();
+	private final List<Joueur> joueurs = new ArrayList<>();
 	protected Predicate<List<? extends PlayerRequest>> filter = List::isEmpty;
 
-	public WebRequestBuilderForPlayerList setPlayers(final List<Joueur> joueurs) {
-		this.joueurs = joueurs;
+	public WebRequestBuilderForPlayerList setPlayers(final List<? extends Joueur> joueurs) {
+		this.joueurs.clear();
+		this.joueurs.addAll(joueurs);
 		return this;
 	}
 
