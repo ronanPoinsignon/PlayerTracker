@@ -1,5 +1,6 @@
 * {
 	-fx-main-color: #efb30e;
+	-fx-main-color-hover: #dfa60d;
 	-fx-secondary-color: #00b0ff;
 	-fx-secondary-mid: #0277bd;
 	-fx-secondary-dark: #01579b;
@@ -10,6 +11,11 @@
 	-fx-background-color: -fx-main-color;
 	-fx-border-color: -fx-main-color;
 	-fx-text-fill: #FFF;
+}
+
+.button:hover {
+	-fx-background-color: -fx-main-color-hover;
+	-fx-border-color: -fx-main-color-hover;
 }
 
 #anchor {
@@ -28,16 +34,16 @@
 	position: fixed;
 }
 
-#open_modal:hover {
-	-fx-cursor: hand;
-}
-
 #text_circle {
 	-fx-font-size: 72px;
 }
 
 .float-button {
 	-fx-fill: -fx-main-color;
+}
+
+.float-button:hover {
+	-fx-fill: -fx-main-color-hover;
 }
 
 #modalAdd {
@@ -58,7 +64,6 @@
 }
 
 #modalAdd #addButton {
-	-fx-cursor: hand;
 	-fx-font-size: 22px;
 	-fx-font-weight: 700;
 }
@@ -88,9 +93,13 @@
 }
 
 .joueur-card .buttons .button {
-	-fx-cursor: hand;
 	-fx-border-radius: 50px;
 	-fx-background-radius: 50px;
 	-fx-background-color: -fx-secondary-mid;
 	-fx-border-color: -fx-secondary-mid;
+}
+
+.joueur-card .buttons .button:hover {
+	-fx-background-color: -fx-secondary-dark;
+	-fx-border-color: -fx-secondary-dark;
 }

@@ -25,9 +25,6 @@
         </content>
       </ScrollPane>
       <Circle id="open_modal" fx:id="open_modal" accessibleRole="BUTTON" onMouseClicked="#openModal" radius="28.0" styleClass="float-button" translateX="480.0" translateY="300.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
          <StackPane.margin>
             <Insets />
          </StackPane.margin>
