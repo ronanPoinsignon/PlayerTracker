@@ -39,7 +39,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 	@FXML
 	private Label pseudo;
-	
+
 	@FXML
 	private Label serveur;
 
@@ -68,13 +68,12 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 	private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
 
 	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
-		
+
 	private static final int ICON_SIZE = 24;
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
-		
-		
+
 		final var viewImage = new ImageView(fm.getImageFromResource("images/view.png"));
 		final var editImage = new ImageView(fm.getImageFromResource("images/edit.png"));
 		final var deleteImage = new ImageView(fm.getImageFromResource("images/delete.png"));
@@ -89,19 +88,19 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		spectate.setGraphic(viewImage);
 		edit.setGraphic(editImage);
 		delete.setGraphic(deleteImage);
-		
+
 		delete.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> MouseButton.PRIMARY.equals(event.getButton()));
 		delete.setOnMouseClicked(event -> {
 			pane.fireEvent(event);
 			new MouseEventSuppression((PaneViewJoueurFx) pane.getParent()).handle(event);
 		});
-		
+
 		spectate.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> MouseButton.PRIMARY.equals(event.getButton()));
 		spectate.setOnMouseClicked(event -> {
 			pane.fireEvent(event);
 			new MouseEventRegarder((PaneViewJoueurFx) pane.getParent()).handle(event);
 		});
-		
+
 		imageJoueur.imageProperty().bind(imageProperty);
 		statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
 		spectate.disableProperty().bind(isConnecte.not());
