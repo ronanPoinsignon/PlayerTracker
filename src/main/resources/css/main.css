@@ -18,6 +18,10 @@
 	-fx-border-color: -fx-main-color-hover;
 }
 
+.button:pressed:hover  {
+	
+}
+
 #anchor {
 	-fx-background-color: #333;
 }
@@ -44,6 +48,10 @@
 
 .float-button:hover {
 	-fx-fill: -fx-main-color-hover;
+}
+
+.float-button:pressed:hover {
+	
 }
 
 #modalAdd {
@@ -97,9 +105,15 @@
 	-fx-background-radius: 50px;
 	-fx-background-color: -fx-secondary-mid;
 	-fx-border-color: -fx-secondary-mid;
+	-fx-pref-width: 48px;
+	-fx-pref-height: 48px;
 }
 
 .joueur-card .buttons .button:hover {
 	-fx-background-color: -fx-secondary-dark;
 	-fx-border-color: -fx-secondary-dark;
+}
+
+.joueur-card .buttons .button:pressed:hover  {
+	
 }

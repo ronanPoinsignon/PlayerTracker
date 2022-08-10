@@ -27,9 +27,9 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="spectate" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <Button fx:id="edit" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-            <Button fx:id="delete" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+            <Button fx:id="spectate" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Button fx:id="edit" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <Button fx:id="delete" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
    </children>
