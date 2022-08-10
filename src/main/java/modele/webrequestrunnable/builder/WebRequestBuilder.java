@@ -1,5 +1,6 @@
 package modele.webrequestrunnable.builder;
 
+import modele.joueur.Joueur;
 import modele.webrequestrunnable.RequestPlayerData;
 
 public abstract class WebRequestBuilder<T extends RequestPlayerData> {
@@ -10,8 +11,8 @@ public abstract class WebRequestBuilder<T extends RequestPlayerData> {
 		return new WebRequestBuilderForPlayerList();
 	}
 
-	public static WebRequestBuilderForPlayer withPlayer() {
-		return new WebRequestBuilderForPlayer();
+	public static WebRequestBuilderForPlayer withPlayer(final Joueur joueur) {
+		return new WebRequestBuilderForPlayer(joueur);
 	}
 
 }
