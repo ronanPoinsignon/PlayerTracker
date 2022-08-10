@@ -6,7 +6,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import modele.joueur.Joueur;
-import modele.webrequestrunnable.WebRequestOnePlayerRunnable;
 import modele.webrequestrunnable.WebRequestRunnable;
 import modele.webrequestrunnable.builder.WebRequestBuilder;
 
@@ -38,10 +37,10 @@ public class WebRequestScheduler implements IService {
 	}
 
 	public void executeNow(final Joueur joueur) {
-		scheduler.execute(new WebRequestOnePlayerRunnable(joueur));
+		scheduler.execute(WebRequestBuilder.withPlayer(joueur).build());
 	}
 
-	public void executeNow(final List<Joueur> joueur) {
-		scheduler.submit(runnable);
+	public void executeNow(final List<? extends Joueur> joueur) {
+		scheduler.execute(WebRequestBuilder.withPlayerList().setPlayers(joueur).build());
 	}
 }
