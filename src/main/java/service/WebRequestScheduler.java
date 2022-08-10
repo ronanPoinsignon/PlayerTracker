@@ -1,5 +1,6 @@
 package service;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +18,7 @@ public class WebRequestScheduler implements IService {
 	public WebRequestScheduler() {
 		scheduler = Executors.newScheduledThreadPool(1);
 		runnable = WebRequestBuilder.withPlayerList().build();
-		scheduler.scheduleWithFixedDelay(runnable, 0, 1, TimeUnit.MINUTES);
+		scheduler.scheduleWithFixedDelay(runnable, 1, 1, TimeUnit.MINUTES);
 	}
 
 	public void addJoueur(final Joueur joueur) {
@@ -38,5 +39,9 @@ public class WebRequestScheduler implements IService {
 
 	public void executeNow(final Joueur joueur) {
 		scheduler.execute(new WebRequestOnePlayerRunnable(joueur));
+	}
+
+	public void executeNow(final List<Joueur> joueur) {
+		scheduler.submit(runnable);
 	}
 }

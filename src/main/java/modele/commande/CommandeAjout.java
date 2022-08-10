@@ -1,6 +1,7 @@
 package modele.commande;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.scene.control.TableView;
 import modele.joueur.JoueurFx;
@@ -34,10 +35,11 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 		elements.removeAll(listeJoueursDejaPresentes);
 		elements.stream().forEach(joueurFx -> {
 			trayIconService.bind(joueurFx);
-			scheduler.executeNow(joueurFx);
 			scheduler.addJoueur(joueurFx);
 			saveService.addJoueur(joueurFx.getJoueur());
 		});
+		final var joueurs = elements.stream().map(JoueurFx::getJoueur).collect(Collectors.toList());
+		scheduler.executeNow(joueurs);
 		return !elements.isEmpty(); //si cette liste est vide, aucun joueur n'a donc été ajouté et cette commande est donc inutile
 	}
 

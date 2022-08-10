@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
@@ -106,9 +107,8 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 			return;
 		}
 
-		joueurs.stream().map(JoueurFx::new)
-		.map(joueur -> new CommandeAjout(table, joueur))
-		.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
+		final var joueursFx = joueurs.stream().map(JoueurFx::new).collect(Collectors.toList());
+		gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueursFx)).executer();
 		gestionnaireCommandeService.viderCommandes();
 
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());

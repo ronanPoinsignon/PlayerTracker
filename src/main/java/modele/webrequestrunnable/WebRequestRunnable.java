@@ -16,10 +16,14 @@ import modele.request.data.player.PlayerRequest;
 public class WebRequestRunnable extends RequestPlayerData {
 
 	private List<Joueur> joueurs = new ArrayList<>();
-	private Predicate<List<? extends PlayerRequest>> filter;
+	private Predicate<List<? extends PlayerRequest>> filter = List::isEmpty;
 
 	public WebRequestRunnable() {
 
+	}
+
+	public WebRequestRunnable(final List<Joueur> joueurs) {
+		this.joueurs = joueurs;
 	}
 
 	@Override
@@ -46,10 +50,21 @@ public class WebRequestRunnable extends RequestPlayerData {
 		final var failedPlayerIds = maps.get(false).stream().map(Entry::getKey).collect(Collectors.toList());
 		final var goodPlayers = maps.get(true);
 
-		goodPlayers.forEach(playerEntry -> {
-			final var player = playerEntry.getValue();
-			final var joueur = joueurs.stream().filter(j -> j.getPlayerId().equals(player.getSummoner_id())).findFirst().orElse(null);
-			map.put(joueur, player);
+		goodPlayers.stream().map(playerEntry -> {
+			final var t = new Thread(() -> {
+				final var player = playerEntry.getValue();
+				final var joueur = joueurs.stream().filter(j -> j.getPlayerId().equals(player.getSummoner_id())).findFirst().orElse(null);
+				map.put(joueur, player);
+			});
+			t.setDaemon(true);
+			t.start();
+			return t;
+		}).forEach(t -> {
+			try {
+				t.join();
+			} catch (final InterruptedException e1) {
+
+			}
 		});
 		return map;
 	}
