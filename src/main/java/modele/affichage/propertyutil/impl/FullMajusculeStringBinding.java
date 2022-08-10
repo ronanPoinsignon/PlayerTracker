@@ -6,10 +6,13 @@ import modele.affichage.propertyutil.StringBindingFormat;
 
 public class FullMajusculeStringBinding extends StringBindingFormat {
 
-	private static final FormatableString FORMAT = String::toUpperCase;
+	public FullMajusculeStringBinding(final StringProperty property) {
+		super(property);
+	}
 
-	public FullMajusculeStringBinding(final StringProperty property, final FormatableString formatFunction) {
-		super(property, FullMajusculeStringBinding.FORMAT);
+	@Override
+	public FormatableString getFormat() {
+		return String::toUpperCase;
 	}
 
 }

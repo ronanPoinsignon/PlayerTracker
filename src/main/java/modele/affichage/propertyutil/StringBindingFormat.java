@@ -6,11 +6,9 @@ import javafx.beans.property.StringProperty;
 public abstract class StringBindingFormat extends StringBinding {
 
 	private final StringProperty property;
-	private final FormatableString formatFunction;
 
-	public StringBindingFormat(final StringProperty property, final FormatableString formatFunction) {
+	public StringBindingFormat(final StringProperty property) {
 		this.property = property;
-		this.formatFunction = formatFunction;
 		bind(property);
 	}
 
@@ -20,6 +18,8 @@ public abstract class StringBindingFormat extends StringBinding {
 		if(value == null) {
 			return "";
 		}
-		return formatFunction.format(value);
+		return getFormat().format(value);
 	}
+
+	public abstract FormatableString getFormat();
 }

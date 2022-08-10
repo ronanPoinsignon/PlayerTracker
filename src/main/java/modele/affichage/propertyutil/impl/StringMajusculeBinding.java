@@ -12,10 +12,13 @@ import modele.affichage.propertyutil.StringBindingFormat;
  */
 public class StringMajusculeBinding extends StringBindingFormat {
 
-	private static final FormatableString FORMAT = value -> value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
-
 	public StringMajusculeBinding(final StringProperty property) {
-		super(property, StringMajusculeBinding.FORMAT);
+		super(property);
+	}
+
+	@Override
+	public FormatableString getFormat() {
+		return value -> value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
 	}
 
 }

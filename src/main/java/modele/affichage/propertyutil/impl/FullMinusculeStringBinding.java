@@ -6,10 +6,13 @@ import modele.affichage.propertyutil.StringBindingFormat;
 
 public class FullMinusculeStringBinding extends StringBindingFormat {
 
-	private static final FormatableString FORMAT = String::toLowerCase;
+	public FullMinusculeStringBinding(final StringProperty property) {
+		super(property);
+	}
 
-	public FullMinusculeStringBinding(final StringProperty property, final FormatableString formatFunction) {
-		super(property, FullMinusculeStringBinding.FORMAT);
+	@Override
+	public FormatableString getFormat() {
+		return String::toLowerCase;
 	}
 
 }
