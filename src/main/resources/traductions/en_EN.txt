@@ -11,6 +11,7 @@ colonnePseudoLegende:Nickname
 colonneIdLegende:Id
 colonneInGameLegende:Online
 colonneServeurLegende:Server
+colonneGameTypeLegend:Game type
 nomPlaceHolder:name
 pseudoPlaceHolder:nickname
 commandeNonTrouveeExceptionMessage:Unable to run the given command

@@ -39,7 +39,15 @@
       </GridPane>
    </bottom>
    <center>
-      <GridPane fx:id="paneCenter" hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
-      </GridPane>
+      <TableView fx:id="table" prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="colonneNom" prefWidth="75.0" text="Nom" />
+          <TableColumn fx:id="colonnePseudo" prefWidth="75.0" text="Pseudo" />
+            <TableColumn fx:id="colonneServeur" prefWidth="75.0" text="Serveur" />
+          <TableColumn fx:id="colonneId" prefWidth="75.0" text="Id" />
+          <TableColumn fx:id="colonneInGame" prefWidth="75.0" text="Connecté" />
+          <TableColumn fx:id="colonneGameType" prefWidth="75.0" text="Type de partie" />
+        </columns>
+      </TableView>
    </center>
 </BorderPane>

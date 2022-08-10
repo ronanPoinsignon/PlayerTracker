@@ -11,6 +11,7 @@ colonnePseudoLegende:Spitzname
 colonneIdLegende:Id
 colonneInGameLegende:Online
 colonneServeurLegende:Server
+colonneGameTypeLegend:Geben Sie die Partei ein
 nomPlaceHolder:Name
 pseudoPlaceHolder:Spitzname
 commandeNonTrouveeExceptionMessage:Unmöglich die gegebene Befehl zu laufen

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
@@ -62,6 +63,8 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 	private TableColumn<JoueurFx, Image> colonneInGame;
 	@FXML
 	private TableColumn<JoueurFx, String> colonneServeur;
+	@FXML
+	private TableColumn<JoueurFx, String> colonneGameType;
 
 	@FXML
 	private TextField nom;
@@ -104,9 +107,8 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 			return;
 		}
 
-		joueurs.stream().map(JoueurFx::new)
-		.map(joueur -> new CommandeAjout(table, joueur))
-		.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
+		final var joueursFx = joueurs.stream().map(JoueurFx::new).collect(Collectors.toList());
+		gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueursFx)).executer();
 		gestionnaireCommandeService.viderCommandes();
 
 		colonneNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
@@ -114,6 +116,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		colonneId.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
 		colonneInGame.setCellValueFactory(cellData -> cellData.getValue().getImageConnexion());
 		colonneServeur.setCellValueFactory(cellData -> cellData.getValue().getServerNameProperty());
+		colonneGameType.setCellValueFactory(cellData -> cellData.getValue().getGameTypeProperty());
 
 		// Wrap de l'image dans une cellule permettant son affichage
 		colonneInGame.setCellFactory(col -> {
@@ -221,6 +224,7 @@ public class ControllerPagePrincipale implements Initializable, ObservateurInter
 		colonneId.textProperty().bind(dictionnaire.getText("colonneIdLegende"));
 		colonneInGame.textProperty().bind(dictionnaire.getText("colonneInGameLegende"));
 		colonneServeur.textProperty().bind(dictionnaire.getText("colonneServeurLegende"));
+		colonneGameType.textProperty().bind(dictionnaire.getText("colonneGameTypeLegend"));
 
 		ajouter.textProperty().bind(dictionnaire.getText("menuItemAjouter"));
 		modifier.textProperty().bind(dictionnaire.getText("menuItemModifier"));

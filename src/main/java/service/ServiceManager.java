@@ -21,8 +21,7 @@ public abstract class ServiceManager {
 	}
 
 	public static final <T extends IService> T getInstance(final Class<T> clazz) {
-		@SuppressWarnings("unchecked")
-		var service = (T) ServiceManager.services.get(clazz);
+		var service = ServiceManager.services.get(clazz);
 		if(service == null) {
 			try {
 				service = clazz.getDeclaredConstructor().newInstance();
@@ -32,6 +31,6 @@ public abstract class ServiceManager {
 				throw new ServiceCreationFailedException();
 			}
 		}
-		return service;
+		return clazz.cast(service);
 	}
 }

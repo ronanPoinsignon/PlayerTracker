@@ -27,6 +27,7 @@ public class JoueurFx extends Joueur {
 	private transient BooleanProperty isConnecteProperty;
 	private transient StringProperty serverNameProperty;
 	private transient ObjectProperty<Serveur> serverProperty;
+	private transient StringProperty gameTypeProperty;
 
 	private transient Joueur joueur;
 	private transient IEtat etat;
@@ -48,6 +49,7 @@ public class JoueurFx extends Joueur {
 		isConnecteProperty = new SimpleBooleanProperty(joueur.inGame);
 		serverProperty = new SimpleObjectProperty<>(joueur.server);
 		serverNameProperty = new SimpleStringProperty(joueur.server != null ? joueur.server.getServerId() : "");
+		gameTypeProperty = new SimpleStringProperty(joueur.partie != null ? joueur.partie.getGameType() : "");
 		if(isConnecteProperty.get()) {
 			etat = new Connecte();
 		} else {
@@ -89,6 +91,9 @@ public class JoueurFx extends Joueur {
 	public StringProperty getServerNameProperty() {
 		return serverNameProperty;
 	}
+	public StringProperty getGameTypeProperty() {
+		return gameTypeProperty;
+	}
 
 	public Joueur getJoueur() {
 		return joueur;
@@ -122,6 +127,12 @@ public class JoueurFx extends Joueur {
 	public void setServer(final Serveur server) {
 		super.setServer(server);
 		Platform.runLater(() -> serverNameProperty.set(server != null ? server.getServerId() : ""));
+	}
+	
+	@Override
+	public void setPartie(final Partie partie) {
+		super.setPartie(partie);
+		gameTypeProperty.set(partie != null ? partie.getGameType() : "");
 	}
 
 	private void writeObject(final ObjectOutputStream out) throws IOException {
