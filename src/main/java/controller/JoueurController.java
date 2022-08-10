@@ -23,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import modele.affichage.PaneViewJoueurFx;
+import modele.event.mouse.MouseEventRegarder;
 import modele.event.mouse.MouseEventSuppression;
 import modele.joueur.JoueurFx;
 import service.FileManager;
@@ -93,6 +94,12 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		delete.setOnMouseClicked(event -> {
 			pane.fireEvent(event);
 			new MouseEventSuppression((PaneViewJoueurFx) pane.getParent()).handle(event);
+		});
+		
+		spectate.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> MouseButton.PRIMARY.equals(event.getButton()));
+		spectate.setOnMouseClicked(event -> {
+			pane.fireEvent(event);
+			new MouseEventRegarder((PaneViewJoueurFx) pane.getParent()).handle(event);
 		});
 		
 		imageJoueur.imageProperty().bind(imageProperty);
