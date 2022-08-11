@@ -7,15 +7,20 @@
 	-fx-font-family: "Calibri";
 }
 
+#mainContainer {
+	
+}
+
 .button {
-	-fx-background-color: -fx-main-color;
-	-fx-border-color: -fx-main-color;
+	-fx-background-color: -fx-secondary-mid;
+	-fx-border-color: -fx-secondary-mid;
 	-fx-text-fill: #FFF;
 }
 
 .button:hover {
-	-fx-background-color: -fx-main-color-hover;
-	-fx-border-color: -fx-main-color-hover;
+	-fx-background-color: -fx-secondary-dark;
+	-fx-border-color: -fx-secondary-dark;
+	-fx-cursor: hand;
 }
 
 .button:pressed:hover  {
@@ -43,11 +48,11 @@
 }
 
 .float-button {
-	-fx-fill: -fx-main-color;
+	-fx-fill: -fx-secondary-mid;
 }
 
 .float-button:hover {
-	-fx-fill: -fx-main-color-hover;
+	-fx-fill: -fx-secondary-dark;
 }
 
 .float-button:pressed:hover {
@@ -55,20 +60,37 @@
 }
 
 #modalAdd {
-	-fx-background-color: #fff;
-	-fx-border-color: #444;
+	-fx-background-color: #444;
+	-fx-border-color: #777;
 	-fx-border-width: 1px;
 }
 
 #modalAddTitle {
-	-fx-background-color: -fx-main-color;
+	-fx-background-color: -fx-secondary-mid;
 }
 
 #modalAdd #nameInput, #modalAdd #pseudoInput, #modalAdd #serverInput {
-	-fx-background-color: #fff;
-	-fx-border-color: -fx-main-color;
+	-fx-background-color: #666;
+	-fx-border-color: #666;
+	-fx-text-fill: #fff;
 	-fx-border-width: 1px;
 	-fx-pref-height: 26px;
+}
+
+#modalAdd #serverInput {
+	-fx-faint-focus-color: #666;
+	-fx-focus-color: #777;
+	-fx-control-inner-background: #666;
+	-fx-selection-bar: #777;
+	-fx-selection-bar-text-fill: #fff;
+}
+
+#modalAdd #serverInput .label, #modalAdd #serverInput .label .text, #modalAdd #serverInput .arrow, .check-menu-item:checked > .left-container > .check {
+	-fx-text-fill: #fff;
+}
+
+#modalAdd #nameLabel, #modalAdd #pseudoLabel, #modalAdd #serverLabel {
+	-fx-text-fill: #fff;
 }
 
 #modalAdd #addButton {
@@ -78,7 +100,7 @@
 
 .joueur-card {
 	-fx-background-color: #444;
-	-fx-border-color: #ccc;
+	-fx-border-color: #666;
 	-fx-border-width: 1px;
 	-fx-border-radius: 8px;
 	-fx-background-radius: 8px;
@@ -103,15 +125,8 @@
 .joueur-card .buttons .button {
 	-fx-border-radius: 50px;
 	-fx-background-radius: 50px;
-	-fx-background-color: -fx-secondary-mid;
-	-fx-border-color: -fx-secondary-mid;
 	-fx-pref-width: 48px;
 	-fx-pref-height: 48px;
-}
-
-.joueur-card .buttons .button:hover {
-	-fx-background-color: -fx-secondary-dark;
-	-fx-border-color: -fx-secondary-dark;
 }
 
 .joueur-card .buttons .button:pressed:hover  {
