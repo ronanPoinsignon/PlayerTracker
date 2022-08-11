@@ -18,5 +18,9 @@ public class EventEditJoueurClick extends EventAbstrait {
 		super(EVENT_EDIT_JOUEUR_CLICK);
 		this.joueur = joueur;
 	}
+	
+	public Joueur getJoueur() {
+		return joueur;
+	}
 
 }

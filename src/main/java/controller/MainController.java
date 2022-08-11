@@ -32,7 +32,6 @@ import modele.affichage.propertyutil.impl.StringMajusculeBinding;
 import modele.commande.CommandeAjout;
 import modele.event.eventaction.AddEvent;
 import modele.event.tache.event.EventEditJoueurClick;
-import modele.event.tache.handler.EventHandlerEditJoueurClick;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import service.DictionnaireService;
@@ -219,13 +218,8 @@ public class MainController implements Initializable {
 		
 		// ------------
 		
-		eventService.addListener(EventEditJoueurClick.EVENT_EDIT_JOUEUR_CLICK, new EventHandlerEditJoueurClick() {
-			
-			@Override
-			public void handle(EventEditJoueurClick event) {
-				// TODO Auto-generated method stub
-				
-			}
+		eventService.addListener(EventEditJoueurClick.EVENT_EDIT_JOUEUR_CLICK, event -> {
+			System.out.println(event.getJoueur());
 		});
 	}
 

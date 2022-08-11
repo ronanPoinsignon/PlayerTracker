@@ -1,42 +1,60 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import modele.event.tache.event.EventAbstrait;
-import modele.event.tache.handler.AbstractEventHandler;
 
 public class EventService implements IService {
 	
-	private final Map<EventType<? extends EventAbstrait>, Set<EventHandler<? super EventAbstrait>>> listeners = new HashMap<>();
+	private final Map<EventType<? extends EventAbstrait>, EventsHandler<? extends EventAbstrait>> listeners = new HashMap<>();
 	
-	public <T extends EventAbstrait> void trigger(T event) {
-		listeners.get(event.getEventType()).forEach(handler -> handler.handle(event));
+	public void trigger(EventAbstrait event) {
+		final var eventsHandler = listeners.get(event.getEventType());
+		eventsHandler.run(event);
 	}
 
 	public <T extends EventAbstrait> void addListener(EventType<T> event, EventHandler<? super T> handler) {
-		var set = listeners.get(event);
+		var handlers = (EventsHandler<T>) listeners.get(event);
 		
-		if(set == null) {
-			set = new HashSet<>();
-			listeners.put(event, set);
+		if(handlers == null) {
+			handlers = new EventsHandler<>();
+			listeners.put(event, handlers);
 		}
 		
-		set.add(handler);
+		handlers.add(handler);
 		
 	}
 	
-	public void removeListener(EventType<? extends EventAbstrait> event, AbstractEventHandler<EventAbstrait> handler) {
-		final var set = listeners.get(event);
+	public <T extends EventAbstrait> void removeListener(EventType<T> event, EventHandler<? super T> handler) {
+		final var handlers = (EventsHandler<T>) listeners.get(event);
 		
-		if(set == null)
+		if(handlers == null)
 			return;
 		
-		set.remove(handler);
+		handlers.remove(handler);
+	}
+	
+	public class EventsHandler<T extends EventAbstrait> {
+		private final List<EventHandler<? super T>> handlers = new ArrayList<>();
+		
+		public void add(final EventHandler<? super T> handler) {
+			handlers.add(handler);
+		}
+		
+		public void remove(final EventHandler<? super T> handler) {
+			handlers.remove(handler);
+		}
+		
+		public void run(final EventAbstrait event) {
+			handlers.forEach(handler -> handler.handle((T) event));
+		}
 	}
 
 }
+
+
