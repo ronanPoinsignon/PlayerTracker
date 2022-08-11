@@ -74,7 +74,10 @@
 	-fx-border-color: #666;
 	-fx-text-fill: #fff;
 	-fx-border-width: 1px;
-	-fx-pref-height: 26px;
+	-fx-pref-height: 28px;
+	-fx-min-height: 28px;
+	-fx-max-height: 28px;
+	-fx-font-size: 14px;
 }
 
 #modalAdd #serverInput {
@@ -93,7 +96,7 @@
 	-fx-text-fill: #fff;
 }
 
-#modalAdd #addButton {
+#modalAdd #addButton, #modalAdd #editButton {
 	-fx-font-size: 22px;
 	-fx-font-weight: 700;
 }

@@ -7,6 +7,8 @@ import javafx.animation.Animation.Status;
 import javafx.animation.TranslateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +32,7 @@ import javafx.util.StringConverter;
 import modele.affichage.PaneViewJoueurFx;
 import modele.affichage.propertyutil.impl.StringMajusculeBinding;
 import modele.commande.CommandeAjout;
+import modele.commande.CommandeModifier;
 import modele.event.eventaction.AddEvent;
 import modele.event.tache.event.EventEditJoueurClick;
 import modele.joueur.JoueurFx;
@@ -94,6 +97,9 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Button addButton;
+	
+	@FXML
+	private Button editButton;
 
 	private final TranslateTransition openTransition = new TranslateTransition(Duration.millis(MainController.TRANSITION_TIME));
 	private final TranslateTransition closeTransition = new TranslateTransition(Duration.millis(MainController.TRANSITION_TIME));
@@ -102,6 +108,8 @@ public class MainController implements Initializable {
 
 	private BooleanBinding openModalBinding;
 	private BooleanBinding closeModalBinding;
+	
+	private final BooleanProperty isEditing = new SimpleBooleanProperty();
 
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
@@ -122,6 +130,12 @@ public class MainController implements Initializable {
 		joueursContainer.setVisible(false);
 
 		addButton.disableProperty().bind(openModalBinding.not());
+		
+		addButton.visibleProperty().bind(isEditing.not());
+		editButton.visibleProperty().bind(isEditing);
+		pseudoInput.disableProperty().bind(isEditing);
+		serverInput.disableProperty().bind(isEditing);
+		isEditing.set(false);
 
 		//Scrollbar
 
@@ -174,6 +188,7 @@ public class MainController implements Initializable {
 		serverLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("colonneServeurLegende")));
 
 		addButton.textProperty().bind(dictionnaire.getText("menuItemAjouter"));
+		editButton.textProperty().bind(dictionnaire.getText("menuItemModifier"));
 
 		serverInput.setItems(FXCollections.observableList(serverManager.getServers()));
 		serverInput.setValue(serverManager.getServerById(ps.get("default_server")));
@@ -189,11 +204,7 @@ public class MainController implements Initializable {
 			}
 		});
 
-		addButton.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> {
-			if (!MouseButton.PRIMARY.equals(evt.getButton())) {
-				evt.consume();
-			}
-		});
+		addButton.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> MouseButton.PRIMARY.equals(evt.getButton()));
 		addButton.setOnAction(this::addJoueur);
 
 		// Chargement
@@ -216,10 +227,21 @@ public class MainController implements Initializable {
 		thread.setDaemon(true);
 		thread.start();
 		
-		// ------------
+		// Modification
+		
+		editButton.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> MouseButton.PRIMARY.equals(evt.getButton()));
+		editButton.setOnAction(this::editJoueur);
 		
 		eventService.addListener(EventEditJoueurClick.EVENT_EDIT_JOUEUR_CLICK, event -> {
-			System.out.println(event.getJoueur());
+			final var joueur = event.getJoueur();
+			pseudoInput.setText(joueur.getPseudo());
+			nameInput.setText(joueur.getNom());
+			serverInput.setValue(joueur.getServer());
+			isEditing.set(true);
+			
+			if(closeModalBinding.get() && !isTransitionRunningProperty.get()) {
+				openModal();
+			}
 		});
 	}
 
@@ -231,6 +253,10 @@ public class MainController implements Initializable {
 
 	public void closeModal() {
 		closeTransition.play();
+		
+		isEditing.set(false);
+		nameInput.setText("");
+		pseudoInput.setText("");
 	}
 
 	public void addJoueur(final ActionEvent event) {
@@ -250,11 +276,23 @@ public class MainController implements Initializable {
 		t.setDaemon(true);
 		t.start();
 
-		nameInput.setText("");
-		pseudoInput.setText("");
-
 		closeModal();
 
+	}
+	
+	public void editJoueur(final ActionEvent event) {
+		final var joueur = joueursContainer.getItems().get(joueursContainer.getSelectedIndex());
+
+		var nom = nameInput.getText();
+		final var pseudo = joueur.getPseudo();
+		
+		if(nom.isEmpty()) {
+			nom = pseudo;
+		}
+		
+		gestionnaireCommandeService.addCommande(new CommandeModifier(joueur, nom, pseudo, joueur.getServer())).executer();
+		
+		closeModal();
 	}
 
 }
