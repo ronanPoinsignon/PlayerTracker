@@ -15,7 +15,7 @@ public class EventTacheUpdateProgress extends EventTacheUpdated {
 	 */
 	private static final long serialVersionUID = 1L;
 	public static final EventType<EventTacheUpdateProgress> EVENT_UPDATE_PROGRESS =
-			new EventType<>(EventTacheUpdated.EVENT_UPDATE, "UPDATE_MESSAGE");
+			new EventType<>(EventTacheUpdated.EVENT_UPDATE, EventTacheUpdateProgress.class.getName());
 
 	private final long workDone;
 	private final long max;

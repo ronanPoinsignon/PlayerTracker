@@ -20,7 +20,7 @@ public abstract class Tache<T> extends Task<T> {
 	protected Tache() {
 		exceptionProperty().addListener((observable, oldValue, newValue) ->  {
 			if(newValue != null) {
-				alerteService.alert((Exception) newValue);
+				alerteService.alert(newValue);
 				this.cancel();
 			}
 		});
