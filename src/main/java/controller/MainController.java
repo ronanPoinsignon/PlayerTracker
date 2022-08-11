@@ -31,9 +31,12 @@ import modele.affichage.PaneViewJoueurFx;
 import modele.affichage.propertyutil.impl.StringMajusculeBinding;
 import modele.commande.CommandeAjout;
 import modele.event.eventaction.AddEvent;
+import modele.event.tache.event.EventEditJoueurClick;
+import modele.event.tache.handler.EventHandlerEditJoueurClick;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import service.DictionnaireService;
+import service.EventService;
 import service.GestionnaireCommandeService;
 import service.LoadService;
 import service.PropertiesService;
@@ -106,6 +109,7 @@ public class MainController implements Initializable {
 	private final PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
 	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
+	private final EventService eventService = ServiceManager.getInstance(EventService.class);
 
 	private final static double SCROLL_SPEED = 10;
 
@@ -212,6 +216,17 @@ public class MainController implements Initializable {
 		final var thread = new Thread(loadTask);
 		thread.setDaemon(true);
 		thread.start();
+		
+		// ------------
+		
+		eventService.addListener(EventEditJoueurClick.EVENT_EDIT_JOUEUR_CLICK, new EventHandlerEditJoueurClick() {
+			
+			@Override
+			public void handle(EventEditJoueurClick event) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	@FXML

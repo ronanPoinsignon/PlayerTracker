@@ -25,7 +25,9 @@ import javafx.scene.layout.Pane;
 import modele.affichage.PaneViewJoueurFx;
 import modele.event.mouse.MouseEventRegarder;
 import modele.event.mouse.MouseEventSuppression;
+import modele.event.tache.event.EventEditJoueurClick;
 import modele.joueur.JoueurFx;
+import service.EventService;
 import service.FileManager;
 import service.ServiceManager;
 
@@ -68,8 +70,9 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 	private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
 
 	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
+	private final EventService eventService = ServiceManager.getInstance(EventService.class);
 
-	private static final int ICON_SIZE = 24;
+	private static final int ICON_SIZE = 20;
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
@@ -99,6 +102,12 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		spectate.setOnMouseClicked(event -> {
 			pane.fireEvent(event);
 			new MouseEventRegarder((PaneViewJoueurFx) pane.getParent()).handle(event);
+		});
+		
+		edit.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> MouseButton.PRIMARY.equals(event.getButton()));
+		edit.setOnMouseClicked(event -> {
+			pane.fireEvent(event);
+			eventService.trigger(new EventEditJoueurClick(element.get()));
 		});
 
 		imageJoueur.imageProperty().bind(imageProperty);
