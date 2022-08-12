@@ -171,6 +171,7 @@ public class MainController implements Initializable {
 		closeTransition.setNode(modalAdd);
 		closeTransition.setOnFinished(evt -> {
 			modalAdd.setVisible(false);
+			isEditing.set(false);
 		});
 
 		// Modal
@@ -182,7 +183,11 @@ public class MainController implements Initializable {
 		modalAdd.setOnMousePressed(MouseEvent::consume);
 
 		// Formulaire d'ajout
-		modalAddTitle.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("menuItemAjouter")));
+		modalAddTitle.textProperty().bind(
+			Bindings.when(isEditing)
+			.then(new StringMajusculeBinding(dictionnaire.getText("menuItemModifier")))
+			.otherwise(new StringMajusculeBinding(dictionnaire.getText("menuItemAjouter")))
+		);
 		nameLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("nomPlaceHolder")));
 		pseudoLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("pseudoPlaceHolder")));
 		serverLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("colonneServeurLegende")));
@@ -254,7 +259,6 @@ public class MainController implements Initializable {
 	public void closeModal() {
 		closeTransition.play();
 		
-		isEditing.set(false);
 		nameInput.setText("");
 		pseudoInput.setText("");
 	}
