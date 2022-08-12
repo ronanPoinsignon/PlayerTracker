@@ -62,8 +62,14 @@ public class Partie {
 	
 	public String getDuree() {
 		final var diff = (System.currentTimeMillis() - startTime) / 1000L;
-		final var minutes = diff/60;
-		final var seconds = diff%60;
+		var minutes = diff/60+"";
+		var seconds = diff%60+"";
+				
+		if(minutes.length() == 1)
+			minutes = "0"+minutes;
+		
+		if(seconds.length() == 1)
+			seconds = "0"+seconds;
 		
 		return minutes+":"+seconds;
 	}
