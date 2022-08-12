@@ -18,7 +18,6 @@ public class Partie {
 		this.champion = champion;
 		this.game_type = game_type;
 		this.startTime = startTime;
-		System.out.println(startTime);
 	}
 
 	public String getGameId() {
@@ -59,6 +58,14 @@ public class Partie {
 
 	public void setStartTime(final long startTime) {
 		this.startTime = startTime;
+	}
+	
+	public String getDuree() {
+		final var diff = (System.currentTimeMillis() - startTime) / 1000L;
+		final var minutes = diff/60;
+		final var seconds = diff%60;
+		
+		return minutes+":"+seconds;
 	}
 
 }
