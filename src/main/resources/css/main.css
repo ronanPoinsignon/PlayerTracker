@@ -135,3 +135,18 @@
 .joueur-card .buttons .button:pressed:hover  {
 	
 }
+
+.joueur-card #game_pane {
+	-fx-background-color: #333;
+	-fx-border-color: #333;
+	-fx-text-fill: #fff;
+}
+
+.joueur-card #game_pane > .label{
+	-fx-text-fill: #fff;
+	-fx-font-size: 16px;
+}
+
+.joueur-card #game_pane #labelChampion {
+	-fx-font-weight: 700;
+}

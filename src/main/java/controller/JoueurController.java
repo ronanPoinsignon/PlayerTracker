@@ -4,6 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.Base64;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -65,12 +68,26 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 	@FXML
 	private Button delete;
+	
+	@FXML
+	private ImageView imageChampion;
+	
+	@FXML
+	private Label labelChampion;
+	
+	@FXML
+	private Label labelGameType;
+	
+	@FXML
+	private Label labelDuree;
 
 	private final BooleanProperty isConnecte = new SimpleBooleanProperty();
-	private final ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
+	private final ObjectProperty<Image> imageChampionProperty = new SimpleObjectProperty<>();
 
 	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
 	private final EventService eventService = ServiceManager.getInstance(EventService.class);
+	
+	private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 	private static final int ICON_SIZE = 20;
 
@@ -110,7 +127,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 			eventService.trigger(new EventEditJoueurClick(element.get()));
 		});
 
-		imageJoueur.imageProperty().bind(imageProperty);
+		imageChampion.imageProperty().bind(imageChampionProperty);
 		statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
 		spectate.disableProperty().bind(isConnecte.not());
 
@@ -133,9 +150,28 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 			final var image = tempImage;
 			Platform.runLater(() ->	{
-				imageProperty.setValue(element.getValue().isInGame() ? image : null);
+				imageChampionProperty.setValue(element.get().isInGame() ? image : null);
+				
+				if(element.get().isInGame()) {
+					labelChampion.setText(element.get().getPartie().getChampion().getChampionName());
+					labelGameType.setText(element.get().getPartie().getGameType());
+				}
+				else {
+					labelDuree.setText("");
+					labelChampion.setText("");
+					labelGameType.setText("");
+				}
 			});
+			
 		});
+		
+		scheduler.scheduleWithFixedDelay(() -> {
+			if(!isConnecte.get()) {
+				return;
+			}
+			
+			Platform.runLater(() -> labelDuree.setText(element.get().getPartie().getDuree()));
+		}, 0, 1, TimeUnit.SECONDS);
 	}
 
 	@Override
