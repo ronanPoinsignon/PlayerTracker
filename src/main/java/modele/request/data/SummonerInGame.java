@@ -8,6 +8,7 @@ public class SummonerInGame {
 	private String game_id;
 	private String encryption_key;
 	private String game_type;
+	private long start_time;
 	private String champion_name;
 	private String champion_image;
 
@@ -16,13 +17,14 @@ public class SummonerInGame {
 	}
 
 	public SummonerInGame(final String summoner_id, final String summoner_name, final boolean in_game, final String game_id,
-			final String encryption_key, final String game_type, final String champion_name, final String champion_image) {
+			final String encryption_key, final String game_type, final long start_time, final String champion_name, final String champion_image) {
 		this.summoner_id = summoner_id;
 		this.summoner_name = summoner_name;
 		this.in_game = in_game;
 		this.game_id = game_id;
 		this.encryption_key = encryption_key;
 		this.game_type = game_type;
+		this.start_time = start_time;
 		this.champion_name = champion_name;
 		this.champion_image = champion_image;
 	}
@@ -73,6 +75,14 @@ public class SummonerInGame {
 
 	public void setGame_type(final String game_type) {
 		this.game_type = game_type;
+	}
+	
+	public long getStart_time() {
+		return start_time;
+	}
+
+	public void setStart_time(final long start_time) {
+		this.start_time = start_time;
 	}
 
 	public String getChampion_name() {

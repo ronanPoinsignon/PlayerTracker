@@ -26,7 +26,7 @@ public abstract class RequestPlayerData implements Runnable {
 		}
 		joueur.setPseudo(summoner.getSummoner_name());
 		if(summoner.isIn_game()) {
-			joueur.setPartie(new Partie(summoner.getGame_id(), summoner.getEncryption_key(), new Champion(summoner.getChampion_name(), summoner.getChampion_image()), summoner.getGame_type()));
+			joueur.setPartie(new Partie(summoner.getGame_id(), summoner.getEncryption_key(), new Champion(summoner.getChampion_name(), summoner.getChampion_image()), summoner.getGame_type(),  summoner.getStart_time()));
 		}
 		// à faire en dernier pour ne déclencher le service de notification uniquement lorsque
 		// toutes les informations du joueurs ont été mises à jour
