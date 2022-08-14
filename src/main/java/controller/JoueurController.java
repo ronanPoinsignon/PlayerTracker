@@ -29,6 +29,7 @@ import modele.affichage.PaneViewJoueurFx;
 import modele.event.mouse.MouseEventRegarder;
 import modele.event.mouse.MouseEventSuppression;
 import modele.event.tache.event.EventEditJoueurClick;
+import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import service.EventService;
 import service.FileManager;
@@ -68,16 +69,16 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 	@FXML
 	private Button delete;
-	
+
 	@FXML
 	private ImageView imageChampion;
-	
+
 	@FXML
 	private Label labelChampion;
-	
+
 	@FXML
 	private Label labelGameType;
-	
+
 	@FXML
 	private Label labelDuree;
 
@@ -86,8 +87,8 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
 	private final EventService eventService = ServiceManager.getInstance(EventService.class);
-	
-	private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 	private static final int ICON_SIZE = 20;
 
@@ -120,7 +121,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 			pane.fireEvent(event);
 			new MouseEventRegarder((PaneViewJoueurFx) pane.getParent()).handle(event);
 		});
-		
+
 		edit.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> MouseButton.PRIMARY.equals(event.getButton()));
 		edit.setOnMouseClicked(event -> {
 			pane.fireEvent(event);
@@ -151,7 +152,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 			final var image = tempImage;
 			Platform.runLater(() ->	{
 				imageChampionProperty.setValue(element.get().isInGame() ? image : null);
-				
+
 				if(element.get().isInGame()) {
 					labelChampion.setText(element.get().getPartie().getChampion().getChampionName());
 					labelGameType.setText(element.get().getPartie().getGameType());
@@ -162,15 +163,15 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 					labelGameType.setText("");
 				}
 			});
-			
+
 		});
-		
+
 		scheduler.scheduleWithFixedDelay(() -> {
 			if(!isConnecte.get()) {
 				return;
 			}
-			
-			Platform.runLater(() -> labelDuree.setText(element.get().getPartie().getDuree()));
+
+			Platform.runLater(() -> labelDuree.setText(getDuree(element.get())));
 		}, 0, 1, TimeUnit.SECONDS);
 	}
 
@@ -190,4 +191,27 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		};
 	}
 
+	public String getDuree(final Joueur joueur) {
+		if(joueur == null) {
+			return "";
+		}
+		final var partie = joueur.getPartie();
+		if(partie == null) {
+			return "";
+		}
+		final var startTime = partie.getStartTime();
+		final var diff = (System.currentTimeMillis() - startTime) / 1000L;
+		var minutes = diff/60+"";
+		var seconds = diff%60+"";
+
+		if(minutes.length() == 1) {
+			minutes = "0"+minutes;
+		}
+
+		if(seconds.length() == 1) {
+			seconds = "0"+seconds;
+		}
+
+		return minutes+":"+seconds;
+	}
 }
