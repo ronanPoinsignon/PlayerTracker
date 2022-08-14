@@ -79,7 +79,7 @@ public class TrayIconService implements IService {
 	}
 
 	public void notifier(final Joueur joueur) {
-		if(!SystemTray.isSupported()) {
+		if(!SystemTray.isSupported() || stage.focusedProperty().getValue()) {
 			return;
 		}
 		final var t = new Thread(() -> trayIcon.showMessage(ps.get("application_name"), joueur.getAppellation() + " " + dictionnaire.getText("trayIconServiceEnJeu").getValue()));
