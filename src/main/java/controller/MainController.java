@@ -20,6 +20,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -33,6 +34,7 @@ import modele.affichage.PaneViewJoueurFx;
 import modele.affichage.propertyutil.impl.StringMajusculeBinding;
 import modele.commande.CommandeAjout;
 import modele.commande.CommandeModifier;
+import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
 import modele.event.tache.event.EventEditJoueurClick;
 import modele.joueur.JoueurFx;
@@ -97,7 +99,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Button addButton;
-	
+
 	@FXML
 	private Button editButton;
 
@@ -108,7 +110,7 @@ public class MainController implements Initializable {
 
 	private BooleanBinding openModalBinding;
 	private BooleanBinding closeModalBinding;
-	
+
 	private final BooleanProperty isEditing = new SimpleBooleanProperty();
 
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
@@ -130,7 +132,7 @@ public class MainController implements Initializable {
 		joueursContainer.setVisible(false);
 
 		addButton.disableProperty().bind(openModalBinding.not());
-		
+
 		addButton.visibleProperty().bind(isEditing.not());
 		editButton.visibleProperty().bind(isEditing);
 		pseudoInput.disableProperty().bind(isEditing);
@@ -184,10 +186,10 @@ public class MainController implements Initializable {
 
 		// Formulaire d'ajout
 		modalAddTitle.textProperty().bind(
-			Bindings.when(isEditing)
-			.then(new StringMajusculeBinding(dictionnaire.getText("menuItemModifier")))
-			.otherwise(new StringMajusculeBinding(dictionnaire.getText("menuItemAjouter")))
-		);
+				Bindings.when(isEditing)
+				.then(new StringMajusculeBinding(dictionnaire.getText("menuItemModifier")))
+				.otherwise(new StringMajusculeBinding(dictionnaire.getText("menuItemAjouter")))
+				);
 		nameLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("nomPlaceHolder")));
 		pseudoLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("pseudoPlaceHolder")));
 		serverLabel.textProperty().bind(new StringMajusculeBinding(dictionnaire.getText("colonneServeurLegende")));
@@ -231,23 +233,26 @@ public class MainController implements Initializable {
 		final var thread = new Thread(loadTask);
 		thread.setDaemon(true);
 		thread.start();
-		
+
 		// Modification
-		
+
 		editButton.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> MouseButton.PRIMARY.equals(evt.getButton()));
 		editButton.setOnAction(this::editJoueur);
-		
+
 		eventService.addListener(EventEditJoueurClick.EVENT_EDIT_JOUEUR_CLICK, event -> {
 			final var joueur = event.getJoueur();
 			pseudoInput.setText(joueur.getPseudo());
 			nameInput.setText(joueur.getNom());
 			serverInput.setValue(joueur.getServer());
 			isEditing.set(true);
-			
+
 			if(closeModalBinding.get() && !isTransitionRunningProperty.get()) {
 				openModal();
 			}
 		});
+
+		mainContainer.addEventHandler(KeyEvent.KEY_PRESSED, new ClavierEventHandler(joueursContainer));
+
 	}
 
 	@FXML
@@ -258,7 +263,7 @@ public class MainController implements Initializable {
 
 	public void closeModal() {
 		closeTransition.play();
-		
+
 		nameInput.setText("");
 		pseudoInput.setText("");
 	}
@@ -283,19 +288,19 @@ public class MainController implements Initializable {
 		closeModal();
 
 	}
-	
+
 	public void editJoueur(final ActionEvent event) {
 		final var joueur = joueursContainer.getItems().get(joueursContainer.getSelectedIndex());
 
 		var nom = nameInput.getText();
 		final var pseudo = joueur.getPseudo();
-		
+
 		if(nom.isEmpty()) {
 			nom = pseudo;
 		}
-		
+
 		gestionnaireCommandeService.addCommande(new CommandeModifier(joueur, nom, pseudo, joueur.getServer())).executer();
-		
+
 		closeModal();
 	}
 
