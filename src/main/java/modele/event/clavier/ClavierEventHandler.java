@@ -46,8 +46,6 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 		keyFunctionMap.put(ClavierEventHandler.COPIER, this::copier);
 		keyFunctionMap.put(ClavierEventHandler.COLLER, this::coller);
 		keyFunctionMap.put(ClavierEventHandler.SUPPRIMER, this::supprimer);
-		keyFunctionMap.put(ClavierEventHandler.INVERSER_HAUT, this::swapUp);
-		keyFunctionMap.put(ClavierEventHandler.INVERSER_BAS, this::swapDown);
 		keyFunctionMap.put(ClavierEventHandler.ANNULER_ACTION, this::annuler);
 		keyFunctionMap.put(ClavierEventHandler.REEXECUTER_ACTION, this::reexecuter);
 	}
