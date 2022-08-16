@@ -62,21 +62,21 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 
 	private void setOnChangeEvent(final Change<? extends T> change) {
 		change.next();
-		
+
 		IStrategiePaneViewElement<T> strategie;
-		
+
 		if(change.wasAdded()) {
-			strategie = new StrategieAjout<T>(this);
-			
+			strategie = new StrategieAjout<>(this);
+
 			change.getAddedSubList().stream().forEach(strategie::execute);
 		}
 
 		if(change.wasRemoved()) {
-			strategie = new StrategieSuppression<T>(this);
+			strategie = new StrategieSuppression<>(this);
 
 			change.getRemoved().stream().forEach(strategie::execute);
 		}
-		
+
 	}
 
 	public void insertValueBasedOnSort(final Pane paneElement) {
@@ -131,13 +131,13 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	public List<T> getItems() {
 		return elements;
 	}
-	
+
 	public void selectItem(final Pane pane) {
 		index = elements.indexOf(paneMap.get(pane));
 	}
 
-	public void setSort(final Comparator<T> sort) {
-		this.sort.setComparator(sort);
+	public void setSort(final Comparator<T> comparator) {
+		this.sort.setComparator(comparator);
 		updateSort();
 	}
 
@@ -152,7 +152,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	public Map<Pane, T> getPaneMap() {
 		return paneMap;
 	}
-	
+
 	public List<Pane> getSortedPane() {
 		return sortedPane;
 	}
