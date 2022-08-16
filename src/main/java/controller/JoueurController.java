@@ -112,24 +112,36 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		edit.setGraphic(editImage);
 		delete.setGraphic(deleteImage);
 
-		delete.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> MouseButton.PRIMARY.equals(event.getButton()));
+		delete.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+			if(!MouseButton.PRIMARY.equals(event.getButton())) {
+				event.consume();
+			}
+		});
 		delete.setOnMouseClicked(event -> {
 			pane.fireEvent(event);
 			new MouseEventSuppression((PaneViewJoueurFx) pane.getParent()).handle(event);
 		});
 
-		spectate.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> MouseButton.PRIMARY.equals(event.getButton()));
+		spectate.addEventFilter(MouseEvent.MOUSE_CLICKED,event -> {
+			if(!MouseButton.PRIMARY.equals(event.getButton())) {
+				event.consume();
+			}
+		});
 		spectate.setOnMouseClicked(event -> {
 			pane.fireEvent(event);
 			new MouseEventRegarder((PaneViewJoueurFx) pane.getParent()).handle(event);
 		});
 
-		edit.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> MouseButton.PRIMARY.equals(event.getButton()));
+		edit.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+			if(!MouseButton.PRIMARY.equals(event.getButton())) {
+				event.consume();
+			}
+		});
 		edit.setOnMouseClicked(event -> {
 			pane.fireEvent(event);
 			eventService.trigger(new EventEditJoueurClick(element.get()));
 		});
-		
+
 		eventService.addListener(EventJoueurEdited.EVENT_JOUEUR_EDITED, event -> {
 			sortPaneView();
 		});
@@ -169,7 +181,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 					labelGameType.setText("");
 				}
 			});
-			
+
 			sortPaneView();
 		});
 
@@ -213,13 +225,14 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 		return String.format("%02d:%02d", duration.toMinutes(), duration.toSecondsPart());
 	}
-	
+
 	public void sortPaneView() {
 		final var paneView = (PaneViewJoueurFx) pane.getParent();
-		
-		if(paneView == null)
+
+		if(paneView == null) {
 			return;
-		
+		}
+
 		paneView.updateSort();
 	}
 }
