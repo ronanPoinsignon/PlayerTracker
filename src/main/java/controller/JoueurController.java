@@ -2,6 +2,7 @@ package controller;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
@@ -195,23 +196,15 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		if(joueur == null) {
 			return "";
 		}
+
 		final var partie = joueur.getPartie();
 		if(partie == null) {
 			return "";
 		}
-		final var startTime = partie.getStartTime();
-		final var diff = (System.currentTimeMillis() - startTime) / 1000L;
-		var minutes = diff/60+"";
-		var seconds = diff%60+"";
 
-		if(minutes.length() == 1) {
-			minutes = "0"+minutes;
-		}
+		final var diff = System.currentTimeMillis() - partie.getStartTime();
+		final var duration = Duration.ofMillis(diff);
 
-		if(seconds.length() == 1) {
-			seconds = "0"+seconds;
-		}
-
-		return minutes+":"+seconds;
+		return String.format("%02d:%02d", duration.toMinutes(), duration.toSecondsPart());
 	}
 }
