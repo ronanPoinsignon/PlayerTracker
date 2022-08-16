@@ -43,7 +43,7 @@ public class Partie {
 	public void setChampion(final Champion champion) {
 		this.champion = champion;
 	}
-	
+
 	public String getGameType() {
 		return game_type;
 	}
@@ -51,27 +51,13 @@ public class Partie {
 	public void setGameType(final String game_type) {
 		this.game_type = game_type;
 	}
-	
+
 	public long getStartTime() {
 		return startTime;
 	}
 
 	public void setStartTime(final long startTime) {
 		this.startTime = startTime;
-	}
-	
-	public String getDuree() {
-		final var diff = (System.currentTimeMillis() - startTime) / 1000L;
-		var minutes = diff/60+"";
-		var seconds = diff%60+"";
-				
-		if(minutes.length() == 1)
-			minutes = "0"+minutes;
-		
-		if(seconds.length() == 1)
-			seconds = "0"+seconds;
-		
-		return minutes+":"+seconds;
 	}
 
 }

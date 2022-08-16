@@ -102,36 +102,42 @@ public class JoueurFx extends Joueur {
 	@Override
 	public void setNom(final String nom) {
 		super.setNom(nom);
+		joueur.setNom(nom);
 		Platform.runLater(() -> nomProperty.set(nom));
 	}
 
 	@Override
 	public void setPseudo(final String pseudo) {
 		super.setPseudo(pseudo);
+		joueur.setPseudo(pseudo);
 		Platform.runLater(() -> pseudoProperty.set(pseudo));
 	}
 
 	@Override
 	public void setPlayerId(final String playerId) {
 		super.setPlayerId(playerId);
+		joueur.setPlayerId(playerId);
 		Platform.runLater(() -> idProperty.set(playerId));
 	}
 
 	@Override
 	public void setInGame(final boolean connected) {
 		super.setInGame(connected);
+		joueur.setInGame(connected);
 		Platform.runLater(() -> isConnecteProperty.set(connected));
 	}
 
 	@Override
 	public void setServer(final Serveur server) {
 		super.setServer(server);
+		joueur.setServer(server);
 		Platform.runLater(() -> serverNameProperty.set(server != null ? server.getServerId() : ""));
 	}
-	
+
 	@Override
 	public void setPartie(final Partie partie) {
 		super.setPartie(partie);
+		joueur.setPartie(partie);
 		gameTypeProperty.set(partie != null ? partie.getGameType() : "");
 	}
 

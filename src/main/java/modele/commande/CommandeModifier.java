@@ -3,8 +3,12 @@ package modele.commande;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
+import service.SaveService;
+import service.ServiceManager;
 
 public class CommandeModifier extends Commande<JoueurFx> {
+
+	private final SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
 	private final Joueur joueur;
 
@@ -33,6 +37,7 @@ public class CommandeModifier extends Commande<JoueurFx> {
 		joueur.setNom(nomModif);
 		joueur.setPseudo(pseudoModif);
 		joueur.setServer(serveurModif);
+		saveService.save();
 		return true;
 	}
 
@@ -41,6 +46,7 @@ public class CommandeModifier extends Commande<JoueurFx> {
 		joueur.setNom(ancienNom);
 		joueur.setPseudo(ancienPseudo);
 		joueur.setServer(ancienServeur);
+		saveService.save();
 		return true;
 	}
 

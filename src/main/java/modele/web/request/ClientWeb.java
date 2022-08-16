@@ -31,6 +31,9 @@ public class ClientWeb<T> {
 		if(response.statusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
 			throw new DataNotFoundException();
 		}
+		if(response.statusCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+			throw new InternalErrorServerException();
+		}
 		return response.body().get();
 	}
 
