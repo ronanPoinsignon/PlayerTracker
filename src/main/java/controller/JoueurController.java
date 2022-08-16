@@ -30,6 +30,7 @@ import modele.affichage.PaneViewJoueurFx;
 import modele.event.mouse.MouseEventRegarder;
 import modele.event.mouse.MouseEventSuppression;
 import modele.event.tache.event.EventEditJoueurClick;
+import modele.event.tache.event.EventJoueurEdited;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import service.EventService;
@@ -128,6 +129,10 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 			pane.fireEvent(event);
 			eventService.trigger(new EventEditJoueurClick(element.get()));
 		});
+		
+		eventService.addListener(EventJoueurEdited.EVENT_JOUEUR_EDITED, event -> {
+			sortPaneView();
+		});
 
 		imageChampion.imageProperty().bind(imageChampionProperty);
 		statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
@@ -149,7 +154,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 				final var bis = new ByteArrayInputStream(imageBytes);
 				tempImage = new Image(bis);
 				
-				((PaneViewJoueurFx) pane.getParent()).updateSort();
+				sortPaneView();
 			}
 
 			final var image = tempImage;
@@ -208,5 +213,14 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		final var duration = Duration.ofMillis(diff);
 
 		return String.format("%02d:%02d", duration.toMinutes(), duration.toSecondsPart());
+	}
+	
+	public void sortPaneView() {
+		final var paneView = (PaneViewJoueurFx) pane.getParent();
+		
+		if(paneView == null)
+			return;
+		
+		paneView.updateSort();
 	}
 }

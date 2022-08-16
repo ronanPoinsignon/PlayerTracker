@@ -37,6 +37,7 @@ import modele.commande.CommandeModifier;
 import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
 import modele.event.tache.event.EventEditJoueurClick;
+import modele.event.tache.event.EventJoueurEdited;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import service.DictionnaireService;
@@ -300,6 +301,7 @@ public class MainController implements Initializable {
 		}
 
 		gestionnaireCommandeService.addCommande(new CommandeModifier(joueur, nom, pseudo, joueur.getServer())).executer();
+		eventService.trigger(new EventJoueurEdited(joueur));
 
 		closeModal();
 	}
