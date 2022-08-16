@@ -148,6 +148,8 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 				final var imageBytes = decoder.decode(element.get().getPartie().getChampion().getBase64ChampionImage());
 				final var bis = new ByteArrayInputStream(imageBytes);
 				tempImage = new Image(bis);
+				
+				((PaneViewJoueurFx) pane.getParent()).updateSort();
 			}
 
 			final var image = tempImage;

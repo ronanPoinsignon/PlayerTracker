@@ -33,7 +33,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 
 	private int index;
 	private final Map<Pane, T> paneMap = new HashMap<>();
-	private final SortedInsert<Node> sort = new SortedInsert<>();
+	private final SortedInsert<T> sort = new SortedInsert<>();
 	private final ObservableList<T> elements = FXCollections.observableArrayList(new ArrayList<>());
 	private final List<Pane> sortedPane = new ArrayList<>();
 
@@ -80,11 +80,11 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	}
 
 	public void insertValueBasedOnSort(final Pane paneElement) {
-		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(pane -> (Node) pane).collect(Collectors.toList()), paneElement);
+		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(paneMap::get).collect(Collectors.toList()), paneMap.get(paneElement));
 
 		final var oldChild = (Pane) setChild(paneElement, index);
 
-		sortedPane.sort(sort.getComparator());
+		sortedPane.sort((pane1, pane2) -> sort.getComparator().compare(paneMap.get(pane1), paneMap.get(pane2)));
 
 		if(oldChild == null || oldChild == paneElement) {
 			return;
@@ -136,7 +136,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 		index = elements.indexOf(paneMap.get(pane));
 	}
 
-	public void setSort(final Comparator<Node> sort) {
+	public void setSort(final Comparator<T> sort) {
 		this.sort.setComparator(sort);
 		updateSort();
 	}
