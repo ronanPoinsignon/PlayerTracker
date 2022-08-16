@@ -153,8 +153,6 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 				final var imageBytes = decoder.decode(element.get().getPartie().getChampion().getBase64ChampionImage());
 				final var bis = new ByteArrayInputStream(imageBytes);
 				tempImage = new Image(bis);
-				
-				sortPaneView();
 			}
 
 			final var image = tempImage;
@@ -171,7 +169,8 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 					labelGameType.setText("");
 				}
 			});
-
+			
+			sortPaneView();
 		});
 
 		scheduler.scheduleWithFixedDelay(() -> {
