@@ -1,6 +1,7 @@
 package modele.commande;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.scene.control.TableView;
 import modele.joueur.JoueurFx;
@@ -35,8 +36,8 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 		elements.stream().forEach(joueurFx -> {
 			trayIconService.bind(joueurFx);
 			scheduler.addJoueur(joueurFx);
-			saveService.addJoueur(joueurFx.getJoueur());
 		});
+		saveService.addJoueurs(elements.stream().map(JoueurFx::getJoueur).collect(Collectors.toList()));
 		scheduler.executeNow(elements);
 		return !elements.isEmpty(); //si cette liste est vide, aucun joueur n'a donc été ajouté et cette commande est donc inutile
 	}
@@ -47,8 +48,8 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 		elements.forEach(joueurFx -> {
 			trayIconService.unbind(joueurFx);
 			scheduler.removeJoueur(joueurFx);
-			saveService.removeJoueur(joueurFx.getJoueur());
 		});
+		saveService.removeJoueurs(elements.stream().map(JoueurFx::getJoueur).collect(Collectors.toList()));
 		return !elements.isEmpty();
 	}
 
@@ -58,8 +59,8 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 		elements.forEach(joueurFx -> {
 			trayIconService.bind(joueurFx);
 			scheduler.addJoueur(joueurFx);
-			saveService.addJoueur(joueurFx.getJoueur());
 		});
+		saveService.addJoueurs(elements.stream().map(JoueurFx::getJoueur).collect(Collectors.toList()));
 		return !elements.isEmpty();
 	}
 }

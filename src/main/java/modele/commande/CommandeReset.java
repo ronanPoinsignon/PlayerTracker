@@ -2,6 +2,7 @@ package modele.commande;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.scene.control.TableView;
 import modele.joueur.JoueurFx;
@@ -35,8 +36,8 @@ public class CommandeReset extends CommandeListe<JoueurFx> {
 		listeJoueursSupprimes.forEach(joueurFx -> {
 			trayIconService.unbind(joueurFx);
 			scheduler.removeJoueur(joueurFx);
-			saveService.removeJoueur(joueurFx.getJoueur());
 		});
+		saveService.removeJoueurs(elements.stream().map(JoueurFx::getJoueur).collect(Collectors.toList()));
 		return !elements.isEmpty();
 	}
 
@@ -47,8 +48,8 @@ public class CommandeReset extends CommandeListe<JoueurFx> {
 		listeJoueursSupprimes.forEach(joueurFx -> {
 			trayIconService.bind(joueurFx);
 			scheduler.addJoueur(joueurFx);
-			saveService.addJoueur(joueurFx.getJoueur());
 		});
+		saveService.addJoueurs(elements.stream().map(JoueurFx::getJoueur).collect(Collectors.toList()));
 		return !elements.isEmpty();
 	}
 
