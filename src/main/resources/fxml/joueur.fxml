@@ -10,15 +10,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="300.0" styleClass="joueur-card" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.JoueurController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0" prefWidth="300.0" styleClass="joueur-card" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.JoueurController">
    <children>
-      <Label fx:id="nom" layoutX="50.0" layoutY="33.0" text="Nom" />
-      <Label fx:id="pseudo" layoutX="50.0" layoutY="53.0" text="Pseudo" />
-      <Label fx:id="serveur" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutY="33.0" prefHeight="20.0" prefWidth="285.0" text="Serveur" textAlignment="RIGHT" />
-      <ImageView fx:id="imageStatut" fitHeight="18.0" fitWidth="18.0" layoutX="15.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="statut" layoutX="50.0" layoutY="78.0" text="Statut" />
-      <ImageView fx:id="imageJoueur" fitHeight="36.0" fitWidth="36.0" layoutX="15.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
-      <GridPane fx:id="buttons" layoutX="15.0" layoutY="165.0" prefHeight="48.0" prefWidth="270.0" styleClass="buttons">
+      <Label fx:id="nom" layoutX="50.0" layoutY="13.0" text="Nom" />
+      <Label fx:id="pseudo" layoutX="50.0" layoutY="33.0" text="Pseudo" />
+      <Label fx:id="serveur" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutY="13.0" prefHeight="20.0" prefWidth="285.0" text="Serveur" textAlignment="RIGHT" />
+      <ImageView fx:id="imageStatut" fitHeight="18.0" fitWidth="18.0" layoutX="15.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="statut" layoutX="50.0" layoutY="58.0" text="Statut" />
+      <ImageView fx:id="imageJoueur" fitHeight="32.0" fitWidth="32.0" layoutX="10.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+      <GridPane fx:id="buttons" layoutX="15.0" layoutY="150.0" prefHeight="48.0" prefWidth="270.0" styleClass="buttons">
          <columnConstraints>
             <ColumnConstraints />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.0" />
@@ -34,7 +34,7 @@
             <Button fx:id="delete" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
-      <StackPane fx:id="game_pane" layoutX="15.0" layoutY="115.0" prefHeight="45.0" prefWidth="270.0">
+      <StackPane fx:id="game_pane" layoutX="15.0" layoutY="95.0" prefHeight="45.0" prefWidth="270.0">
          <children>
             <Label fx:id="labelGameType" StackPane.alignment="BOTTOM_LEFT">
                <StackPane.margin>

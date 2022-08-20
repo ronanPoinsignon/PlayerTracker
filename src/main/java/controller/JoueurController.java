@@ -86,6 +86,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 	private final BooleanProperty isConnecte = new SimpleBooleanProperty();
 	private final ObjectProperty<Image> imageChampionProperty = new SimpleObjectProperty<>();
+	private final ObjectProperty<Image> imageJoueurProperty = new SimpleObjectProperty<>();
 
 	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
 	private final EventService eventService = ServiceManager.getInstance(EventService.class);
@@ -161,10 +162,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 			Image tempImage = null;
 
 			if(element.getValue().isInGame()) {
-				final var decoder = Base64.getDecoder();
-				final var imageBytes = decoder.decode(element.get().getPartie().getChampion().getBase64ChampionImage());
-				final var bis = new ByteArrayInputStream(imageBytes);
-				tempImage = new Image(bis);
+				tempImage = decodeImage(element.get().getPartie().getChampion().getBase64ChampionImage());
 			}
 
 			final var image = tempImage;
@@ -207,6 +205,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 			nom.textProperty().bind(newV.getNomProperty());
 			pseudo.textProperty().bind(newV.getPseudoProperty());
 			serveur.textProperty().bind(Bindings.when(newV.getServerProperty().isNotNull()).then(newV.getServer().getLabel()).otherwise(""));
+			imageJoueur.setImage(decodeImage(newV.getBase64Icon()));
 		};
 	}
 
@@ -234,5 +233,15 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		}
 
 		paneView.updateSort();
+	}
+	
+	private Image decodeImage(String base64encoded) {
+		if(base64encoded == null)
+			return null;
+		
+		final var decoder = Base64.getDecoder();
+		final var imageBytes = decoder.decode(base64encoded);
+		final var bis = new ByteArrayInputStream(imageBytes);
+		return new Image(bis);
 	}
 }

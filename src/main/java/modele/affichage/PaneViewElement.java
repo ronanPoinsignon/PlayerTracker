@@ -40,7 +40,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	private final List<Pane> sortedPane = new ArrayList<>();
 
 	protected static final int WIDTH = 300;
-	protected static final int HEIGHT = 230;
+	protected static final int HEIGHT = 210;
 	protected static final int WIDTH_PADDING = 40;
 	protected static final int HEIGHT_PADDING = 30;
 	protected static final int ELEMENTS_PER_ROW = 3;
