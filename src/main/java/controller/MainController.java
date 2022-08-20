@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.animation.Animation.Status;
@@ -23,7 +24,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
@@ -32,12 +32,17 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 import modele.affichage.PaneViewJoueurFx;
 import modele.affichage.propertyutil.impl.StringMajusculeBinding;
+import modele.affichage.sortstrategy.NameSort;
+import modele.affichage.sortstrategy.PseudoSort;
+import modele.affichage.sortstrategy.ServerSort;
+import modele.affichage.sortstrategy.SortStrategy;
 import modele.commande.CommandeAjout;
 import modele.commande.CommandeModifier;
 import modele.event.clavier.ClavierEventHandler;
 import modele.event.eventaction.AddEvent;
 import modele.event.tache.event.EventEditJoueurClick;
 import modele.event.tache.event.EventJoueurEdited;
+import modele.event.tache.event.EventSortSelect;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import service.DictionnaireService;
@@ -56,10 +61,16 @@ public class MainController implements Initializable {
 	private StackPane mainContainer;
 
 	@FXML
-	private AnchorPane anchor;
+	private GridPane gridpane;
 
 	@FXML
 	private ScrollPane scrollpane;
+	
+	@FXML
+	private Label labelSort;
+	
+	@FXML
+	private ChoiceBox<SortStrategy<JoueurFx>> sortSelect;
 
 	private PaneViewJoueurFx joueursContainer;
 
@@ -139,25 +150,54 @@ public class MainController implements Initializable {
 		pseudoInput.disableProperty().bind(isEditing);
 		serverInput.disableProperty().bind(isEditing);
 		isEditing.set(false);
+		
+		//SortSelect
+		sortSelect.setItems(
+			FXCollections.observableList(
+				List.of(
+					new NameSort<JoueurFx>(), 
+					new PseudoSort<JoueurFx>(),
+					new ServerSort<JoueurFx>()
+				)
+			)
+		);
+		sortSelect.setValue(sortSelect.getItems().get(0));
+		sortSelect.setConverter(new StringConverter<SortStrategy<JoueurFx>>() {
+
+			@Override
+			public String toString(SortStrategy<JoueurFx> object) {
+				return object.getLabelProperty().get();
+			}
+
+			@Override
+			public SortStrategy<JoueurFx> fromString(String string) {
+				return sortSelect.getItems().stream().filter(strategy -> strategy.getLabelProperty().get().equals(string)).findFirst().orElse(null);
+			}
+			
+		});
+		sortSelect.setOnAction(evt -> {
+			eventService.trigger(new EventSortSelect(sortSelect.getValue()));
+		});
+		
+		labelSort.textProperty().bind(dictionnaire.getText("labelSort"));
 
 		//Scrollbar
 
-		anchor.getChildren().add(joueursContainer);
+		gridpane.add(joueursContainer, 0, 1);
 
-		anchor.prefHeightProperty().bind(joueursContainer.prefHeightProperty());
+		gridpane.prefHeightProperty().bind(joueursContainer.prefHeightProperty());
 
 		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scrollpane.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> {
-			if (!MouseButton.PRIMARY.equals(evt.getButton()) || closeModalBinding.getValue()) {
+			if (!MouseButton.PRIMARY.equals(evt.getButton())) {
 				evt.consume();
 			}
 		});
 		scrollpane.setOnMousePressed(event -> {
 			closeModal();
-			event.consume();
 		});
 		scrollpane.vbarPolicyProperty().bind(
-				Bindings.when(anchor.heightProperty().greaterThan(scrollpane.minHeightProperty()))
+				Bindings.when(gridpane.heightProperty().greaterThan(scrollpane.minHeightProperty()))
 				.then(ScrollBarPolicy.ALWAYS)
 				.otherwise(ScrollBarPolicy.NEVER));
 
@@ -258,11 +298,17 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void openModal() {
+		if(openModalBinding.get())
+			return;
+		
 		modalAdd.setVisible(true);
 		openTransition.play();
 	}
 
 	public void closeModal() {
+		if(closeModalBinding.get())
+			return;
+		
 		closeTransition.play();
 
 		nameInput.setText("");

@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 
 import javafx.fxml.FXMLLoader;
 import modele.affichage.sortstrategy.NameSort;
+import modele.event.tache.event.EventSortSelect;
 import modele.joueur.JoueurFx;
 
 public class PaneViewJoueurFx extends PaneViewElement<JoueurFx> {
@@ -12,6 +13,7 @@ public class PaneViewJoueurFx extends PaneViewElement<JoueurFx> {
 		setId("joueursContainer");
 
 		setSort(new NameSort<JoueurFx>());
+		eventService.addListener(EventSortSelect.EVENT_SORT_SELECT, evt -> setSort(evt.getSort()));
 	}
 
 	@Override

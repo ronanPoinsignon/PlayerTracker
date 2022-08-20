@@ -24,12 +24,14 @@ import modele.affichage.sort.SortedInsert;
 import modele.affichage.strategie.IStrategiePaneViewElement;
 import modele.affichage.strategie.StrategieAjout;
 import modele.affichage.strategie.StrategieSuppression;
+import service.EventService;
 import service.FileManager;
 import service.ServiceManager;
 
 public abstract class PaneViewElement<T> extends GridPane implements ViewElement<T> {
 
 	protected final FileManager fm = ServiceManager.getInstance(FileManager.class);
+	protected final EventService eventService = ServiceManager.getInstance(EventService.class);
 
 	private int index;
 	private final Map<Pane, T> paneMap = new HashMap<>();
@@ -38,7 +40,7 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 	private final List<Pane> sortedPane = new ArrayList<>();
 
 	protected static final int WIDTH = 300;
-	protected static final int HEIGHT = 250;
+	protected static final int HEIGHT = 230;
 	protected static final int WIDTH_PADDING = 40;
 	protected static final int HEIGHT_PADDING = 30;
 	protected static final int ELEMENTS_PER_ROW = 3;

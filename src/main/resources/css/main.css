@@ -27,8 +27,16 @@
 	
 }
 
-#anchor {
+.label {
+	-fx-text-fill: #fff;
+}
+
+#gridpane {
 	-fx-background-color: #333;
+}
+
+#labelSort {
+	-fx-font-size: 18px
 }
 
 #joueursContainer {
@@ -59,6 +67,26 @@
 	
 }
 
+.choice-box {
+	-fx-faint-focus-color: #666;
+	-fx-focus-color: #777;
+	-fx-control-inner-background: #666;
+	-fx-selection-bar: #777;
+	-fx-selection-bar-text-fill: #fff;
+	-fx-background-color: #666;
+	-fx-border-color: #666;
+	-fx-text-fill: #fff;
+	-fx-border-width: 1px;
+	-fx-pref-height: 28px;
+	-fx-min-height: 28px;
+	-fx-max-height: 28px;
+	-fx-font-size: 14px;
+}
+
+.choice-box .label, .choice-box .label .text, .choice-box .arrow, .check-menu-item:checked > .left-container > .check {
+	-fx-text-fill: #fff;
+}
+
 #modalAdd {
 	-fx-background-color: #444;
 	-fx-border-color: #777;
@@ -80,17 +108,6 @@
 	-fx-font-size: 14px;
 }
 
-#modalAdd #serverInput {
-	-fx-faint-focus-color: #666;
-	-fx-focus-color: #777;
-	-fx-control-inner-background: #666;
-	-fx-selection-bar: #777;
-	-fx-selection-bar-text-fill: #fff;
-}
-
-#modalAdd #serverInput .label, #modalAdd #serverInput .label .text, #modalAdd #serverInput .arrow, .check-menu-item:checked > .left-container > .check {
-	-fx-text-fill: #fff;
-}
 
 #modalAdd #nameLabel, #modalAdd #pseudoLabel, #modalAdd #serverLabel {
 	-fx-text-fill: #fff;
