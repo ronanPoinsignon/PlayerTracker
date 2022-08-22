@@ -86,7 +86,6 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 	private final BooleanProperty isConnecte = new SimpleBooleanProperty();
 	private final ObjectProperty<Image> imageChampionProperty = new SimpleObjectProperty<>();
-	private final ObjectProperty<Image> imageJoueurProperty = new SimpleObjectProperty<>();
 
 	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
 	private final EventService eventService = ServiceManager.getInstance(EventService.class);

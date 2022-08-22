@@ -1,13 +1,10 @@
 package controller;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.TranslateTransition;
@@ -17,6 +14,7 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -270,42 +268,40 @@ public class MainController implements Initializable {
 
 			final var t = new Thread(() -> {
 				
-				final var pool = Executors.newFixedThreadPool(joueurs.size());
-				final List<Future<JoueurFx>> results = new ArrayList<>();
-				joueurs.stream()
-				.map(JoueurFx::new)
-				.forEach(joueur -> {
-					final var task = new TacheCharger(joueur.getNom(), joueur.getPseudo(), joueur.getServer());
-					results.add(pool.submit(task, joueur));
-				});
-				
-				try {
-					pool.shutdown();
-					pool.awaitTermination(300, TimeUnit.SECONDS);
-				} catch (InterruptedException e) {
+				final var task = new Task<List<CommandeAjout>>() {
+
+					@Override
+					protected List<CommandeAjout> call() throws Exception {
+						final var tasks = joueurs.stream()
+						.map(joueur -> new TacheCharger(joueur.getNom(), joueur.getPseudo(), joueur.getServer()))
+						.collect(Collectors.toList());
+						
+						tasks.forEach(TacheCharger::run);
+														
+						return tasks.stream()
+						.map(tache -> {
+							try {
+								return tache.get();
+							} catch (InterruptedException | ExecutionException e) {
+								return null;
+							}
+						})
+						.map(joueur -> new CommandeAjout(joueursContainer, joueur))
+						.collect(Collectors.toList());
+					}
 					
-				}
-				
-				Platform.runLater(() -> {
-					results.stream()
-					.map(future -> {
-						try {
-							return future.get();
-						} catch (InterruptedException e) {
-							return null;
-						} catch (ExecutionException e) {
-							return null;
-						}
-					})
-					.filter(joueur -> joueur != null)
-					.map(joueur -> new CommandeAjout(joueursContainer, joueur))
-					.forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
-		
-					gestionnaireCommandeService.viderCommandes();
-					
-					mainContainer.getChildren().remove(loading);
-					joueursContainer.setVisible(true);
+				};
+				task.setOnSucceeded(evt -> {
+					Platform.runLater(() -> {
+						task.getValue().forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
+						
+						gestionnaireCommandeService.viderCommandes();
+						
+						mainContainer.getChildren().remove(loading);
+						joueursContainer.setVisible(true);
+					});
 				});
+				task.run();
 			});
 			
 			t.setDaemon(true);
