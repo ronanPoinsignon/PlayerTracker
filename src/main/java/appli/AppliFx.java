@@ -40,6 +40,11 @@ public class AppliFx extends Application {
 		
 		stage.getIcons().add(fm.getImageFromResource("images/icon.png"));
 		stage.setTitle(ps.get("application_name"));
+		stage.setMinWidth(400);
+		stage.setMinHeight(600);
+		
+		stage.setWidth(1100);
+		stage.setHeight(700);
 		
 		final var file = fm.getFileFromResources("fxml/main.fxml");
 		final var loader = new FXMLLoader(file.toURI().toURL());

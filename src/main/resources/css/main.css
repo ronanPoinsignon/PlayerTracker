@@ -7,6 +7,10 @@
 	-fx-font-family: "Calibri";
 }
 
+.scroll-bar:vertical {
+    -fx-pref-width: 15px;
+}
+
 #mainContainer {
 	
 }
@@ -47,24 +51,15 @@
 	-fx-progress-color: -fx-main-color;
 }
 
-#open_modal, #text_circle {
-	position: fixed;
-}
-
-#text_circle {
-	-fx-font-size: 72px;
-}
-
 .float-button {
-	-fx-fill: -fx-secondary-mid;
-}
-
-.float-button:hover {
-	-fx-fill: -fx-secondary-dark;
-}
-
-.float-button:pressed:hover {
-	
+	position: fixed;
+	-fx-font-family: "Verdana";
+	-fx-font-size: 64px;
+	-fx-border-radius: 56px;
+	-fx-background-radius: 56px;
+	-fx-pref-width: 56px;
+	-fx-pref-height: 56px;
+	-fx-padding: -0.25em 0 -0.2em 0;
 }
 
 .choice-box {
@@ -147,10 +142,6 @@
 	-fx-background-radius: 50px;
 	-fx-pref-width: 48px;
 	-fx-pref-height: 48px;
-}
-
-.joueur-card .buttons .button:pressed:hover  {
-	
 }
 
 .joueur-card #game_pane {

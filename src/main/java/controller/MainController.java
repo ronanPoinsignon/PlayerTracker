@@ -30,7 +30,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
@@ -57,6 +56,7 @@ import service.LoadService;
 import service.PropertiesService;
 import service.ServerManager;
 import service.ServiceManager;
+import service.StageManager;
 
 public class MainController implements Initializable {
 
@@ -80,7 +80,7 @@ public class MainController implements Initializable {
 	private PaneViewJoueurFx joueursContainer;
 
 	@FXML
-	private Circle open_modal;
+	private Button open_modal;
 
 	@FXML
 	private Text text_circle;
@@ -136,11 +136,15 @@ public class MainController implements Initializable {
 	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private final EventService eventService = ServiceManager.getInstance(EventService.class);
+	private final StageManager stageManager = ServiceManager.getInstance(StageManager.class);
 
 	private final static double SCROLL_SPEED = 10;
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
+		
+		mainContainer.prefHeightProperty().bind(stageManager.getCurrentStage().heightProperty());
+		mainContainer.prefWidthProperty().bind(stageManager.getCurrentStage().widthProperty());
 
 		openModalBinding = isTransitionRunningProperty.or(modalAdd.visibleProperty());
 		closeModalBinding = isTransitionRunningProperty.or(modalAdd.visibleProperty().not());
@@ -190,7 +194,8 @@ public class MainController implements Initializable {
 
 		gridpane.add(joueursContainer, 0, 1);
 
-		gridpane.prefHeightProperty().bind(joueursContainer.prefHeightProperty());
+		gridpane.prefWidthProperty().bind(mainContainer.prefWidthProperty());
+		gridpane.prefHeightProperty().bind(mainContainer.prefHeightProperty());
 
 		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scrollpane.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> {
@@ -223,8 +228,12 @@ public class MainController implements Initializable {
 		});
 
 		// Modal
+		
+		open_modal.translateYProperty().bind(mainContainer.prefHeightProperty().divide(2).add(-70));
+		open_modal.translateXProperty().bind(mainContainer.prefWidthProperty().divide(2).add(-70));
 
 		modalAdd.setVisible(false);
+		modalAdd.prefHeightProperty().bind(gridpane.prefHeightProperty());
 		openTransition.byXProperty().bind(modalAdd.widthProperty().multiply(-1));
 		closeTransition.byXProperty().bind(modalAdd.widthProperty());
 
@@ -265,47 +274,44 @@ public class MainController implements Initializable {
 		final var loadTask = loadService.asyncLoad();
 		loadTask.setOnSucceeded(workerStateEvent -> {
 			final var joueurs = loadTask.getValue();
+			
+			final var task = new Task<List<CommandeAjout>>() {
 
-			final var t = new Thread(() -> {
-				
-				final var task = new Task<List<CommandeAjout>>() {
-
-					@Override
-					protected List<CommandeAjout> call() throws Exception {
-						final var tasks = joueurs.stream()
-						.map(joueur -> new TacheCharger(joueur.getNom(), joueur.getPseudo(), joueur.getServer()))
-						.collect(Collectors.toList());
-						
-						tasks.forEach(TacheCharger::run);
-														
-						return tasks.stream()
-						.map(tache -> {
-							try {
-								return tache.get();
-							} catch (InterruptedException | ExecutionException e) {
-								return null;
-							}
-						})
-						.map(joueur -> new CommandeAjout(joueursContainer, joueur))
-						.collect(Collectors.toList());
-					}
+				@Override
+				protected List<CommandeAjout> call() throws Exception {
+					final var tasks = joueurs.stream()
+					.map(joueur -> new TacheCharger(joueur.getNom(), joueur.getPseudo(), joueur.getServer()))
+					.collect(Collectors.toList());
 					
-				};
-				task.setOnSucceeded(evt -> {
-					Platform.runLater(() -> {
-						task.getValue().forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
-						
-						gestionnaireCommandeService.viderCommandes();
-						
-						mainContainer.getChildren().remove(loading);
-						joueursContainer.setVisible(true);
-					});
+					tasks.forEach(TacheCharger::run);
+													
+					return tasks.stream()
+					.map(tache -> {
+						try {
+							return tache.get();
+						} catch (InterruptedException | ExecutionException e) {
+							return null;
+						}
+					})
+					.map(joueur -> new CommandeAjout(joueursContainer, joueur))
+					.collect(Collectors.toList());
+				}
+				
+			};
+			task.setOnSucceeded(evt -> {
+				Platform.runLater(() -> {
+					task.getValue().forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
+					
+					gestionnaireCommandeService.viderCommandes();
+					
+					mainContainer.getChildren().remove(loading);
+					joueursContainer.setVisible(true);
 				});
-				task.run();
 			});
 			
-			t.setDaemon(true);
-			t.start();
+			final var thread = new Thread(task);
+			thread.setDaemon(true);
+			thread.start();
 		});
 
 		final var thread = new Thread(loadTask);

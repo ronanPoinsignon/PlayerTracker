@@ -15,11 +15,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="mainContainer" prefHeight="700.0" prefWidth="1060.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<StackPane fx:id="mainContainer" prefHeight="700" prefWidth="1060" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
-      <ScrollPane fx:id="scrollpane" focusTraversable="false" minHeight="700.0" prefHeight="700.0" prefWidth="1060.0">
+      <ScrollPane fx:id="scrollpane" focusTraversable="false">
         <content>
-          <GridPane fx:id="gridpane" minHeight="700.0" prefWidth="1060.0">
+          <GridPane fx:id="gridpane" prefWidth="1060.0">
                <children>
                   <Label fx:id="labelSort" contentDisplay="RIGHT" focusTraversable="false" text="Label" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                      <GridPane.margin>
@@ -44,21 +44,10 @@
            </GridPane>
         </content>
       </ScrollPane>
-      <Circle id="open_modal" fx:id="open_modal" accessibleRole="BUTTON" onMouseClicked="#openModal" radius="28.0" styleClass="float-button" translateX="480.0" translateY="300.0">
-         <StackPane.margin>
-            <Insets />
-         </StackPane.margin>
-      </Circle>
-      <Text fx:id="text_circle" accessibleRole="BUTTON" fill="WHITE" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="open-modal-text" text="+" textAlignment="CENTER" translateX="480.0" translateY="302.0" wrappingWidth="60.0">
-         <font>
-            <Font name="Verdana" size="48.0" />
-         </font>
-         <StackPane.margin>
-            <Insets />
-         </StackPane.margin>
-      </Text>
+      <Button id="open_modal" fx:id="open_modal" text="+" accessibleRole="BUTTON" onMouseClicked="#openModal" styleClass="float-button">
+      </Button>
       <ProgressIndicator fx:id="loading" styleClass="loading-spinner" />
-      <GridPane id="modalAdd" fx:id="modalAdd" layoutX="300.0" maxHeight="700.0" maxWidth="300.0" minHeight="700.0" minWidth="300.0" prefHeight="700.0" prefWidth="300.0" translateX="300.0" StackPane.alignment="CENTER_RIGHT">
+      <GridPane id="modalAdd" fx:id="modalAdd" layoutX="300.0" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" translateX="300.0" StackPane.alignment="CENTER_RIGHT">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>

@@ -13,13 +13,9 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import modele.affichage.sort.SortedInsert;
 import modele.affichage.strategie.IStrategiePaneViewElement;
 import modele.affichage.strategie.StrategieAjout;
@@ -28,7 +24,7 @@ import service.EventService;
 import service.FileManager;
 import service.ServiceManager;
 
-public abstract class PaneViewElement<T> extends GridPane implements ViewElement<T> {
+public abstract class PaneViewElement<T> extends FlowPane implements ViewElement<T> {
 
 	protected final FileManager fm = ServiceManager.getInstance(FileManager.class);
 	protected final EventService eventService = ServiceManager.getInstance(EventService.class);
@@ -57,6 +53,9 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 				sortedPane.removeAll(change.getRemoved().stream().map(element -> (Pane) element).collect(Collectors.toList()));
 			}
 		});
+		
+		setHgap(WIDTH_PADDING);
+		setVgap(HEIGHT_PADDING);
 	}
 
 	public abstract FXMLLoader createLoader() throws MalformedURLException;
@@ -83,47 +82,12 @@ public abstract class PaneViewElement<T> extends GridPane implements ViewElement
 
 	public void insertValueBasedOnSort(final Pane paneElement) {
 		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(paneMap::get).collect(Collectors.toList()), paneMap.get(paneElement));
-
-		final var oldChild = (Pane) setChild(paneElement, index);
+		
+		getChildren().add(index, paneElement);
 
 		sortedPane.sort((pane1, pane2) -> sort.getComparator().compare(paneMap.get(pane1), paneMap.get(pane2)));
-
-		if(oldChild == null || oldChild == paneElement) {
-			return;
-		}
-
-		insertValueBasedOnSort(oldChild);
 	}
-
-	public Node setChild(final Pane paneElement, final int index) {
-		final var column = index % PaneViewElement.ELEMENTS_PER_ROW;
-		final var row = index / PaneViewElement.ELEMENTS_PER_ROW;
-
-		final var old = getChildren().stream()
-				.filter(child -> GridPane.getColumnIndex(child) == column && GridPane.getRowIndex(child) == row)
-				.findFirst();
-
-		if(old.isPresent()) {
-			getChildren().remove(old.get());
-		}
-
-		add(paneElement, column, row);
-
-		if(getRowConstraints().size() == row) {
-			getRowConstraints().add(new RowConstraints(0, PaneViewElement.HEIGHT + PaneViewElement.HEIGHT_PADDING, PaneViewElement.HEIGHT + PaneViewElement.HEIGHT_PADDING, null, VPos.CENTER, false));
-		}
-
-		if(getColumnConstraints().size() == column) {
-			getColumnConstraints().add(new ColumnConstraints(0, PaneViewElement.WIDTH + PaneViewElement.WIDTH_PADDING, PaneViewElement.WIDTH + PaneViewElement.WIDTH_PADDING, null, HPos.LEFT, false));
-		}
-
-		if(old.isEmpty()) {
-			return null;
-		}
-
-		return old.get();
-	}
-
+	
 	@Override
 	public int getSelectedIndex() {
 		return index;
