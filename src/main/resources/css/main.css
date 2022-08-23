@@ -11,10 +11,6 @@
     -fx-pref-width: 15px;
 }
 
-#mainContainer {
-	
-}
-
 .button {
 	-fx-background-color: -fx-secondary-mid;
 	-fx-border-color: -fx-secondary-mid;
@@ -25,10 +21,6 @@
 	-fx-background-color: -fx-secondary-dark;
 	-fx-border-color: -fx-secondary-dark;
 	-fx-cursor: hand;
-}
-
-.button:pressed:hover  {
-	
 }
 
 .label {
@@ -102,7 +94,6 @@
 	-fx-max-height: 28px;
 	-fx-font-size: 14px;
 }
-
 
 #modalAdd #nameLabel, #modalAdd #pseudoLabel, #modalAdd #serverLabel {
 	-fx-text-fill: #fff;

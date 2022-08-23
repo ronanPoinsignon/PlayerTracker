@@ -2,6 +2,7 @@ package controller;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -30,7 +31,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import modele.affichage.PaneViewJoueurFx;
@@ -81,9 +81,6 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Button open_modal;
-
-	@FXML
-	private Text text_circle;
 
 	@FXML
 	private ProgressIndicator loading;
@@ -293,6 +290,7 @@ public class MainController implements Initializable {
 									return null;
 								}
 							})
+							.filter(Objects::nonNull)
 							.map(joueur -> new CommandeAjout(joueursContainer, joueur))
 							.collect(Collectors.toList());
 				}

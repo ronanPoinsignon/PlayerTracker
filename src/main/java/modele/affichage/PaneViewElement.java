@@ -32,7 +32,7 @@ public abstract class PaneViewElement<T> extends FlowPane implements ViewElement
 	private int index;
 	private final Map<Pane, T> paneMap = new HashMap<>();
 	private final SortedInsert<T> sort = new SortedInsert<>();
-	private final ObservableList<T> elements = FXCollections.observableArrayList(new ArrayList<>());
+	private final ObservableList<T> elements = FXCollections.observableArrayList();
 	private final List<Pane> sortedPane = new ArrayList<>();
 
 	protected static final int WIDTH = 300;
@@ -59,7 +59,6 @@ public abstract class PaneViewElement<T> extends FlowPane implements ViewElement
 	}
 
 	public abstract FXMLLoader createLoader() throws MalformedURLException;
-
 
 	private void setOnChangeEvent(final Change<? extends T> change) {
 		change.next();
