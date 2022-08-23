@@ -12,7 +12,7 @@ public class Joueur implements Serializable {
 	protected transient boolean inGame;
 	protected transient Partie partie;
 	protected Serveur server;
-	protected String base64ProfileIcon;
+	protected transient String base64ProfileIcon;
 
 	public Joueur(final String nom, final String pseudo, final Serveur server) {
 		playerId = "";
@@ -69,7 +69,7 @@ public class Joueur implements Serializable {
 	public void setPartie(final Partie partie) {
 		this.partie = partie;
 	}
-	
+
 	public String getBase64Icon() {
 		return base64ProfileIcon;
 	}
