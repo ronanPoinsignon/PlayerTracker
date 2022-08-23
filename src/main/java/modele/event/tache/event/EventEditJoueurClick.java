@@ -7,18 +7,18 @@ import modele.joueur.Joueur;
 public class EventEditJoueurClick extends EventAbstrait {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	public static final EventType<EventEditJoueurClick> EVENT_EDIT_JOUEUR_CLICK = new EventType<>(Event.ANY, EventEditJoueurClick.class.getName());
-	
-	private Joueur joueur;
 
-	public EventEditJoueurClick(Joueur joueur) {
-		super(EVENT_EDIT_JOUEUR_CLICK);
+	private final Joueur joueur;
+
+	public EventEditJoueurClick(final Joueur joueur) {
+		super(EventEditJoueurClick.EVENT_EDIT_JOUEUR_CLICK);
 		this.joueur = joueur;
 	}
-	
+
 	public Joueur getJoueur() {
 		return joueur;
 	}

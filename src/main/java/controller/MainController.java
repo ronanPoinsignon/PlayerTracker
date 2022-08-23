@@ -70,10 +70,10 @@ public class MainController implements Initializable {
 
 	@FXML
 	private ScrollPane scrollpane;
-	
+
 	@FXML
 	private Label labelSort;
-	
+
 	@FXML
 	private ChoiceBox<SortStrategy<JoueurFx>> sortSelect;
 
@@ -142,7 +142,7 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
-		
+
 		mainContainer.prefHeightProperty().bind(stageManager.getCurrentStage().heightProperty());
 		mainContainer.prefWidthProperty().bind(stageManager.getCurrentStage().widthProperty());
 
@@ -159,35 +159,35 @@ public class MainController implements Initializable {
 		pseudoInput.disableProperty().bind(isEditing);
 		serverInput.disableProperty().bind(isEditing);
 		isEditing.set(false);
-		
+
 		//SortSelect
 		sortSelect.setItems(
-			FXCollections.observableList(
-				List.of(
-					new NameSort<JoueurFx>(), 
-					new PseudoSort<JoueurFx>(),
-					new ServerSort<JoueurFx>()
-				)
-			)
-		);
+				FXCollections.observableList(
+						List.of(
+								new NameSort<JoueurFx>(),
+								new PseudoSort<JoueurFx>(),
+								new ServerSort<JoueurFx>()
+								)
+						)
+				);
 		sortSelect.setValue(sortSelect.getItems().get(0));
 		sortSelect.setConverter(new StringConverter<SortStrategy<JoueurFx>>() {
 
 			@Override
-			public String toString(SortStrategy<JoueurFx> object) {
+			public String toString(final SortStrategy<JoueurFx> object) {
 				return object.getLabelProperty().get();
 			}
 
 			@Override
-			public SortStrategy<JoueurFx> fromString(String string) {
+			public SortStrategy<JoueurFx> fromString(final String string) {
 				return sortSelect.getItems().stream().filter(strategy -> strategy.getLabelProperty().get().equals(string)).findFirst().orElse(null);
 			}
-			
+
 		});
 		sortSelect.setOnAction(evt -> {
 			eventService.trigger(new EventSortSelect(sortSelect.getValue()));
 		});
-		
+
 		labelSort.textProperty().bind(dictionnaire.getText("labelSort"));
 
 		//Scrollbar
@@ -228,7 +228,7 @@ public class MainController implements Initializable {
 		});
 
 		// Modal
-		
+
 		open_modal.translateYProperty().bind(mainContainer.prefHeightProperty().divide(2).add(-70));
 		open_modal.translateXProperty().bind(mainContainer.prefWidthProperty().divide(2).add(-70));
 
@@ -274,41 +274,41 @@ public class MainController implements Initializable {
 		final var loadTask = loadService.asyncLoad();
 		loadTask.setOnSucceeded(workerStateEvent -> {
 			final var joueurs = loadTask.getValue();
-			
+
 			final var task = new Task<List<CommandeAjout>>() {
 
 				@Override
 				protected List<CommandeAjout> call() throws Exception {
 					final var tasks = joueurs.stream()
-					.map(joueur -> new TacheCharger(joueur.getNom(), joueur.getPseudo(), joueur.getServer()))
-					.collect(Collectors.toList());
-					
+							.map(joueur -> new TacheCharger(joueur.getNom(), joueur.getPseudo(), joueur.getServer()))
+							.collect(Collectors.toList());
+
 					tasks.forEach(TacheCharger::run);
-													
+
 					return tasks.stream()
-					.map(tache -> {
-						try {
-							return tache.get();
-						} catch (InterruptedException | ExecutionException e) {
-							return null;
-						}
-					})
-					.map(joueur -> new CommandeAjout(joueursContainer, joueur))
-					.collect(Collectors.toList());
+							.map(tache -> {
+								try {
+									return tache.get();
+								} catch (InterruptedException | ExecutionException e) {
+									return null;
+								}
+							})
+							.map(joueur -> new CommandeAjout(joueursContainer, joueur))
+							.collect(Collectors.toList());
 				}
-				
+
 			};
 			task.setOnSucceeded(evt -> {
 				Platform.runLater(() -> {
 					task.getValue().forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
-					
+
 					gestionnaireCommandeService.viderCommandes();
-					
+
 					mainContainer.getChildren().remove(loading);
 					joueursContainer.setVisible(true);
 				});
 			});
-			
+
 			final var thread = new Thread(task);
 			thread.setDaemon(true);
 			thread.start();
@@ -341,17 +341,19 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void openModal() {
-		if(openModalBinding.get())
+		if(openModalBinding.get()) {
 			return;
-		
+		}
+
 		modalAdd.setVisible(true);
 		openTransition.play();
 	}
 
 	public void closeModal() {
-		if(closeModalBinding.get())
+		if(closeModalBinding.get()) {
 			return;
-		
+		}
+
 		closeTransition.play();
 
 		nameInput.setText("");

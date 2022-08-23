@@ -37,21 +37,21 @@ public class AppliFx extends Application {
 			alertService.alert(e);
 			return;
 		}
-		
+
 		stage.getIcons().add(fm.getImageFromResource("images/icon.png"));
 		stage.setTitle(ps.get("application_name"));
 		stage.setMinWidth(400);
 		stage.setMinHeight(600);
-		
+
 		stage.setWidth(1100);
 		stage.setHeight(700);
-		
+
 		final var file = fm.getFileFromResources("fxml/main.fxml");
 		final var loader = new FXMLLoader(file.toURI().toURL());
 
 		final var scene = new Scene(loader.load());
 		scene.getStylesheets().add(fm.getFileFromResources("css/main.css").toURI().toString());
-		
+
 		stage.setScene(scene);
 		trayIconService.createFXTrayIcon(stage);
 		stage.show();

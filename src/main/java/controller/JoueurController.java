@@ -233,11 +233,12 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 		paneView.updateSort();
 	}
-	
-	private Image decodeImage(String base64encoded) {
-		if(base64encoded == null)
+
+	private Image decodeImage(final String base64encoded) {
+		if(base64encoded == null) {
 			return null;
-		
+		}
+
 		final var decoder = Base64.getDecoder();
 		final var imageBytes = decoder.decode(base64encoded);
 		final var bis = new ByteArrayInputStream(imageBytes);

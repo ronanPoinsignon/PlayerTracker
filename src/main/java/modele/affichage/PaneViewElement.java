@@ -53,9 +53,9 @@ public abstract class PaneViewElement<T> extends FlowPane implements ViewElement
 				sortedPane.removeAll(change.getRemoved().stream().map(element -> (Pane) element).collect(Collectors.toList()));
 			}
 		});
-		
-		setHgap(WIDTH_PADDING);
-		setVgap(HEIGHT_PADDING);
+
+		setHgap(PaneViewElement.WIDTH_PADDING);
+		setVgap(PaneViewElement.HEIGHT_PADDING);
 	}
 
 	public abstract FXMLLoader createLoader() throws MalformedURLException;
@@ -82,12 +82,12 @@ public abstract class PaneViewElement<T> extends FlowPane implements ViewElement
 
 	public void insertValueBasedOnSort(final Pane paneElement) {
 		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(paneMap::get).collect(Collectors.toList()), paneMap.get(paneElement));
-		
+
 		getChildren().add(index, paneElement);
 
 		sortedPane.sort((pane1, pane2) -> sort.getComparator().compare(paneMap.get(pane1), paneMap.get(pane2)));
 	}
-	
+
 	@Override
 	public int getSelectedIndex() {
 		return index;

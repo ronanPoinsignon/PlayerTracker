@@ -8,8 +8,8 @@ import service.DictionnaireService;
 import service.ServiceManager;
 
 public class PseudoSort<T extends Joueur> implements SortStrategy<T> {
-	
-	private DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
+
+	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 
 	@Override
 	public Comparator<T> getComparator() {
@@ -20,7 +20,7 @@ public class PseudoSort<T extends Joueur> implements SortStrategy<T> {
 			return value1.compareTo(value2);
 		});
 	}
-	
+
 	@Override
 	public StringProperty getLabelProperty() {
 		return dictionnaire.getText("sortPseudo");

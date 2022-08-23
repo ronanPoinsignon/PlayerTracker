@@ -32,8 +32,6 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	private static final KeyCombination COPIER = new KeyCodeCombination(KeyCodeCombinationEnum.COPIER.getKeyCode(), KeyCodeCombinationEnum.COPIER.getModifier());
 	private static final KeyCombination COLLER = new KeyCodeCombination(KeyCodeCombinationEnum.COLLER.getKeyCode(), KeyCodeCombinationEnum.COLLER.getModifier());
 	private static final KeyCombination SUPPRIMER = new KeyCodeCombination(KeyCodeCombinationEnum.SUPPRIMER.getKeyCode(), KeyCodeCombinationEnum.SUPPRIMER.getModifier());
-	private static final KeyCombination INVERSER_HAUT = new KeyCodeCombination(KeyCodeCombinationEnum.INVERSER_HAUT.getKeyCode(), KeyCodeCombinationEnum.INVERSER_HAUT.getModifier());
-	private static final KeyCombination INVERSER_BAS = new KeyCodeCombination(KeyCodeCombinationEnum.INVERSER_BAS.getKeyCode(), KeyCodeCombinationEnum.INVERSER_BAS.getModifier());
 	private static final KeyCombination ANNULER_ACTION = new KeyCodeCombination(KeyCodeCombinationEnum.ANNULER_ACTION.getKeyCode(), KeyCodeCombinationEnum.ANNULER_ACTION.getModifier());
 	private static final KeyCombination REEXECUTER_ACTION = new KeyCodeCombination(KeyCodeCombinationEnum.REEXECUTER_ACTION.getKeyCode(), KeyCodeCombinationEnum.REEXECUTER_ACTION.getModifier());
 
