@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface StringConverter {
 
-	String convert(List<? extends Object> strings);
+	String convert(List<?> strings);
 
 }

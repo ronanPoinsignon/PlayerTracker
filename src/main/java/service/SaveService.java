@@ -18,8 +18,18 @@ public class SaveService implements IService {
 		save();
 	}
 
+	public void addJoueurs(final List<Joueur> joueurs) {
+		this.joueurs.addAll(joueurs);
+		save();
+	}
+
 	public void removeJoueur(final Joueur joueur) {
 		joueurs.remove(joueur);
+		save();
+	}
+
+	public void removeJoueurs(final List<Joueur> joueurs) {
+		this.joueurs.removeAll(joueurs);
 		save();
 	}
 

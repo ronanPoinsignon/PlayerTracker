@@ -3,6 +3,7 @@ package modele.commande;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import modele.affichage.ViewElement;
 import modele.exception.JoueurDejaPresentException;
@@ -39,8 +40,8 @@ public class CommandeSuppression extends CommandeListe<JoueurFx> {
 			listeIndex.add(table.getItems().indexOf(joueurFx));
 			trayIconService.unbind(joueurFx);
 			scheduler.removeJoueur(joueurFx);
-			saveService.removeJoueur(joueurFx.getJoueur());
 		});
+		saveService.removeJoueurs(elements.stream().map(JoueurFx::getJoueur).collect(Collectors.toList()));
 		final var listeJoueursNonPresents = commandeUtil.removeAll(table, elements);
 		elements.removeAll(listeJoueursNonPresents);
 		return !elements.isEmpty();
@@ -56,11 +57,11 @@ public class CommandeSuppression extends CommandeListe<JoueurFx> {
 				trayIconService.bind(joueurFx);
 				scheduler.executeNow(joueurFx);
 				scheduler.addJoueur(joueurFx);
-				saveService.addJoueur(joueurFx.getJoueur());
 			} catch (UnsupportedOperationException | ClassCastException
 					| IllegalArgumentException | JoueurDejaPresentException e) {
 				alerteService.alert(e);
 			}
+			saveService.addJoueurs(elements.stream().map(JoueurFx::getJoueur).collect(Collectors.toList()));
 		}
 		listeIndex = new ArrayList<>();
 		return !elements.isEmpty();

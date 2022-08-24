@@ -9,6 +9,10 @@
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<appfolder>${basedir}/target/apps</appfolder>
+		<javafolder>${java.home}</javafolder>
+		<projectname>${project.name}</projectname>
+		<mainclass>appli.App</mainclass>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -38,44 +42,58 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>${project.name}</finalName>
+		<finalName>${projectname}</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>appli.App</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
 						<phase>package</phase>
 						<goals>
-						<goal>single</goal>
+							<goal>single</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
+					<outputDirectory>${appfolder}</outputDirectory>
+					<finalName>${projectname}</finalName>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>appli.App</mainClass>
+							<mainClass>${mainclass}</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
 				</configuration>
-			</plugin> 
+			</plugin>
+			<plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${appfolder}/jre</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${javafolder}</directory>
+                                    <includes>
+						        		<include>bin/**</include>
+						        		<include>lib/**</include>
+						        		<include>conf/**</include>
+						        	</includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
           		<groupId>com.akathist.maven.plugins.launch4j</groupId>
           		<artifactId>launch4j-maven-plugin</artifactId>
@@ -87,14 +105,15 @@
                   		<goals><goal>launch4j</goal></goals>
                   		<configuration>
 		                    <headerType>gui</headerType>
-		                    <outfile>target/PlayerTracker.exe</outfile>
-		                    <jar>target/PlayerTracker-jar-with-dependencies.jar</jar>
-		                    <errTitle>PlayerTracker</errTitle>
+		                    <outfile>${appfolder}/${projectname}.exe</outfile>
+		                    <jar>${appfolder}/${projectname}-jar-with-dependencies.jar</jar>
+		                    <errTitle>${projectname}</errTitle>
+		                    <icon>src/main/resources/images/icon.ico</icon>
 		                    <classPath>
-                      			<mainClass>appli.App</mainClass>
+                      			<mainClass>${mainclass}</mainClass>
                     		</classPath>
 		                    <jre>
-		                      <minVersion>11.0.14</minVersion>
+		                    	<path>./jre</path>
 		                    </jre>
 		                    <versionInfo>
 		                      	<fileVersion>1.0.0.0</fileVersion>
@@ -103,14 +122,33 @@
 		                      	<copyright>my copyright</copyright>
 		                      	<productVersion>1.0.0.0</productVersion>
 		                      	<txtProductVersion>txt product version</txtProductVersion>
-		                      	<productName>PlayerTracker</productName>
-		                      	<internalName>PlayerTracker</internalName>
-		                      	<originalFilename>PlayerTracker.exe</originalFilename>
+		                      	<productName>${projectname}</productName>
+		                      	<internalName>${projectname}</internalName>
+		                      	<originalFilename>${projectname}.exe</originalFilename>
                     		</versionInfo>
                   		</configuration>
                 	</execution>
           		</executions>
         	</plugin>
+        	<plugin>
+	        	<groupId>net.jsign</groupId>
+	         	<artifactId>jsign-maven-plugin</artifactId>
+	          	<version>4.1</version>
+	          	<executions>
+	            	<execution>
+	              		<goals>
+	                		<goal>sign</goal>
+	              		</goals>
+	              		<configuration>
+	                		<file>${appfolder}/${projectname}.exe</file>
+	                		<name>${projectname}</name>
+	                		<keystore>${basedir}/playertrackerkeystore.jks</keystore>
+	                		<alias>playertracker</alias>
+	                		<storepass>password</storepass>
+	             		 </configuration>
+	            	</execution>
+	          	</executions>
+	    	</plugin>
 		</plugins>
 	</build>
 </project>

@@ -9,6 +9,7 @@ import java.net.http.HttpResponse.BodySubscribers;
 import java.net.http.HttpResponse.ResponseInfo;
 import java.util.function.Supplier;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -37,7 +38,7 @@ public class JsonBodyHandler<T> implements BodyHandler<Supplier<T>> {
 	public static <W> Supplier<W> toSupplierOfType(final InputStream inputStream, final Class<W> targetType) {
 		return () -> {
 			try (var stream = inputStream) {
-				final var objectMapper = new ObjectMapper();
+				final var objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 				return objectMapper.readValue(stream, targetType);
 			} catch (final IOException e) {
 				throw new UncheckedIOException(e);

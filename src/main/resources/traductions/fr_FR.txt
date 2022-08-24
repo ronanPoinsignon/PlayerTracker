@@ -40,7 +40,7 @@ trayIconServiceEnJeu:est en jeu
 BadOsExceptionDescription:L'application ne fonctionne que sous Windows
 BadOsExceptionMessage:Impossible de lancer l'application
 internalErrorServerExceptionDescription:Un problème venant du serveur est survenu
-internalErrorServerExceptionDescription:Veuillez réessayer plus tard
+internalErrorServerExceptionMessage:Veuillez réessayer plus tard
 sortName:Nom
 sortPseudo:Pseudo
 sortServer:Serveur
