@@ -108,6 +108,7 @@
 		                    <outfile>${appfolder}/${projectname}.exe</outfile>
 		                    <jar>${appfolder}/${projectname}-jar-with-dependencies.jar</jar>
 		                    <errTitle>${projectname}</errTitle>
+		                    <icon>src/main/resources/images/icon.ico</icon>
 		                    <classPath>
                       			<mainClass>${mainclass}</mainClass>
                     		</classPath>
