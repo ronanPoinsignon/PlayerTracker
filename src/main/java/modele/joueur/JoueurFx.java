@@ -26,6 +26,7 @@ public class JoueurFx extends Joueur {
 	private transient BooleanProperty isConnecteProperty;
 	private transient StringProperty serverNameProperty;
 	private transient StringProperty gameTypeProperty;
+	private transient StringProperty profileIconProperty;
 
 	private transient Joueur joueur;
 	private transient IEtat etat;
@@ -40,6 +41,7 @@ public class JoueurFx extends Joueur {
 		inGame = joueur.inGame;
 		partie = joueur.partie;
 		server = joueur.server;
+		base64ProfileIcon = joueur.base64ProfileIcon;
 
 		idProperty = new SimpleStringProperty(joueur.getPlayerId());
 		nomProperty = new SimpleStringProperty(joueur.nom);
@@ -47,6 +49,8 @@ public class JoueurFx extends Joueur {
 		isConnecteProperty = new SimpleBooleanProperty(joueur.inGame);
 		serverNameProperty = new SimpleStringProperty(joueur.server != null ? joueur.server.getServerId() : "");
 		gameTypeProperty = new SimpleStringProperty(joueur.partie != null ? joueur.partie.getGameType() : "");
+		profileIconProperty = new SimpleStringProperty(joueur.getBase64Icon());
+		
 		if(isConnecteProperty.get()) {
 			etat = new Connecte();
 		} else {
@@ -86,6 +90,10 @@ public class JoueurFx extends Joueur {
 	}
 	public StringProperty getGameTypeProperty() {
 		return gameTypeProperty;
+	}
+	
+	public StringProperty getProfileIconProperty() {
+		return profileIconProperty;
 	}
 
 	public Joueur getJoueur() {
@@ -132,6 +140,13 @@ public class JoueurFx extends Joueur {
 		super.setPartie(partie);
 		joueur.setPartie(partie);
 		gameTypeProperty.set(partie != null ? partie.getGameType() : "");
+	}
+	
+	@Override
+	public void setBase64Icon(final String icon) {
+		super.setBase64Icon(icon);
+		joueur.setBase64Icon(icon);
+		profileIconProperty.set(icon);
 	}
 
 	private void writeObject(final ObjectOutputStream out) throws IOException {
