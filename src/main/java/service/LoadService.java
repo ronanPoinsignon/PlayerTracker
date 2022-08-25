@@ -1,7 +1,6 @@
 package service;
 
 import java.io.EOFException;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InvalidClassException;
@@ -18,7 +17,7 @@ public class LoadService implements IService {
 	private FileManager fm;
 
 	public List<Joueur> load() throws SauvegardeCorrompueException, IOException {
-		final var fichier = new File("joueurs.txt");
+		final var fichier = fm.getOrCreateFile("joueurs.txt");
 
 		try {
 			return fm.readList(fichier);

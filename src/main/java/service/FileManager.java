@@ -26,6 +26,15 @@ public class FileManager implements IService {
 	private final Map<String, File> fileMap = new HashMap<>();
 	private final Map<String, Image> imageMap = new HashMap<>();
 
+	public File getApplicationFolderFile() {
+		return new File(this.getClass().getProtectionDomain().getCodeSource()
+				.getLocation().getPath()).getParentFile();
+	}
+
+	public File getOrCreateFile(final String fileName) {
+		return new File(getApplicationFolderFile().getAbsolutePath() + File.separator + fileName);
+	}
+
 	public File getFileFromResources(final String fileName) {
 		var file = fileMap.get(fileName);
 		if(file != null) {

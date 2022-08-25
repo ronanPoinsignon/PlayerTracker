@@ -1,6 +1,5 @@
 package service;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class SaveService implements IService {
 
 	public void save() {
 		try {
-			fm.writeInto(new File("joueurs.txt"), joueurs);
+			fm.writeInto(fm.getOrCreateFile("joueurs.txt"), joueurs);
 		} catch (final IOException e) {
 			alertService.alert(e);
 		}
