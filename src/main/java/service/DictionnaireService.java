@@ -1,6 +1,5 @@
 package service;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,14 +9,16 @@ import java.util.Map;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import modele.localization.Langage;
 import modele.properties.CaselessProperties;
 
 public class DictionnaireService implements IService {
 
 	FileManager fm;
 	PropertiesService ps;
+	LangagesManager langagesManager;
 
-	private File langue;
+	private Langage langue;
 
 	private final Map<String, SimpleStringProperty> textProperties = new HashMap<>();
 
@@ -29,10 +30,13 @@ public class DictionnaireService implements IService {
 	 * Méthode permettant de mettre à jour tous les champs de l'application.
 	 * @param langue
 	 */
-	public void setLangue(final File langue) {
+	public void setLangue(final Langage langue) {
 		this.langue = langue;
+		
+		final var file = fm.getFileFromResources("traductions/" + langue.getFileName() + ".txt");
+		
 		final var properties = new CaselessProperties();
-		try(var is = new InputStreamReader(new FileInputStream(langue), StandardCharsets.UTF_8)) {
+		try(var is = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
 			properties.load(is);
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
@@ -54,7 +58,7 @@ public class DictionnaireService implements IService {
 		});
 	}
 
-	public File getLangue() {
+	public Langage getLangue() {
 		return langue;
 	}
 
@@ -72,6 +76,7 @@ public class DictionnaireService implements IService {
 	public void init() {
 		fm = ServiceManager.getInstance(FileManager.class);
 		ps = ServiceManager.getInstance(PropertiesService.class);
-		setLangue(fm.getFileFromResources("traductions/" + ps.get("default_language") + ".txt"));
+		langagesManager = ServiceManager.getInstance(LangagesManager.class);
+		setLangue(langagesManager.getDefaultLangage());
 	}
 }
