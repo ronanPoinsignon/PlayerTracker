@@ -22,10 +22,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -52,6 +56,7 @@ import modele.tache.TacheCharger;
 import service.DictionnaireService;
 import service.EventService;
 import service.GestionnaireCommandeService;
+import service.LangagesManager;
 import service.LoadService;
 import service.PropertiesService;
 import service.ServerManager;
@@ -61,6 +66,12 @@ import service.StageManager;
 public class MainController implements Initializable {
 
 	private static final int TRANSITION_TIME = 300;
+	
+	@FXML
+	private MenuBar menuBar;
+	
+	@FXML
+	private Menu menuLangue;
 
 	@FXML
 	private StackPane mainContainer;
@@ -134,11 +145,39 @@ public class MainController implements Initializable {
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private final EventService eventService = ServiceManager.getInstance(EventService.class);
 	private final StageManager stageManager = ServiceManager.getInstance(StageManager.class);
+	private final LangagesManager langagesManager = ServiceManager.getInstance(LangagesManager.class);
 
 	private final static double SCROLL_SPEED = 10;
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
+		
+		ToggleGroup langagesGroup = new ToggleGroup();
+		
+		menuLangue.textProperty().bind(dictionnaire.getText("langue"));
+		
+		menuLangue.getItems().addAll(
+			langagesManager.getLangages().stream()
+			.map(langage -> {
+				final var item = new RadioMenuItem(langage.getName());
+				item.getProperties().put("file_name", langage.getFileName());
+				item.setToggleGroup(langagesGroup);
+				return item;
+			})
+			.collect(Collectors.toList())
+		);
+		
+		final var default_langage_item = (RadioMenuItem) menuLangue.getItems().stream()
+				.filter(item -> item.getProperties().get("file_name").equals(langagesManager.getDefaultLangage().getFileName()))
+				.findFirst()
+				.orElse(null);
+		
+		if(default_langage_item != null)
+			default_langage_item.setSelected(true);
+		
+		langagesGroup.selectedToggleProperty().addListener((obs, oldV, newV) -> {
+			dictionnaire.setLangue(langagesManager.getLangage(newV.getProperties().get("file_name").toString()));
+		});
 
 		mainContainer.prefHeightProperty().bind(stageManager.getCurrentStage().heightProperty());
 		mainContainer.prefWidthProperty().bind(stageManager.getCurrentStage().widthProperty());

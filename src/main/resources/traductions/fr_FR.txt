@@ -45,3 +45,6 @@ sortName:Nom
 sortPseudo:Pseudo
 sortServer:Serveur
 labelSort:Trier par
+langue:Langue
+online:En jeu
+offline:Déconnecté

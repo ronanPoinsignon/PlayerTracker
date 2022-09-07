@@ -39,3 +39,6 @@ trayIconServiceQuitter:Aussteigen
 trayIconServiceEnJeu:spielt
 BadOsExceptionDescription:Die App laüft nur mit Windows
 BadOsExceptionMessage:Unmöglich, die App zu starten
+langue:Sprache
+online:Online
+offline:Offline

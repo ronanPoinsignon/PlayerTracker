@@ -45,3 +45,6 @@ sortName:Name
 sortPseudo:Username
 sortServer:Server
 labelSort:Sort by
+langue:Langage
+online:In game
+offline:Offline

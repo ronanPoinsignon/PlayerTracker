@@ -33,6 +33,7 @@ import modele.event.tache.event.EventEditJoueurClick;
 import modele.event.tache.event.EventJoueurEdited;
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
+import service.DictionnaireService;
 import service.EventService;
 import service.FileManager;
 import service.ServiceManager;
@@ -89,6 +90,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 
 	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
 	private final EventService eventService = ServiceManager.getInstance(EventService.class);
+	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -147,7 +149,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 		});
 
 		imageChampion.imageProperty().bind(imageChampionProperty);
-		statut.textProperty().bind(Bindings.when(isConnecte).then("En jeu").otherwise("Déconnecté"));
+		statut.textProperty().bind(Bindings.when(isConnecte).then(dictionnaire.getText("online")).otherwise(dictionnaire.getText("offline")));
 		spectate.disableProperty().bind(isConnecte.not());
 
 		nom.setMaxWidth(pane.getPrefWidth() - nom.getLayoutX() - 80);

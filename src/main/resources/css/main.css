@@ -27,6 +27,10 @@
 	-fx-text-fill: #fff;
 }
 
+#menuBar .label {
+	-fx-text-fill: #000;
+}
+
 #gridpane {
 	-fx-background-color: #333;
 }
