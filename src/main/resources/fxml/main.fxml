@@ -109,7 +109,7 @@
                   <Insets left="15.0" right="15.0" />
                </GridPane.margin>
              </ChoiceBox>
-            <Button fx:id="addButton" mnemonicParsing="false" prefHeight="36.0" prefWidth="120.0" text="Ajouter" textFill="WHITE" GridPane.rowIndex="4" GridPane.valignment="TOP">
+            <Button fx:id="addButton" mnemonicParsing="false" prefHeight="36.0" minWidth="120.0" text="Ajouter" textFill="WHITE" GridPane.rowIndex="4" GridPane.valignment="TOP">
                <font>
                   <Font name="Arial Bold" size="20.0" />
                </font>
