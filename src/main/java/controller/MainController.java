@@ -36,6 +36,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
@@ -248,6 +249,7 @@ public class MainController implements Initializable {
 		gridpane.prefWidthProperty().bind(mainContainer.prefWidthProperty());
 		gridpane.prefHeightProperty().bind(mainContainer.prefHeightProperty());
 
+		scrollpane.setFitToHeight(true);
 		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
 		scrollpane.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> {
 			if (!MouseButton.PRIMARY.equals(evt.getButton())) {
@@ -258,7 +260,7 @@ public class MainController implements Initializable {
 			closeModal();
 		});
 		scrollpane.vbarPolicyProperty().bind(
-				Bindings.when(gridpane.heightProperty().greaterThan(scrollpane.minHeightProperty()))
+				Bindings.when(((Region) (scrollpane.getContent())).heightProperty().greaterThan(gridpane.prefHeightProperty()))
 				.then(ScrollBarPolicy.ALWAYS)
 				.otherwise(ScrollBarPolicy.NEVER));
 
