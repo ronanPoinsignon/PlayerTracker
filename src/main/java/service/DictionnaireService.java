@@ -16,6 +16,7 @@ public class DictionnaireService implements IService {
 
 	FileManager fm;
 	PropertiesService ps;
+	SaveService saveService;
 
 	private File langue;
 
@@ -38,6 +39,8 @@ public class DictionnaireService implements IService {
 			throw new RuntimeException(e);
 		}
 
+		saveService.setLanguePath(langue);
+
 		properties.forEach((k, v) -> {
 			final var key = (String) k;
 			final var value = (String) v;
@@ -50,7 +53,6 @@ public class DictionnaireService implements IService {
 			else {
 				property.set(value);
 			}
-
 		});
 	}
 
@@ -72,6 +74,6 @@ public class DictionnaireService implements IService {
 	public void init() {
 		fm = ServiceManager.getInstance(FileManager.class);
 		ps = ServiceManager.getInstance(PropertiesService.class);
-		setLangue(fm.getFileFromResources("traductions/" + ps.get("default_language") + ".txt"));
+		saveService = ServiceManager.getInstance(SaveService.class);
 	}
 }

@@ -11,6 +11,7 @@ import modele.joueur.Joueur;
 import service.AlertFxService;
 import service.DirectoryManager;
 import service.FileManager;
+import service.SaveService;
 import service.ServiceManager;
 import service.StageManager;
 
@@ -20,6 +21,7 @@ public class ActionEventRegarder extends ActionEventHandler {
 	FileManager fm = ServiceManager.getInstance(FileManager.class);
 	DirectoryManager dm = ServiceManager.getInstance(DirectoryManager.class);
 	StageManager sm = ServiceManager.getInstance(StageManager.class);
+	SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
 	private final Joueur joueur;
 
@@ -37,6 +39,7 @@ public class ActionEventRegarder extends ActionEventHandler {
 			return;
 		}
 		final var possibleFile = setLoLDirectory(findLoLInstallation());
+		saveService.setLolPath(possibleFile);
 		if(possibleFile == null) {
 			dm.setDirectory(null, "LoL");
 			alerteService.alert(new NoLolInstallationFound());
