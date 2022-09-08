@@ -1,27 +1,36 @@
 package appli;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 
 import appli.exception.ApplicationDejaEnCoursException;
 import appli.exception.BadOsException;
+import controller.ControllerPagePrincipale;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import modele.save.DataObject;
 import service.AlertFxService;
+import service.DictionnaireService;
+import service.DirectoryManager;
 import service.FileManager;
+import service.LoadService;
 import service.PropertiesService;
 import service.ServiceManager;
-import service.StageManager;
 import service.TrayIconService;
+import service.exception.SauvegardeCorrompueException;
 
 public class AppliFx extends Application {
 
-	private FileManager fm;
-	private TrayIconService trayIconService;
-	private AlertFxService alertService;
-	PropertiesService ps;
+	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
+	private final TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
+	private final AlertFxService alertService = ServiceManager.getInstance(AlertFxService.class);
+	private final PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
+	private final DirectoryManager directoryManager = ServiceManager.getInstance(DirectoryManager.class);
+	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
+	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 
 	public static void start(final String[] args) {
 		Application.launch(args);
@@ -29,7 +38,29 @@ public class AppliFx extends Application {
 
 	@Override
 	public void start(final Stage stage) throws IOException {
-		initService(stage);
+		DataObject data = null;
+		try {
+			data = loadService.load();
+		} catch (final SauvegardeCorrompueException e) {
+			dictionnaire.setLangue(fm.getFileFromResources("traductions/" + ps.get("default_language") + ".txt"));
+			alertService.alert(e);
+		} catch (final IOException e) {
+			dictionnaire.setLangue(fm.getFileFromResources("traductions/" + ps.get("default_language") + ".txt"));
+			alertService.alert(e);
+			return;
+		}
+
+		final var joueurs = data.getJoueurs();
+
+		final var options = data.getOptions();
+		if(options.getLolPath() != null) {
+			directoryManager.setDirectory(new File(options.getLolPath()), "LoL");
+		}
+
+		if(options.getLanguePath() != null) {
+			dictionnaire.setLangue(new File(options.getLanguePath()));
+		}
+
 		try {
 			checkAlreadyRunning();
 			checkOs();
@@ -42,16 +73,9 @@ public class AppliFx extends Application {
 		final var file = fm.getFileFromResources("fxml/page_principale.fxml");
 		final var loader = new FXMLLoader(file.toURI().toURL());
 		stage.setScene(new Scene(loader.load()));
+		((ControllerPagePrincipale) loader.getController()).setJoueurs(joueurs);
 		trayIconService.createFXTrayIcon(stage);
 		stage.show();
-	}
-
-	private void initService(final Stage stage) {
-		fm = ServiceManager.getInstance(FileManager.class);
-		trayIconService = ServiceManager.getInstance(TrayIconService.class);
-		alertService = ServiceManager.getInstance(AlertFxService.class);
-		ps = ServiceManager.getInstance(PropertiesService.class);
-		ServiceManager.getInstance(StageManager.class).setCurrentStage(stage);
 	}
 
 	private void checkAlreadyRunning() throws ApplicationDejaEnCoursException {
