@@ -12,12 +12,12 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javafx.scene.image.Image;
+import modele.save.DataObject;
 
 public class FileManager implements IService {
 
@@ -121,18 +121,8 @@ public class FileManager implements IService {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends Serializable> List<T> readList(final File file) throws ClassNotFoundException, IOException {
-		final List<T> elements = new ArrayList<>();
-		try (var ois = new ObjectInputStream(new FileInputStream(file))) {
-
-			final var size = ois.readInt();
-			for(var i = 1; i <= size; i++) {
-				elements.add((T) ois.readObject());
-			}
-
-			return elements;
-		}
+	public DataObject readSave(final File file) throws ClassNotFoundException, IOException {
+		return read(file);
 	}
 
 	@Override
