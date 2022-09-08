@@ -52,6 +52,7 @@ import modele.event.eventaction.AddEvent;
 import modele.event.tache.event.EventEditJoueurClick;
 import modele.event.tache.event.EventJoueurEdited;
 import modele.event.tache.event.EventSortSelect;
+import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import modele.localization.Langage;
@@ -60,7 +61,6 @@ import service.DictionnaireService;
 import service.EventService;
 import service.GestionnaireCommandeService;
 import service.LangagesManager;
-import service.LoadService;
 import service.PropertiesService;
 import service.ServerManager;
 import service.ServiceManager;
@@ -145,7 +145,6 @@ public class MainController implements Initializable {
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	private final PropertiesService ps = ServiceManager.getInstance(PropertiesService.class);
-	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 	private final EventService eventService = ServiceManager.getInstance(EventService.class);
 	private final StageManager stageManager = ServiceManager.getInstance(StageManager.class);
@@ -155,7 +154,7 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
-		langageProperty.set(langagesManager.getDefaultLangage());
+		langageProperty.set(dictionnaire.getLangue());
 		
 		langageProperty.addListener((obs, oldV, newV) -> {
 			dictionnaire.setLangue(newV);
@@ -185,13 +184,13 @@ public class MainController implements Initializable {
 			.collect(Collectors.toList())
 		);
 		
-		final var default_langage_item = (RadioMenuItem) menuLangue.getItems().stream()
-				.filter(item -> item.getProperties().get("file_name").equals(langagesManager.getDefaultLangage().getFileName()))
+		final var selected_langage = (RadioMenuItem) menuLangue.getItems().stream()
+				.filter(item -> item.getProperties().get("file_name").equals(dictionnaire.getLangue().getFileName()))
 				.findFirst()
 				.orElse(null);
 		
-		if(default_langage_item != null)
-			default_langage_item.setSelected(true);
+		if(selected_langage != null)
+			selected_langage.setSelected(true);
 		
 		langagesGroup.selectedToggleProperty().addListener((obs, oldV, newV) -> {
 			langageProperty.set(langagesManager.getLangage(newV.getProperties().get("file_name").toString()));
@@ -321,56 +320,6 @@ public class MainController implements Initializable {
 		addButton.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> MouseButton.PRIMARY.equals(evt.getButton()));
 		addButton.setOnAction(this::addJoueur);
 
-		// Chargement
-
-		final var loadTask = loadService.asyncLoad();
-		loadTask.setOnSucceeded(workerStateEvent -> {
-			final var joueurs = loadTask.getValue();
-
-			final var task = new Task<List<CommandeAjout>>() {
-
-				@Override
-				protected List<CommandeAjout> call() throws Exception {
-					final var tasks = joueurs.stream()
-							.map(joueur -> new TacheCharger(joueur.getNom(), joueur.getPseudo(), joueur.getServer()))
-							.collect(Collectors.toList());
-
-					tasks.forEach(TacheCharger::run);
-
-					return tasks.stream()
-							.map(tache -> {
-								try {
-									return tache.get();
-								} catch (InterruptedException | ExecutionException e) {
-									return null;
-								}
-							})
-							.filter(Objects::nonNull)
-							.map(joueur -> new CommandeAjout(joueursContainer, joueur))
-							.collect(Collectors.toList());
-				}
-
-			};
-			task.setOnSucceeded(evt -> {
-				Platform.runLater(() -> {
-					task.getValue().forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
-
-					gestionnaireCommandeService.viderCommandes();
-
-					mainContainer.getChildren().remove(loading);
-					joueursContainer.setVisible(true);
-				});
-			});
-
-			final var thread = new Thread(task);
-			thread.setDaemon(true);
-			thread.start();
-		});
-
-		final var thread = new Thread(loadTask);
-		thread.setDaemon(true);
-		thread.start();
-
 		// Modification
 
 		editButton.addEventFilter(MouseEvent.MOUSE_PRESSED, evt -> MouseButton.PRIMARY.equals(evt.getButton()));
@@ -452,6 +401,47 @@ public class MainController implements Initializable {
 	
 	private void sortAction(ActionEvent evt) {
 		eventService.trigger(new EventSortSelect(sortSelect.getValue()));
+	}
+	
+	public void setJoueurs(List<Joueur> joueurs) {
+		final var task = new Task<List<CommandeAjout>>() {
+
+			@Override
+			protected List<CommandeAjout> call() throws Exception {
+				final var tasks = joueurs.stream()
+						.map(joueur -> new TacheCharger(joueur.getNom(), joueur.getPseudo(), joueur.getServer()))
+						.collect(Collectors.toList());
+
+				tasks.forEach(TacheCharger::run);
+
+				return tasks.stream()
+						.map(tache -> {
+							try {
+								return tache.get();
+							} catch (InterruptedException | ExecutionException e) {
+								return null;
+							}
+						})
+						.filter(Objects::nonNull)
+						.map(joueur -> new CommandeAjout(joueursContainer, joueur))
+						.collect(Collectors.toList());
+			}
+
+		};
+		task.setOnSucceeded(evt -> {
+			Platform.runLater(() -> {
+				task.getValue().forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
+
+				gestionnaireCommandeService.viderCommandes();
+
+				mainContainer.getChildren().remove(loading);
+				joueursContainer.setVisible(true);
+			});
+		});
+
+		final var thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();
 	}
 
 }

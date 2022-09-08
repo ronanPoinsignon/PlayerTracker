@@ -1,6 +1,11 @@
 package modele.localization;
 
-public class Langage {
+import java.io.Serializable;
+
+public class Langage implements Serializable {
+
+	private static final long serialVersionUID = -8055038406940944408L;
+
 	private String name;
 	
 	private String file_name;

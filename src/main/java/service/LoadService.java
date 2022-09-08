@@ -1,7 +1,6 @@
 package service;
 
 import java.io.EOFException;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InvalidClassException;
@@ -11,6 +10,7 @@ import java.util.List;
 
 import appli.exception.DataLoadingException;
 import modele.joueur.Joueur;
+import modele.save.DataObject;
 import modele.tache.Tache;
 import service.exception.SauvegardeCorrompueException;
 
@@ -19,14 +19,14 @@ public class LoadService implements IService {
 	private FileManager fm;
 	private AlertFxService alerteService;
 
-	public List<Joueur> load() throws SauvegardeCorrompueException, IOException {
-		final var fichier = new File("joueurs.txt");
+	public DataObject load() throws SauvegardeCorrompueException, IOException {
+		final var fichier = fm.getOrCreateFile("data.txt");
 
 		try {
-			return fm.readList(fichier);
+			return fm.readSave(fichier);
 		} catch(final FileNotFoundException e) {
 			fichier.createNewFile();
-			return new ArrayList<>();
+			return new DataObject();
 		} catch (ClassNotFoundException|EOFException|StreamCorruptedException e) {
 			throw new SauvegardeCorrompueException();
 		} catch (final InvalidClassException e) {
@@ -41,7 +41,8 @@ public class LoadService implements IService {
 				List<Joueur> joueurs;
 				
 				try {
-					joueurs = LoadService.this.load();
+					final var data = LoadService.this.load();
+					joueurs = data.getJoueurs();
 				} catch (final SauvegardeCorrompueException e) {
 					alerteService.alert(e);
 					joueurs = new ArrayList<>();

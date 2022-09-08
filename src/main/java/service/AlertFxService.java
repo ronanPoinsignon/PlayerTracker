@@ -1,11 +1,17 @@
 package service;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import modele.exception.AException;
 import modele.exception.ARuntimeException;
@@ -27,7 +33,7 @@ public class AlertFxService implements IService {
 			showWarningAlert(e);
 		}
 		catch (final Throwable e) {
-			showAlertFrom(e);
+			showErrorAlert(e);
 		}
 	}
 
@@ -40,12 +46,33 @@ public class AlertFxService implements IService {
 		});
 	}
 
-	private void showAlertFrom(final Throwable e) {
-		e.printStackTrace();
+	private void showErrorAlert(final Throwable e) {
 		Platform.runLater(() -> {
-			final var header = dictionnaire.getText("showAlertFromHeader").getValue();
-			final var context = dictionnaire.getText("showAlertFromContext").getValue();
-			final var alert = createErrorAlert(header, context);
+			final var alert = createErrorAlert("Un problème est apparu", "Veuillez redémarrer l'application");
+
+			final var sw = new StringWriter();
+			final var pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			final var exceptionText = sw.toString();
+
+			final var label = new Label("Erreur : ");
+
+			final var textArea = new TextArea(exceptionText);
+			textArea.setEditable(false);
+			textArea.setWrapText(true);
+
+			textArea.setMaxWidth(Double.MAX_VALUE);
+			textArea.setMaxHeight(Double.MAX_VALUE);
+			GridPane.setVgrow(textArea, Priority.ALWAYS);
+			GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+			final var expContent = new GridPane();
+			expContent.setMaxWidth(Double.MAX_VALUE);
+			expContent.add(label, 0, 0);
+			expContent.add(textArea, 0, 1);
+
+			alert.getDialogPane().setExpandableContent(expContent);
+
 			alert.showAndWait();
 			trayIconService.quitter();
 		});

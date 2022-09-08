@@ -1,16 +1,18 @@
 package service.exception;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
 import modele.exception.AException;
 import service.AlertFxService;
+import service.FileManager;
 import service.ServiceManager;
 
 public class SauvegardeCorrompueException extends AException {
 
 	private static final long serialVersionUID = 4377631700576701768L;
+
+	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
 
 	@Override
 	public String getDescription() {
@@ -24,7 +26,7 @@ public class SauvegardeCorrompueException extends AException {
 
 	@Override
 	public Runnable next() {
-		final var fichier = new File("joueurs.txt");
+		final var fichier = fm.getOrCreateFile("joueurs.txt");
 
 		return () -> {
 			try {
