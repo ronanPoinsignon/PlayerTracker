@@ -13,7 +13,9 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -52,6 +54,7 @@ import modele.event.tache.event.EventJoueurEdited;
 import modele.event.tache.event.EventSortSelect;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
+import modele.localization.Langage;
 import modele.tache.TacheCharger;
 import service.DictionnaireService;
 import service.EventService;
@@ -137,6 +140,7 @@ public class MainController implements Initializable {
 	private BooleanBinding closeModalBinding;
 
 	private final BooleanProperty isEditing = new SimpleBooleanProperty();
+	private final ObjectProperty<Langage> langageProperty = new SimpleObjectProperty<>();
 
 	private final ServerManager serverManager = ServiceManager.getInstance(ServerManager.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
@@ -151,6 +155,20 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
+		langageProperty.set(langagesManager.getDefaultLangage());
+		
+		langageProperty.addListener((obs, oldV, newV) -> {
+			dictionnaire.setLangue(newV);
+			
+			final var value = sortSelect.getValue();
+			final var strategies = sortSelect.getItems();
+			
+			sortSelect.setOnAction(null);
+			sortSelect.setItems(FXCollections.observableArrayList());
+			sortSelect.setItems(strategies);
+			sortSelect.setValue(value);
+			sortSelect.setOnAction(this::sortAction);
+		});
 		
 		ToggleGroup langagesGroup = new ToggleGroup();
 		
@@ -176,7 +194,7 @@ public class MainController implements Initializable {
 			default_langage_item.setSelected(true);
 		
 		langagesGroup.selectedToggleProperty().addListener((obs, oldV, newV) -> {
-			dictionnaire.setLangue(langagesManager.getLangage(newV.getProperties().get("file_name").toString()));
+			langageProperty.set(langagesManager.getLangage(newV.getProperties().get("file_name").toString()));
 		});
 
 		mainContainer.prefHeightProperty().bind(stageManager.getCurrentStage().heightProperty());
@@ -198,14 +216,14 @@ public class MainController implements Initializable {
 
 		//SortSelect
 		sortSelect.setItems(
-				FXCollections.observableList(
-						List.of(
-								new NameSort<JoueurFx>(),
-								new PseudoSort<JoueurFx>(),
-								new ServerSort<JoueurFx>()
-								)
-						)
-				);
+			FXCollections.observableList(
+				List.of(
+					new NameSort<JoueurFx>(),
+					new PseudoSort<JoueurFx>(),
+					new ServerSort<JoueurFx>()
+				)
+			)
+		);
 		sortSelect.setValue(sortSelect.getItems().get(0));
 		sortSelect.setConverter(new StringConverter<SortStrategy<JoueurFx>>() {
 
@@ -220,9 +238,7 @@ public class MainController implements Initializable {
 			}
 
 		});
-		sortSelect.setOnAction(evt -> {
-			eventService.trigger(new EventSortSelect(sortSelect.getValue()));
-		});
+		sortSelect.setOnAction(this::sortAction);
 
 		labelSort.textProperty().bind(dictionnaire.getText("labelSort"));
 
@@ -432,6 +448,10 @@ public class MainController implements Initializable {
 		eventService.trigger(new EventJoueurEdited(joueur));
 
 		closeModal();
+	}
+	
+	private void sortAction(ActionEvent evt) {
+		eventService.trigger(new EventSortSelect(sortSelect.getValue()));
 	}
 
 }
