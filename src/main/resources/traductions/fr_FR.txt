@@ -48,3 +48,5 @@ labelSort:Trier par
 langue:Langue
 online:En jeu
 offline:Déconnecté
+leagueOfLegends:League of Legends
+dossier:Dossier de jeu

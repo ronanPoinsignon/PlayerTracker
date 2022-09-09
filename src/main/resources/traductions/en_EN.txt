@@ -48,3 +48,5 @@ labelSort:Sort by
 langue:Langage
 online:In game
 offline:Offline
+leagueOfLegends:League of Legends
+dossier:Game folder
