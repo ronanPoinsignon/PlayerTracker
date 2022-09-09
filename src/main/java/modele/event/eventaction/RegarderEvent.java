@@ -14,15 +14,15 @@ import service.ServiceManager;
 import service.StageManager;
 
 public class RegarderEvent extends RunnableEvent {
-	
+
 	private final AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 	private final DirectoryManager dm = ServiceManager.getInstance(DirectoryManager.class);
 	private final StageManager sm = ServiceManager.getInstance(StageManager.class);
 	private final SaveService saveService = ServiceManager.getInstance(SaveService.class);
-	
-	private Joueur element;
 
-	public RegarderEvent(Joueur element) {
+	private final Joueur element;
+
+	public RegarderEvent(final Joueur element) {
 		this.element = element;
 	}
 
@@ -31,22 +31,30 @@ public class RegarderEvent extends RunnableEvent {
 		if(element == null) {
 			return null;
 		}
-		
+
 		final var partie = element.getPartie();
-		
+
 		if(partie == null) {
 			return null;
 		}
-		
-		final var possibleFile = setLoLDirectory(findLoLInstallation());
-		saveService.setLolPath(possibleFile);
-		
-		if(possibleFile == null) {
+
+		var directoryFile = dm.getDirectory("LoL");
+		if(directoryFile == null) {
+			directoryFile = setLoLDirectory(findLoLInstallation());
+		}
+		else {
+			directoryFile = findExeFromDirectory(directoryFile); // le chemin peut exister tout en étant incorrect
+		}
+
+		if(directoryFile == null) {
 			dm.setDirectory(null, "LoL");
 			alerteService.alert(new NoLolInstallationFound());
 			return null;
 		}
-		
+
+		final var file = findExeFromDirectory(directoryFile);
+		saveService.setLolPath(file);
+
 		final var t = new Thread(() -> {
 			final String[] cmd = {
 					"cmd.exe",
@@ -63,7 +71,7 @@ public class RegarderEvent extends RunnableEvent {
 					"-EnableLNP"
 			};
 			try {
-				final var process = new ProcessBuilder(cmd).directory(possibleFile).start();
+				final var process = new ProcessBuilder(cmd).directory(file).start();
 				// on attend que le process se finisse pour vérifier si la commande a fonctionné ou non
 				process.onExit().thenRun(() -> {
 					if(process.exitValue() != 0) {
@@ -76,10 +84,10 @@ public class RegarderEvent extends RunnableEvent {
 		});
 		t.setDaemon(true);
 		t.start();
-		
+
 		return null;
 	}
-	
+
 	private File setLoLDirectory(File possibleFile) {
 		if(possibleFile != null) {
 			dm.setDirectory(possibleFile, "LoL");
