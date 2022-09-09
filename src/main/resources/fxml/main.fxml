@@ -39,7 +39,7 @@
                   <ColumnConstraints percentWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints fillHeight="false" prefHeight="60.0" />
+                  <RowConstraints fillHeight="false" prefHeight="80.0" />
                   <RowConstraints fillHeight="true" />
                </rowConstraints>
            </GridPane>

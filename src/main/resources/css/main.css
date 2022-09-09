@@ -27,16 +27,29 @@
 	-fx-text-fill: #fff;
 }
 
-#menuBar .label {
-	-fx-text-fill: #000;
+/* Menu */
+
+#menuBar, .menu {
+	-fx-background-color: #555;
+	-fx-text-fill: #fff;
 }
+
+#menuBar .label {
+	-fx-text-fill: #fff;
+}
+
+.context-menu {
+    -fx-background-color: #666;
+}
+
+.menu-item:focused {
+     -fx-background-color: #333;
+}
+
+/* Main */
 
 #gridpane {
 	-fx-background-color: #333;
-}
-
-#labelSort {
-	-fx-font-size: 18px
 }
 
 #joueursContainer {
@@ -58,6 +71,12 @@
 	-fx-padding: -0.25em 0 -0.2em 0;
 }
 
+/* Tri */
+
+#labelSort {
+	-fx-font-size: 18px
+}
+
 .choice-box {
 	-fx-faint-focus-color: #666;
 	-fx-focus-color: #777;
@@ -77,6 +96,8 @@
 .choice-box .label, .choice-box .label .text, .choice-box .arrow, .check-menu-item:checked > .left-container > .check {
 	-fx-text-fill: #fff;
 }
+
+/* Modal add / edit */
 
 #modalAdd {
 	-fx-background-color: #444;
@@ -107,6 +128,8 @@
 	-fx-font-size: 22px;
 	-fx-font-weight: 700;
 }
+
+/* Joueur card */
 
 .joueur-card {
 	-fx-background-color: #444;
