@@ -23,6 +23,7 @@ public class Options implements Serializable {
 	public void setLolPath(final File file) {
 		if(file == null) {
 			lolPath = null;
+			return;
 		}
 		lolPath = file.getAbsolutePath();
 	}
