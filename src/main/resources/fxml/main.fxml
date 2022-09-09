@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -109,7 +110,7 @@
                   <Insets left="15.0" right="15.0" />
                </GridPane.margin>
              </ChoiceBox>
-            <Button fx:id="addButton" mnemonicParsing="false" prefHeight="36.0" minWidth="120.0" text="Ajouter" textFill="WHITE" GridPane.rowIndex="4" GridPane.valignment="TOP">
+            <Button fx:id="addButton" minWidth="120.0" mnemonicParsing="false" prefHeight="36.0" text="Ajouter" textFill="WHITE" GridPane.rowIndex="4" GridPane.valignment="TOP">
                <font>
                   <Font name="Arial Bold" size="20.0" />
                </font>
@@ -130,6 +131,10 @@
       <MenuBar fx:id="menuBar" StackPane.alignment="TOP_LEFT">
         <menus>
           <Menu fx:id="menuLangue" mnemonicParsing="false" text="Langue" />
+          <Menu fx:id="menuLeagueOfLegends" mnemonicParsing="false" text="League Of Legends">
+               <items>
+                  <MenuItem fx:id="menuItemLolFolder" mnemonicParsing="false" text="Dossier" />
+               </items></Menu>
         </menus>
       </MenuBar>
    </children>

@@ -26,6 +26,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ScrollPane;
@@ -59,10 +60,12 @@ import modele.joueur.Serveur;
 import modele.localization.Langage;
 import modele.tache.TacheCharger;
 import service.DictionnaireService;
+import service.DirectoryManager;
 import service.EventService;
 import service.GestionnaireCommandeService;
 import service.LangagesManager;
 import service.PropertiesService;
+import service.SaveService;
 import service.ServerManager;
 import service.ServiceManager;
 import service.StageManager;
@@ -70,12 +73,18 @@ import service.StageManager;
 public class MainController implements Initializable {
 
 	private static final int TRANSITION_TIME = 300;
-	
+
 	@FXML
 	private MenuBar menuBar;
-	
+
 	@FXML
 	private Menu menuLangue;
+
+	@FXML
+	private Menu menuLeagueOfLegends;
+
+	@FXML
+	private MenuItem menuItemLolFolder;
 
 	@FXML
 	private StackPane mainContainer;
@@ -150,49 +159,64 @@ public class MainController implements Initializable {
 	private final EventService eventService = ServiceManager.getInstance(EventService.class);
 	private final StageManager stageManager = ServiceManager.getInstance(StageManager.class);
 	private final LangagesManager langagesManager = ServiceManager.getInstance(LangagesManager.class);
+	private final DirectoryManager directoryManager = ServiceManager.getInstance(DirectoryManager.class);
+	private final SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
 	private final static double SCROLL_SPEED = 10;
 
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
 		langageProperty.set(dictionnaire.getLangue());
-		
+
 		langageProperty.addListener((obs, oldV, newV) -> {
 			dictionnaire.setLangue(newV);
-			
+
 			final var value = sortSelect.getValue();
 			final var strategies = sortSelect.getItems();
-			
+
 			sortSelect.setOnAction(null);
 			sortSelect.setItems(FXCollections.observableArrayList());
 			sortSelect.setItems(strategies);
 			sortSelect.setValue(value);
 			sortSelect.setOnAction(this::sortAction);
 		});
-		
-		ToggleGroup langagesGroup = new ToggleGroup();
-		
+
+		final var langagesGroup = new ToggleGroup();
+
 		menuLangue.textProperty().bind(dictionnaire.getText("langue"));
-		
+
 		menuLangue.getItems().addAll(
-			langagesManager.getLangages().stream()
-			.map(langage -> {
-				final var item = new RadioMenuItem(langage.getName());
-				item.getProperties().put("file_name", langage.getFileName());
-				item.setToggleGroup(langagesGroup);
-				return item;
-			})
-			.collect(Collectors.toList())
-		);
-		
+				langagesManager.getLangages().stream()
+				.map(langage -> {
+					final var item = new RadioMenuItem(langage.getName());
+					item.getProperties().put("file_name", langage.getFileName());
+					item.setToggleGroup(langagesGroup);
+					return item;
+				})
+				.collect(Collectors.toList())
+				);
+
+
+		menuItemLolFolder.textProperty().bind(dictionnaire.getText("dossier"));
+		menuItemLolFolder.setOnAction(event -> {
+			final var file = directoryManager.updateFolderDirectory(stageManager.getCurrentStage(), "LoL");
+			if(file == null) {
+				return;
+			}
+			saveService.setLolPath(file);
+		});
+
+		menuLeagueOfLegends.textProperty().bind(dictionnaire.getText("leagueOfLegends"));
+
 		final var selected_langage = (RadioMenuItem) menuLangue.getItems().stream()
 				.filter(item -> item.getProperties().get("file_name").equals(dictionnaire.getLangue().getFileName()))
 				.findFirst()
 				.orElse(null);
-		
-		if(selected_langage != null)
+
+		if(selected_langage != null) {
 			selected_langage.setSelected(true);
-		
+		}
+
 		langagesGroup.selectedToggleProperty().addListener((obs, oldV, newV) -> {
 			langageProperty.set(langagesManager.getLangage(newV.getProperties().get("file_name").toString()));
 		});
@@ -216,14 +240,14 @@ public class MainController implements Initializable {
 
 		//SortSelect
 		sortSelect.setItems(
-			FXCollections.observableList(
-				List.of(
-					new NameSort<JoueurFx>(),
-					new PseudoSort<JoueurFx>(),
-					new ServerSort<JoueurFx>()
-				)
-			)
-		);
+				FXCollections.observableList(
+						List.of(
+								new NameSort<JoueurFx>(),
+								new PseudoSort<JoueurFx>(),
+								new ServerSort<JoueurFx>()
+								)
+						)
+				);
 		sortSelect.setValue(sortSelect.getItems().get(0));
 		sortSelect.setConverter(new StringConverter<SortStrategy<JoueurFx>>() {
 
@@ -260,7 +284,7 @@ public class MainController implements Initializable {
 			closeModal();
 		});
 		scrollpane.vbarPolicyProperty().bind(
-				Bindings.when(((Region) (scrollpane.getContent())).heightProperty().greaterThan(gridpane.prefHeightProperty()))
+				Bindings.when(((Region) scrollpane.getContent()).heightProperty().greaterThan(gridpane.prefHeightProperty()))
 				.then(ScrollBarPolicy.ALWAYS)
 				.otherwise(ScrollBarPolicy.NEVER));
 
@@ -400,12 +424,12 @@ public class MainController implements Initializable {
 
 		closeModal();
 	}
-	
-	private void sortAction(ActionEvent evt) {
+
+	private void sortAction(final ActionEvent evt) {
 		eventService.trigger(new EventSortSelect(sortSelect.getValue()));
 	}
-	
-	public void setJoueurs(List<Joueur> joueurs) {
+
+	public void setJoueurs(final List<Joueur> joueurs) {
 		final var task = new Task<List<CommandeAjout>>() {
 
 			@Override
