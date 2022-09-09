@@ -50,3 +50,4 @@ online:In game
 offline:Offline
 leagueOfLegends:League of Legends
 dossier:Game folder
+selectLoLFolder:Select the  League of Legends root folder

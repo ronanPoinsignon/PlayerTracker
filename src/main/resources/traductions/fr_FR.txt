@@ -50,3 +50,4 @@ online:En jeu
 offline:Déconnecté
 leagueOfLegends:League of Legends
 dossier:Dossier de jeu
+selectLoLFolder:Sélectionner le dossier racine de League of Legends

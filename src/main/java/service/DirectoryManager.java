@@ -119,6 +119,21 @@ public class DirectoryManager implements IService {
 		final var directory = directoryChooserManager.getOrCreateInstance(directoryName);
 		chooser.setInitialDirectory(directory.getInitialDirectory());
 		final var file = chooser.showDialog(window);
+
+		if(file == null) {
+			return null;
+		}
+		directory.setInitialDirectory(file);
+		return directory.getInitialDirectory();
+	}
+
+	public File updateFolderDirectory(final Window window, final String directoryName, final String title) {
+		final var chooser = new DirectoryChooser();
+		final var directory = directoryChooserManager.getOrCreateInstance(directoryName);
+		chooser.setInitialDirectory(directory.getInitialDirectory());
+		chooser.setTitle(title);
+		final var file = chooser.showDialog(window);
+
 		if(file == null) {
 			return null;
 		}

@@ -199,7 +199,7 @@ public class MainController implements Initializable {
 
 		menuItemLolFolder.textProperty().bind(dictionnaire.getText("dossier"));
 		menuItemLolFolder.setOnAction(event -> {
-			final var file = directoryManager.updateFolderDirectory(stageManager.getCurrentStage(), "LoL");
+			final var file = directoryManager.updateFolderDirectory(stageManager.getCurrentStage(), "LoL", dictionnaire.getText("selectLoLFolder").get());
 			if(file == null) {
 				return;
 			}

@@ -48,3 +48,4 @@ online:Online
 offline:Offline
 leagueOfLegends:League of Legends
 dossier:Spielordner
+selectLoLFolder:Wählen Sie den Root-Ordner von League of Legends aus
