@@ -19,6 +19,7 @@ import service.FileManager;
 import service.LangagesManager;
 import service.LoadService;
 import service.PropertiesService;
+import service.SaveService;
 import service.ServiceManager;
 import service.StageManager;
 import service.TrayIconService;
@@ -34,6 +35,7 @@ public class AppliFx extends Application {
 	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 	private final LangagesManager langagesManager = ServiceManager.getInstance(LangagesManager.class);
+	private final SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
 	public static void start(final String[] args) {
 		Application.launch(args);
@@ -72,6 +74,8 @@ public class AppliFx extends Application {
 			checkAlreadyRunning();
 			checkOs();
 		} catch (final ApplicationDejaEnCoursException | BadOsException e) {
+			saveService.addJoueurs(data.getJoueurs());
+			saveService.save();
 			alertService.alert(e);
 			return;
 		}
