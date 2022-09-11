@@ -7,9 +7,46 @@
 	-fx-font-family: "Calibri";
 }
 
+/* Scrollbar */
+
 .scroll-bar:vertical {
-    -fx-pref-width: 15px;
+    -fx-pref-width: 10px;
 }
+
+.scroll-bar:vertical .track{
+    -fx-background-color :#333;
+    -fx-border-color :#333;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+
+
+.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar:vertical .increment-arrow, .scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color :#666;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :#888;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+/* Elements */
 
 .button {
 	-fx-background-color: -fx-secondary-mid;
@@ -48,8 +85,15 @@
 
 /* Main */
 
-#gridpane {
+#mainContainer, #scrollpane, #joueursContainer {
 	-fx-background-color: #333;
+}
+
+#sortPane {
+	/*-fx-border-style: hidden hidden solid hidden;*/
+	-fx-border-width: 0 0 6 0;
+	-fx-border-style: solid;
+    -fx-border-color: #555;
 }
 
 #joueursContainer {
@@ -91,6 +135,10 @@
 	-fx-min-height: 28px;
 	-fx-max-height: 28px;
 	-fx-font-size: 14px;
+}
+
+.choice-box .arrow {
+	-fx-alignment: center-right;
 }
 
 .choice-box .label, .choice-box .label .text, .choice-box .arrow, .check-menu-item:checked > .left-container > .check {

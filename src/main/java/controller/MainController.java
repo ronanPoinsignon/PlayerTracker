@@ -90,7 +90,7 @@ public class MainController implements Initializable {
 	private StackPane mainContainer;
 
 	@FXML
-	private GridPane gridpane;
+	private StackPane sortPane;
 
 	@FXML
 	private ScrollPane scrollpane;
@@ -228,7 +228,6 @@ public class MainController implements Initializable {
 		closeModalBinding = isTransitionRunningProperty.or(modalAdd.visibleProperty().not());
 
 		joueursContainer = new PaneViewJoueurFx();
-		joueursContainer.setVisible(false);
 
 		addButton.disableProperty().bind(openModalBinding.not());
 
@@ -268,10 +267,10 @@ public class MainController implements Initializable {
 
 		//Scrollbar
 
-		gridpane.add(joueursContainer, 0, 1);
-
-		gridpane.prefWidthProperty().bind(mainContainer.prefWidthProperty());
-		gridpane.prefHeightProperty().bind(mainContainer.prefHeightProperty());
+		scrollpane.setContent(joueursContainer);
+		scrollpane.prefWidthProperty().bind(mainContainer.prefWidthProperty());
+		joueursContainer.prefWidthProperty().bind(mainContainer.prefWidthProperty());
+		
 
 		scrollpane.setFitToHeight(true);
 		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
@@ -284,7 +283,7 @@ public class MainController implements Initializable {
 			closeModal();
 		});
 		scrollpane.vbarPolicyProperty().bind(
-				Bindings.when(((Region) scrollpane.getContent()).heightProperty().greaterThan(gridpane.prefHeightProperty()))
+				Bindings.when(((Region) scrollpane.getContent()).heightProperty().greaterThan(mainContainer.prefHeightProperty()))
 				.then(ScrollBarPolicy.ALWAYS)
 				.otherwise(ScrollBarPolicy.NEVER));
 
@@ -310,7 +309,7 @@ public class MainController implements Initializable {
 		open_modal.translateXProperty().bind(mainContainer.prefWidthProperty().divide(2).add(-70));
 
 		modalAdd.setVisible(false);
-		modalAdd.prefHeightProperty().bind(gridpane.prefHeightProperty());
+		modalAdd.prefHeightProperty().bind(mainContainer.prefHeightProperty());
 		openTransition.byXProperty().bind(modalAdd.widthProperty().multiply(-1));
 		closeTransition.byXProperty().bind(modalAdd.widthProperty());
 
@@ -461,7 +460,6 @@ public class MainController implements Initializable {
 				gestionnaireCommandeService.viderCommandes();
 
 				mainContainer.getChildren().remove(loading);
-				joueursContainer.setVisible(true);
 			});
 		});
 

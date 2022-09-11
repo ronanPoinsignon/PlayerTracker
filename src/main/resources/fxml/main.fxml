@@ -18,32 +18,35 @@
 
 <StackPane fx:id="mainContainer" prefHeight="700" prefWidth="1060" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
+      <MenuBar fx:id="menuBar" prefHeight="25.0" StackPane.alignment="TOP_LEFT">
+        <menus>
+          <Menu fx:id="menuLangue" mnemonicParsing="false" text="Langue" />
+          <Menu fx:id="menuLeagueOfLegends" mnemonicParsing="false" text="League Of Legends">
+               <items>
+                  <MenuItem fx:id="menuItemLolFolder" mnemonicParsing="false" text="Dossier" />
+               </items></Menu>
+        </menus>
+      </MenuBar>
+      <StackPane fx:id="sortPane" maxHeight="60.0" prefHeight="60.0" StackPane.alignment="TOP_LEFT">
+         <children>
+            <ChoiceBox fx:id="sortSelect" prefWidth="150.0" StackPane.alignment="CENTER_RIGHT" />
+            <Label fx:id="labelSort" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" nodeOrientation="RIGHT_TO_LEFT" text="Label" StackPane.alignment="CENTER_RIGHT">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+               <StackPane.margin>
+                  <Insets right="180.0" />
+               </StackPane.margin>
+            </Label>
+         </children>
+         <StackPane.margin>
+            <Insets left="40.0" right="40.0" top="25.0" />
+         </StackPane.margin>
+      </StackPane>
       <ScrollPane fx:id="scrollpane" focusTraversable="false">
-        <content>
-          <GridPane fx:id="gridpane" prefWidth="1060.0">
-               <children>
-                  <Label fx:id="labelSort" contentDisplay="RIGHT" focusTraversable="false" text="Label" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
-                     <GridPane.margin>
-                        <Insets bottom="5.0" right="250.0" />
-                     </GridPane.margin>
-                     <font>
-                        <Font name="Arial" size="18.0" />
-                     </font>
-                  </Label>
-                  <ChoiceBox fx:id="sortSelect" prefWidth="150.0" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
-                     <GridPane.margin>
-                        <Insets right="60.0" />
-                     </GridPane.margin></ChoiceBox>
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints percentWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints fillHeight="false" prefHeight="80.0" />
-                  <RowConstraints fillHeight="true" />
-               </rowConstraints>
-           </GridPane>
-        </content>
+         <StackPane.margin>
+            <Insets top="80.0" />
+         </StackPane.margin>
       </ScrollPane>
       <Button id="open_modal" fx:id="open_modal" accessibleRole="BUTTON" onMouseClicked="#openModal" styleClass="float-button" text="+">
       </Button>
@@ -128,14 +131,5 @@
             </Button>
          </children>
       </GridPane>
-      <MenuBar fx:id="menuBar" StackPane.alignment="TOP_LEFT">
-        <menus>
-          <Menu fx:id="menuLangue" mnemonicParsing="false" text="Langue" />
-          <Menu fx:id="menuLeagueOfLegends" mnemonicParsing="false" text="League Of Legends">
-               <items>
-                  <MenuItem fx:id="menuItemLolFolder" mnemonicParsing="false" text="Dossier" />
-               </items></Menu>
-        </menus>
-      </MenuBar>
    </children>
 </StackPane>
