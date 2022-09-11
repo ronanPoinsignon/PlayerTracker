@@ -189,7 +189,14 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 				return;
 			}
 
-			Platform.runLater(() -> labelDuree.setText(getDuree(element.get())));
+			Platform.runLater(() -> {
+				if(element.get().getPartie().getStartTime() == 0) {
+					labelDuree.setText("");
+				}
+				else {
+					labelDuree.setText(getDuree(element.get()));
+				}
+			});
 		}, 0, 1, TimeUnit.SECONDS);
 	}
 

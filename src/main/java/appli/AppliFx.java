@@ -75,7 +75,6 @@ public class AppliFx extends Application {
 			checkOs();
 		} catch (final ApplicationDejaEnCoursException | BadOsException e) {
 			saveService.addJoueurs(data.getJoueurs());
-			saveService.save();
 			alertService.alert(e);
 			return;
 		}

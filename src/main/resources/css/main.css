@@ -85,13 +85,16 @@
 
 /* Main */
 
-#mainContainer, #scrollpane, #joueursContainer {
+#mainContainer, #joueursContainer {
 	-fx-background-color: #333;
 }
 
+#scrollpane {
+	-fx-background-color: transparent;
+}
+
 #sortPane {
-	/*-fx-border-style: hidden hidden solid hidden;*/
-	-fx-border-width: 0 0 6 0;
+	-fx-border-width: 0 0 5 0;
 	-fx-border-style: solid;
     -fx-border-color: #555;
 }

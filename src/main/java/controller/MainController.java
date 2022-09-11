@@ -223,6 +223,14 @@ public class MainController implements Initializable {
 
 		mainContainer.prefHeightProperty().bind(stageManager.getCurrentStage().heightProperty());
 		mainContainer.prefWidthProperty().bind(stageManager.getCurrentStage().widthProperty());
+		
+		mainContainer.setOnMousePressed(event -> {
+			if (!MouseButton.PRIMARY.equals(event.getButton())) {
+				return;
+			}
+			
+			closeModal();
+		});
 
 		openModalBinding = isTransitionRunningProperty.or(modalAdd.visibleProperty());
 		closeModalBinding = isTransitionRunningProperty.or(modalAdd.visibleProperty().not());
