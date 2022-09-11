@@ -5,6 +5,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -25,6 +26,7 @@ public class JoueurFx extends Joueur {
 	private transient StringProperty pseudoProperty;
 	private transient BooleanProperty isConnecteProperty;
 	private transient StringProperty serverNameProperty;
+	private transient ObjectProperty<Serveur> serverProperty;
 	private transient StringProperty gameTypeProperty;
 	private transient StringProperty profileIconProperty;
 
@@ -47,6 +49,7 @@ public class JoueurFx extends Joueur {
 		nomProperty = new SimpleStringProperty(joueur.nom);
 		pseudoProperty = new SimpleStringProperty(joueur.pseudo);
 		isConnecteProperty = new SimpleBooleanProperty(joueur.inGame);
+		serverProperty = new SimpleObjectProperty<>(joueur.server);
 		serverNameProperty = new SimpleStringProperty(joueur.server != null ? joueur.server.getServerId() : "");
 		gameTypeProperty = new SimpleStringProperty(joueur.partie != null ? joueur.partie.getGameType() : "");
 		profileIconProperty = new SimpleStringProperty(joueur.getBase64Icon());
@@ -84,10 +87,15 @@ public class JoueurFx extends Joueur {
 	public BooleanProperty getIsConnecteProperty() {
 		return isConnecteProperty;
 	}
+	
+	public ObjectProperty<Serveur> getServerProperty() {
+		return serverProperty;
+	}
 
 	public StringProperty getServerNameProperty() {
 		return serverNameProperty;
 	}
+	
 	public StringProperty getGameTypeProperty() {
 		return gameTypeProperty;
 	}
@@ -104,35 +112,35 @@ public class JoueurFx extends Joueur {
 	public void setNom(final String nom) {
 		super.setNom(nom);
 		joueur.setNom(nom);
-		nomProperty.set(nom);
+		Platform.runLater(() -> nomProperty.set(nom));
 	}
 
 	@Override
 	public void setPseudo(final String pseudo) {
 		super.setPseudo(pseudo);
 		joueur.setPseudo(pseudo);
-		pseudoProperty.set(pseudo);
+		Platform.runLater(() -> pseudoProperty.set(pseudo));
 	}
 
 	@Override
 	public void setPlayerId(final String playerId) {
 		super.setPlayerId(playerId);
 		joueur.setPlayerId(playerId);
-		idProperty.set(playerId);
+		Platform.runLater(() -> idProperty.set(playerId));
 	}
 
 	@Override
 	public void setInGame(final boolean connected) {
 		super.setInGame(connected);
 		joueur.setInGame(connected);
-		isConnecteProperty.set(connected);
+		Platform.runLater(() -> isConnecteProperty.set(connected));
 	}
 
 	@Override
 	public void setServer(final Serveur server) {
 		super.setServer(server);
 		joueur.setServer(server);
-		serverNameProperty.set(server != null ? server.getServerId() : "");
+		Platform.runLater(() -> serverNameProperty.set(server != null ? server.getServerId() : ""));
 	}
 
 	@Override

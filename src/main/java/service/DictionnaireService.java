@@ -1,6 +1,5 @@
 package service;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,15 +9,17 @@ import java.util.Map;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import modele.localization.Langage;
 import modele.properties.CaselessProperties;
 
 public class DictionnaireService implements IService {
 
 	FileManager fm;
 	PropertiesService ps;
+	LangagesManager langagesManager;
 	SaveService saveService;
 
-	private File langue;
+	private Langage langue;
 
 	private final Map<String, SimpleStringProperty> textProperties = new HashMap<>();
 
@@ -30,16 +31,19 @@ public class DictionnaireService implements IService {
 	 * Méthode permettant de mettre à jour tous les champs de l'application.
 	 * @param langue
 	 */
-	public void setLangue(final File langue) {
+	public void setLangue(final Langage langue) {
 		this.langue = langue;
+		
+		final var file = fm.getFileFromResources("traductions/" + langue.getFileName() + ".txt");
+		
 		final var properties = new CaselessProperties();
-		try(var is = new InputStreamReader(new FileInputStream(langue), StandardCharsets.UTF_8)) {
+		try(var is = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
 			properties.load(is);
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 
-		saveService.setLanguePath(langue);
+		saveService.setLangage(langue);
 
 		properties.forEach((k, v) -> {
 			final var key = (String) k;
@@ -56,7 +60,7 @@ public class DictionnaireService implements IService {
 		});
 	}
 
-	public File getLangue() {
+	public Langage getLangue() {
 		return langue;
 	}
 
@@ -74,6 +78,7 @@ public class DictionnaireService implements IService {
 	public void init() {
 		fm = ServiceManager.getInstance(FileManager.class);
 		ps = ServiceManager.getInstance(PropertiesService.class);
+		langagesManager = ServiceManager.getInstance(LangagesManager.class);
 		saveService = ServiceManager.getInstance(SaveService.class);
 	}
 }

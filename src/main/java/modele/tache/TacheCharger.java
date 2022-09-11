@@ -52,5 +52,6 @@ public class TacheCharger extends Tache<JoueurFx> {
 		}
 		joueur.setPseudo(summoner.getName());
 		joueur.setPlayerId(summoner.getSummoner_id());
+		joueur.setBase64Icon(summoner.getProfile_icon());
 	}
 }

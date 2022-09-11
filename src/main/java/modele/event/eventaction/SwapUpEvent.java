@@ -1,17 +1,17 @@
 package modele.event.eventaction;
 
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 import modele.commande.CommandeInversion;
 
 public class SwapUpEvent<T> extends SwapDownEvent<T> {
 
-	public SwapUpEvent(final TableView<T> table) {
+	public SwapUpEvent(ViewElement<T> table) {
 		super(table);
 	}
 
 	@Override
 	public Void execute() {
-		final var index = table.getSelectionModel().getSelectedIndex();
+		int index = table.getSelectedIndex();
 		if(index == 0) {
 			return null;
 		}

@@ -1,15 +1,15 @@
 package modele.event.eventaction;
 
-import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
 
 public class CopierEvent extends EventAction<Void> {
 
-	TableView<JoueurFx> table;
+	ViewElement<JoueurFx> table;
 
-	public CopierEvent(final TableView<JoueurFx> table) {
+	public CopierEvent(ViewElement<JoueurFx> table) {
 		this.table = table;
 	}
 

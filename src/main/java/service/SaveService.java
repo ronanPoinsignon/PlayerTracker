@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import modele.joueur.Joueur;
+import modele.localization.Langage;
 import modele.save.DataObject;
 
 public class SaveService implements IService {
@@ -35,8 +36,8 @@ public class SaveService implements IService {
 		execute(data.getOptions()::setLolPath, file);
 	}
 
-	public void setLanguePath(final File file) {
-		execute(data.getOptions()::setLanguePath, file);
+	public void setLangage(final Langage langage) {
+		execute(data.getOptions()::setLangage, langage);
 	}
 
 	public <T> void execute(final Consumer<T> data, final T value) {

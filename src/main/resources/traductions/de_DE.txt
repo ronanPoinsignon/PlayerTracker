@@ -39,3 +39,13 @@ trayIconServiceQuitter:Aussteigen
 trayIconServiceEnJeu:spielt
 BadOsExceptionDescription:Die App laüft nur mit Windows
 BadOsExceptionMessage:Unmöglich, die App zu starten
+sortName:Name
+sortPseudo:Spitzname
+sortServer:Server
+labelSort:Sortieren nach
+langue:Sprache
+online:Online
+offline:Offline
+leagueOfLegends:League of Legends
+dossier:Spielordner
+selectLoLFolder:Wählen Sie den Root-Ordner von League of Legends aus

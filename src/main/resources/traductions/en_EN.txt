@@ -7,13 +7,13 @@ menuItemModifier:Edit
 menuItemSupprimer:Delete
 menuItemRegarder:Spectate
 colonneNomLegende:Name
-colonnePseudoLegende:Nickname
+colonnePseudoLegende:Username
 colonneIdLegende:Id
 colonneInGameLegende:Online
 colonneServeurLegende:Server
 colonneGameTypeLegend:Game type
-nomPlaceHolder:name
-pseudoPlaceHolder:nickname
+nomPlaceHolder:Name
+pseudoPlaceHolder:Username
 commandeNonTrouveeExceptionMessage:Unable to run the given command
 commandeNonTrouveeExceptionDescription:The command cannot be found in the manager
 playerNotFoundExceptionMessage:Player not found
@@ -39,3 +39,15 @@ trayIconServiceQuitter:Quit
 trayIconServiceEnJeu:is playing
 BadOsExceptionDescription:The application only works with Windows
 BadOsExceptionMessage:Unable to launch the app
+internalErrorServerExceptionDescription:The server encountered an error
+internalErrorServerExceptionDescription:Please try again later
+sortName:Name
+sortPseudo:Username
+sortServer:Server
+labelSort:Sort by
+langue:Langage
+online:In game
+offline:Offline
+leagueOfLegends:League of Legends
+dossier:Game folder
+selectLoLFolder:Select the  League of Legends root folder

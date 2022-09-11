@@ -1,0 +1,229 @@
+* {
+	-fx-main-color: #efb30e;
+	-fx-main-color-hover: #dfa60d;
+	-fx-secondary-color: #00b0ff;
+	-fx-secondary-mid: #0277bd;
+	-fx-secondary-dark: #01579b;
+	-fx-font-family: "Calibri";
+}
+
+/* Scrollbar */
+
+.scroll-bar:vertical {
+    -fx-pref-width: 10px;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color :#333;
+    -fx-border-color :#333;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+
+
+.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar:vertical .increment-arrow, .scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color :#666;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :#888;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+/* Elements */
+
+.button {
+	-fx-background-color: -fx-secondary-mid;
+	-fx-border-color: -fx-secondary-mid;
+	-fx-text-fill: #FFF;
+}
+
+.button:hover {
+	-fx-background-color: -fx-secondary-dark;
+	-fx-border-color: -fx-secondary-dark;
+	-fx-cursor: hand;
+}
+
+.label {
+	-fx-text-fill: #fff;
+}
+
+/* Menu */
+
+#menuBar, .menu {
+	-fx-background-color: #555;
+	-fx-text-fill: #fff;
+}
+
+#menuBar .label {
+	-fx-text-fill: #fff;
+}
+
+.context-menu {
+    -fx-background-color: #666;
+}
+
+.menu-item:focused {
+     -fx-background-color: #333;
+}
+
+/* Main */
+
+#mainContainer, #joueursContainer {
+	-fx-background-color: #333;
+}
+
+#scrollpane {
+	-fx-background-color: transparent;
+}
+
+#sortPane {
+	-fx-border-width: 0 0 5 0;
+	-fx-border-style: solid;
+    -fx-border-color: #555;
+}
+
+#joueursContainer {
+	-fx-padding: 40px;
+}
+
+.loading-spinner {
+	-fx-progress-color: -fx-main-color;
+}
+
+.float-button {
+	position: fixed;
+	-fx-font-family: "Verdana";
+	-fx-font-size: 64px;
+	-fx-border-radius: 56px;
+	-fx-background-radius: 56px;
+	-fx-pref-width: 56px;
+	-fx-pref-height: 56px;
+	-fx-padding: -0.25em 0 -0.2em 0;
+}
+
+/* Tri */
+
+#labelSort {
+	-fx-font-size: 18px
+}
+
+.choice-box {
+	-fx-faint-focus-color: #666;
+	-fx-focus-color: #777;
+	-fx-control-inner-background: #666;
+	-fx-selection-bar: #777;
+	-fx-selection-bar-text-fill: #fff;
+	-fx-background-color: #666;
+	-fx-border-color: #666;
+	-fx-text-fill: #fff;
+	-fx-border-width: 1px;
+	-fx-pref-height: 28px;
+	-fx-min-height: 28px;
+	-fx-max-height: 28px;
+	-fx-font-size: 14px;
+}
+
+.choice-box .arrow {
+	-fx-alignment: center-right;
+}
+
+.choice-box .label, .choice-box .label .text, .choice-box .arrow, .check-menu-item:checked > .left-container > .check {
+	-fx-text-fill: #fff;
+}
+
+/* Modal add / edit */
+
+#modalAdd {
+	-fx-background-color: #444;
+	-fx-border-color: #777;
+	-fx-border-width: 1px;
+}
+
+#modalAddTitle {
+	-fx-background-color: -fx-secondary-mid;
+}
+
+#modalAdd #nameInput, #modalAdd #pseudoInput, #modalAdd #serverInput {
+	-fx-background-color: #666;
+	-fx-border-color: #666;
+	-fx-text-fill: #fff;
+	-fx-border-width: 1px;
+	-fx-pref-height: 28px;
+	-fx-min-height: 28px;
+	-fx-max-height: 28px;
+	-fx-font-size: 14px;
+}
+
+#modalAdd #nameLabel, #modalAdd #pseudoLabel, #modalAdd #serverLabel {
+	-fx-text-fill: #fff;
+}
+
+#modalAdd #addButton, #modalAdd #editButton {
+	-fx-font-size: 22px;
+	-fx-font-weight: 700;
+}
+
+/* Joueur card */
+
+.joueur-card {
+	-fx-background-color: #444;
+	-fx-border-color: #666;
+	-fx-border-width: 1px;
+	-fx-border-radius: 8px;
+	-fx-background-radius: 8px;
+	-fx-font-size: 20px;
+}
+
+.joueur-card #nom, .joueur-card #serveur {
+	-fx-text-fill: #FFF;
+	-fx-font-weight: 700;
+	-fx-font-size: 20px;
+}
+
+.joueur-card #pseudo {
+	-fx-text-fill: #FFF;
+	-fx-font-size: 18px;
+}
+
+.joueur-card #statut {
+	-fx-text-fill: #FFF;
+}
+
+.joueur-card .buttons .button {
+	-fx-border-radius: 50px;
+	-fx-background-radius: 50px;
+	-fx-pref-width: 48px;
+	-fx-pref-height: 48px;
+}
+
+.joueur-card #game_pane {
+	-fx-background-color: #333;
+	-fx-border-color: #333;
+	-fx-text-fill: #fff;
+}
+
+.joueur-card #game_pane > .label{
+	-fx-text-fill: #fff;
+	-fx-font-size: 16px;
+}
+
+.joueur-card #game_pane #labelChampion {
+	-fx-font-weight: 700;
+}

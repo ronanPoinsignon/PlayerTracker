@@ -69,7 +69,7 @@ public class Joueur implements Serializable {
 	public void setPartie(final Partie partie) {
 		this.partie = partie;
 	}
-	
+
 	public String getBase64Icon() {
 		return base64ProfileIcon;
 	}

@@ -6,7 +6,7 @@ public class Connecte extends AEtat {
 
 	@Override
 	public Image getImageConnecte() {
-		return fm.getImageFromResource("images/pastille_verte.PNG");
+		return fm.getImageFromResource("images/pastille_verte.png");
 	}
 
 	@Override

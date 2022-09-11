@@ -1,7 +1,7 @@
 package modele.event.mouse;
 
-import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import modele.affichage.ViewElement;
 import modele.event.eventaction.AddEvent;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
@@ -21,7 +21,7 @@ public class MouseEventAjout extends MouseEventHandler {
 	private final String pseudo;
 	private final Serveur serveur;
 
-	public MouseEventAjout(final TableView<JoueurFx> table, final String nom, final String pseudo, final Serveur serveur) {
+	public MouseEventAjout(final ViewElement<JoueurFx> table, final String nom, final String pseudo, final Serveur serveur) {
 		super(table);
 		this.nom = nom;
 		this.pseudo = pseudo;

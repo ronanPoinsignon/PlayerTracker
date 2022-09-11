@@ -1,6 +1,6 @@
 package modele.event.eventaction;
 
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 import modele.commande.CommandeSuppression;
 import modele.joueur.JoueurFx;
 import service.GestionnaireCommandeService;
@@ -10,13 +10,13 @@ public class DeleteEvent extends RunnableEventWithTable<JoueurFx> {
 
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
 
-	public DeleteEvent(final TableView<JoueurFx> table) {
+	public DeleteEvent(ViewElement<JoueurFx> table) {
 		super(table);
 	}
 
 	@Override
 	public Void execute() {
-		final var selectedIndex = table.getSelectionModel().getSelectedIndex();
+		int selectedIndex = table.getSelectedIndex();
 		if (selectedIndex < 0) {
 			return null;
 		}

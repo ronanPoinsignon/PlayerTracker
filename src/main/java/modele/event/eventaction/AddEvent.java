@@ -1,7 +1,7 @@
 package modele.event.eventaction;
 
 import javafx.concurrent.WorkerStateEvent;
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 import modele.commande.CommandeAjout;
 import modele.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
@@ -23,7 +23,7 @@ public class AddEvent extends RunnableEventWithTable<JoueurFx> {
 	private final String pseudo;
 	private final Serveur serveur;
 
-	public AddEvent(final TableView<JoueurFx> table, final String nom, final String pseudo, final Serveur serveur) {
+	public AddEvent(final ViewElement<JoueurFx> table, final String nom, final String pseudo, final Serveur serveur) {
 		super(table);
 		this.nom = nom;
 		this.pseudo = pseudo;
@@ -44,9 +44,8 @@ public class AddEvent extends RunnableEventWithTable<JoueurFx> {
 			}
 			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur)).executer();
 		});
-		final var t = new Thread(tache);
-		t.setDaemon(true);
-		t.start();
+		tache.run();
+		
 		return null;
 	}
 }

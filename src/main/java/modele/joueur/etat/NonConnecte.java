@@ -6,7 +6,7 @@ public class NonConnecte extends AEtat {
 
 	@Override
 	public Image getImageConnecte() {
-		return fm.getImageFromResource("images/pastille_rouge.jpg");
+		return fm.getImageFromResource("images/pastille_rouge.png");
 	}
 
 	@Override

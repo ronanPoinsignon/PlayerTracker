@@ -1,15 +1,15 @@
 package modele.event.action;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.TableView;
+import modele.affichage.ViewElement;
 import modele.event.eventaction.DeleteEvent;
 import modele.joueur.JoueurFx;
 
 public class ActionEventSupprimer extends ActionEventHandler {
 
-	private final TableView<JoueurFx> table;
+	private ViewElement<JoueurFx> table;
 
-	public ActionEventSupprimer(final TableView<JoueurFx> table) {
+	public ActionEventSupprimer(ViewElement<JoueurFx> table) {
 		this.table = table;
 	}
 

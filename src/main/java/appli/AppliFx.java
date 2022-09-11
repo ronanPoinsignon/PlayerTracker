@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 
 import appli.exception.ApplicationDejaEnCoursException;
 import appli.exception.BadOsException;
-import controller.ControllerPagePrincipale;
+import controller.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,9 +16,12 @@ import service.AlertFxService;
 import service.DictionnaireService;
 import service.DirectoryManager;
 import service.FileManager;
+import service.LangagesManager;
 import service.LoadService;
 import service.PropertiesService;
+import service.SaveService;
 import service.ServiceManager;
+import service.StageManager;
 import service.TrayIconService;
 import service.exception.SauvegardeCorrompueException;
 
@@ -31,6 +34,8 @@ public class AppliFx extends Application {
 	private final DirectoryManager directoryManager = ServiceManager.getInstance(DirectoryManager.class);
 	private final LoadService loadService = ServiceManager.getInstance(LoadService.class);
 	private final DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
+	private final LangagesManager langagesManager = ServiceManager.getInstance(LangagesManager.class);
+	private final SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
 	public static void start(final String[] args) {
 		Application.launch(args);
@@ -42,10 +47,11 @@ public class AppliFx extends Application {
 		try {
 			data = loadService.load();
 		} catch (final SauvegardeCorrompueException e) {
-			dictionnaire.setLangue(fm.getFileFromResources("traductions/" + ps.get("default_language") + ".txt"));
+			dictionnaire.setLangue(langagesManager.getDefaultLangage());
 			alertService.alert(e);
+			data = new DataObject();
 		} catch (final IOException e) {
-			dictionnaire.setLangue(fm.getFileFromResources("traductions/" + ps.get("default_language") + ".txt"));
+			dictionnaire.setLangue(langagesManager.getDefaultLangage());
 			alertService.alert(e);
 			return;
 		}
@@ -57,23 +63,40 @@ public class AppliFx extends Application {
 			directoryManager.setDirectory(new File(options.getLolPath()), "LoL");
 		}
 
-		if(options.getLanguePath() != null) {
-			dictionnaire.setLangue(new File(options.getLanguePath()));
+		if(options.getLangage() != null) {
+			dictionnaire.setLangue(options.getLangage());
+		}
+		else {
+			dictionnaire.setLangue(langagesManager.getDefaultLangage());
 		}
 
 		try {
 			checkAlreadyRunning();
 			checkOs();
 		} catch (final ApplicationDejaEnCoursException | BadOsException e) {
+			saveService.addJoueurs(data.getJoueurs());
 			alertService.alert(e);
 			return;
 		}
+		
+		ServiceManager.getInstance(StageManager.class).setCurrentStage(stage);
+
 		stage.getIcons().add(fm.getImageFromResource("images/icon.png"));
 		stage.setTitle(ps.get("application_name"));
-		final var file = fm.getFileFromResources("fxml/page_principale.fxml");
+		stage.setMinWidth(400);
+		stage.setMinHeight(600);
+
+		stage.setWidth(1100);
+		stage.setHeight(700);
+
+		final var file = fm.getFileFromResources("fxml/main.fxml");
 		final var loader = new FXMLLoader(file.toURI().toURL());
-		stage.setScene(new Scene(loader.load()));
-		((ControllerPagePrincipale) loader.getController()).setJoueurs(joueurs);
+
+		final var scene = new Scene(loader.load());
+		scene.getStylesheets().add(fm.getFileFromResources("css/main.css").toURI().toString());
+
+		stage.setScene(scene);
+		((MainController) loader.getController()).setJoueurs(joueurs);
 		trayIconService.createFXTrayIcon(stage);
 		stage.show();
 	}

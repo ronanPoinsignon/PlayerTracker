@@ -1,7 +1,7 @@
 package modele.event.eventaction;
 
-import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
+import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
 import service.ServerManager;
 import service.ServiceManager;
@@ -9,10 +9,9 @@ import service.ServiceManager;
 public class CollerEvent extends EventAction<Void> {
 
 	ServerManager sm = ServiceManager.getInstance(ServerManager.class);
+	ViewElement<JoueurFx> table;
 
-	TableView<JoueurFx> table;
-
-	public CollerEvent(final TableView<JoueurFx> table) {
+	public CollerEvent(ViewElement<JoueurFx> table) {
 		this.table = table;
 	}
 
