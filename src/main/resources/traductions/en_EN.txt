@@ -1,7 +1,7 @@
 applicationDejaEnCoursExceptionMessage:The application is already running
 applicationDejaEnCoursExceptionDescription:Look for the app into your Windows icons
 dataLoadingExceptionMessage:Unable to load data
-dataLoadingExceptionDescription:Please delete the save file "joueurs.txt".
+dataLoadingExceptionDescription:Please delete the save file "data.txt".
 menuItemAjouter:Add
 menuItemModifier:Edit
 menuItemSupprimer:Delete

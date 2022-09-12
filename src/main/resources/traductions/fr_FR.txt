@@ -1,7 +1,7 @@
 applicationDejaEnCoursExceptionMessage:L'application est déjà en cours d'exécution.
 applicationDejaEnCoursExceptionDescription:Regardez dans vos icones windows pour y trouver l'application.
 dataLoadingExceptionMessage:Impossible de charger les données
-dataLoadingExceptionDescription:Veuillez supprimer le fichier de sauvegarde "joueurs.txt".
+dataLoadingExceptionDescription:Veuillez supprimer le fichier de sauvegarde "data.txt".
 menuItemAjouter:Ajouter
 menuItemModifier:Modifier
 menuItemSupprimer:Supprimer

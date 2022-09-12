@@ -26,7 +26,7 @@ public class SauvegardeCorrompueException extends AException {
 
 	@Override
 	public Runnable next() {
-		final var fichier = fm.getOrCreateFile("joueurs.txt");
+		final var fichier = fm.getOrCreateFile("data.txt");
 
 		return () -> {
 			try {

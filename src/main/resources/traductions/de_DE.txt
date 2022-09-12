@@ -1,7 +1,7 @@
 applicationDejaEnCoursExceptionMessage:Die App laüft schon
 applicationDejaEnCoursExceptionDescription:Suchen Sie die App in Ihre Windows Ikone
 dataLoadingExceptionMessage:Unmöglich Daten zu laden
-dataLoadingExceptionDescription:Löschen Sie bitte die "joueurs.txt" Sicherungsdatei.
+dataLoadingExceptionDescription:Löschen Sie bitte die "data.txt" Sicherungsdatei.
 menuItemAjouter:Hinzufügen
 menuItemModifier:Bearbeiten
 menuItemSupprimer:Löschen
