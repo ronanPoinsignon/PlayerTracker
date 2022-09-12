@@ -87,9 +87,7 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 * Supprime une ligne de la table.
 	 */
 	public void supprimer() {
-		final var th = new Thread(new DeleteEvent(table));
-		th.setDaemon(true);
-		th.start();
+		new DeleteEvent(table).execute();
 	}
 
 
@@ -105,36 +103,26 @@ public class ClavierEventHandler implements EventHandler<KeyEvent> {
 	 * Inverse la ligne séléctionnée avec celle du haut.
 	 */
 	public void swapUp() {
-		final var th = new Thread(new SwapUpEvent<>(table));
-		th.setDaemon(true);
-		th.start();
+		new SwapUpEvent<>(table).execute();
 	}
 
 	/**
 	 * Inverse la ligne séléctionnée avec celle du bas.
 	 */
 	public void swapDown() {
-		final var th = new Thread(new SwapDownEvent<>(table));
-		th.setDaemon(true);
-		th.start();
+		new SwapDownEvent<>(table).execute();
 	}
 
 	public void annuler() {
-		final var th = new Thread(new AnnulerEvent());
-		th.setDaemon(true);
-		th.start();
+		new AnnulerEvent().execute();
 	}
 
 	public void reexecuter() {
-		final var th = new Thread(new ReexecuterEvent());
-		th.setDaemon(true);
-		th.start();
+		new ReexecuterEvent().execute();
 	}
 
 	public void addJoueurFxToTable(final String nom, final String pseudo, final Serveur serveur) {
-		final var th = new Thread(new AddEvent(table, nom, pseudo, serveur));
-		th.setDaemon(true);
-		th.start();
+		new AddEvent(table, nom, pseudo, serveur).execute();
 	}
 
 }
