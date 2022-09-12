@@ -210,7 +210,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 			isConnecte.bind(newV.getIsConnecteProperty());
 			imageStatut.imageProperty().bind(newV.getImageConnexion());
 
-			nom.textProperty().bind(newV.getNomProperty());
+			nom.textProperty().bind(Bindings.when(newV.getNomProperty().isNull().or(newV.getNomProperty().isEmpty())).then(newV.getPseudoProperty()).otherwise(newV.getNomProperty()));
 			pseudo.textProperty().bind(newV.getPseudoProperty());
 			serveur.textProperty().bind(Bindings.when(newV.getServerProperty().isNotNull()).then(newV.getServer().getLabel()).otherwise(""));
 			imageJoueur.setImage(decodeImage(newV.getBase64Icon()));

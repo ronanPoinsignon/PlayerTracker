@@ -372,7 +372,6 @@ public class MainController implements Initializable {
 		});
 
 		mainContainer.addEventHandler(KeyEvent.KEY_PRESSED, new ClavierEventHandler(joueursContainer));
-
 	}
 
 	@FXML
@@ -383,6 +382,8 @@ public class MainController implements Initializable {
 
 		modalAdd.setVisible(true);
 		openTransition.play();
+
+		nameInput.requestFocus();
 	}
 
 	public void closeModal() {
@@ -397,7 +398,7 @@ public class MainController implements Initializable {
 	}
 
 	public void addJoueur(final ActionEvent event) {
-		var nom = nameInput.getText();
+		final var nom = nameInput.getText();
 		final var pseudo = pseudoInput.getText();
 		final var server = serverInput.getValue();
 
@@ -405,27 +406,18 @@ public class MainController implements Initializable {
 			return;
 		}
 
-		if(nom.isEmpty()) {
-			nom = pseudo;
-		}
-
 		final var t = new Thread(new AddEvent(joueursContainer, nom, pseudo, server));
 		t.setDaemon(true);
 		t.start();
 
 		closeModal();
-
 	}
 
 	public void editJoueur(final ActionEvent event) {
 		final var joueur = joueursContainer.getItems().get(joueursContainer.getSelectedIndex());
 
-		var nom = nameInput.getText();
+		final var nom = nameInput.getText();
 		final var pseudo = joueur.getPseudo();
-
-		if(nom.isEmpty()) {
-			nom = pseudo;
-		}
 
 		gestionnaireCommandeService.addCommande(new CommandeModifier(joueur, nom, pseudo, joueur.getServer())).executer();
 		eventService.trigger(new EventJoueurEdited(joueur));
