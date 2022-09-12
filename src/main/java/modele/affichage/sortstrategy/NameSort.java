@@ -21,7 +21,7 @@ public class NameSort<T extends Joueur> implements SortStrategy<T> {
 				value1 = j1.getPseudo().toLowerCase();
 			}
 			if(value2 == null || value2.isEmpty()) {
-				value2 = j1.getPseudo().toLowerCase();
+				value2 = j2.getPseudo().toLowerCase();
 			}
 
 			return value1.compareTo(value2);
