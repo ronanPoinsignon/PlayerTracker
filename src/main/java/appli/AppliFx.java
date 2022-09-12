@@ -57,6 +57,7 @@ public class AppliFx extends Application {
 		}
 
 		final var joueurs = data.getJoueurs();
+		saveService.addJoueurs(data.getJoueurs());
 
 		final var options = data.getOptions();
 		if(options.getLolPath() != null) {
@@ -70,15 +71,15 @@ public class AppliFx extends Application {
 			dictionnaire.setLangue(langagesManager.getDefaultLangage());
 		}
 
+
 		try {
 			checkAlreadyRunning();
 			checkOs();
 		} catch (final ApplicationDejaEnCoursException | BadOsException e) {
-			saveService.addJoueurs(data.getJoueurs());
 			alertService.alert(e);
 			return;
 		}
-		
+
 		ServiceManager.getInstance(StageManager.class).setCurrentStage(stage);
 
 		stage.getIcons().add(fm.getImageFromResource("images/icon.png"));
