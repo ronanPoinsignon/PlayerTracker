@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.util.Collection;
 
 import appli.exception.ApplicationDejaEnCoursException;
 import appli.exception.BadOsException;
@@ -11,6 +12,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import modele.joueur.Joueur;
 import modele.save.DataObject;
 import service.AlertFxService;
 import service.DictionnaireService;
@@ -57,7 +59,6 @@ public class AppliFx extends Application {
 		}
 
 		final var joueurs = data.getJoueurs();
-		saveService.addJoueurs(data.getJoueurs());
 
 		final var options = data.getOptions();
 		if(options.getLolPath() != null) {
@@ -71,15 +72,17 @@ public class AppliFx extends Application {
 			dictionnaire.setLangue(langagesManager.getDefaultLangage());
 		}
 
-
 		try {
 			checkAlreadyRunning();
 			checkOs();
-		} catch (final ApplicationDejaEnCoursException | BadOsException e) {
+			display(stage, joueurs);
+		} catch (final Exception e) {
+			saveService.addJoueurs(data.getJoueurs());
 			alertService.alert(e);
-			return;
 		}
+	}
 
+	private void display(final Stage stage, final Collection<Joueur> joueurs) throws IOException {
 		ServiceManager.getInstance(StageManager.class).setCurrentStage(stage);
 
 		stage.getIcons().add(fm.getImageFromResource("images/icon.png"));
