@@ -49,3 +49,5 @@ offline:Offline
 leagueOfLegends:League of Legends
 dossier:Spielordner
 selectLoLFolder:Wählen Sie den Root-Ordner von League of Legends aus
+sauvegardeNonConformeExceptionMessage:Problem beim Laden von Daten
+sauvegardeNonConformeExceptionDescription:Das Backup entspricht nicht mehr der neuen Version, die Datei wurde ersetzt.

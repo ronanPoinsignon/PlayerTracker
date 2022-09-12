@@ -51,3 +51,5 @@ offline:Déconnecté
 leagueOfLegends:League of Legends
 dossier:Dossier de jeu
 selectLoLFolder:Sélectionner le dossier racine de League of Legends
+sauvegardeNonConformeExceptionMessage:Problème lors du chargement des données
+sauvegardeNonConformeExceptionDescription:La sauvegarde n'est plus conforme à la nouvelle version, le fichier a été remplacé.

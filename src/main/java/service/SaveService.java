@@ -2,7 +2,7 @@ package service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 import java.util.function.Consumer;
 
 import modele.joueur.Joueur;
@@ -20,7 +20,7 @@ public class SaveService implements IService {
 		execute(data::addJoueur, joueur);
 	}
 
-	public void addJoueurs(final List<Joueur> joueurs) {
+	public void addJoueurs(final Collection<Joueur> joueurs) {
 		execute(data::addJoueurs, joueurs);
 	}
 
@@ -28,7 +28,7 @@ public class SaveService implements IService {
 		execute(data::removeJoueur, joueur);
 	}
 
-	public void removeJoueurs(final List<Joueur> joueurs) {
+	public void removeJoueurs(final Collection<Joueur> joueurs) {
 		execute(data::removeJoueurs, joueurs);
 	}
 

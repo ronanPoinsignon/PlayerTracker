@@ -1,6 +1,7 @@
 package modele.joueur;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Joueur implements Serializable {
 
@@ -85,6 +86,29 @@ public class Joueur implements Serializable {
 	@Override
 	public String toString() {
 		return "Joueur [playerId=" + playerId + ", nom=" + nom + ", pseudo=" + pseudo + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(playerId, server);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
+			return false;
+		}
+		final var other = (Joueur) obj;
+		if (!Objects.equals(playerId, other.playerId)) {
+			return false;
+		}
+		if (!Objects.equals(server, other.server)) {
+			return false;
+		}
+		return true;
 	}
 
 }

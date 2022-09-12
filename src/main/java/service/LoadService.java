@@ -5,14 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.StreamCorruptedException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import appli.exception.DataLoadingException;
 import modele.joueur.Joueur;
 import modele.save.DataObject;
 import modele.tache.Tache;
 import service.exception.SauvegardeCorrompueException;
+import service.exception.SauvegardeNonConformeException;
 
 public class LoadService implements IService {
 
@@ -31,23 +32,25 @@ public class LoadService implements IService {
 			throw new SauvegardeCorrompueException();
 		} catch (final InvalidClassException e) {
 			throw new DataLoadingException();
+		} catch(final ClassCastException e) {
+			throw new SauvegardeNonConformeException();
 		}
 	}
-	
-	public Tache<List<Joueur>> asyncLoad() {
-		return new Tache<List<Joueur>>() {
+
+	public Tache<Set<Joueur>> asyncLoad() {
+		return new Tache<>() {
 			@Override
-			protected List<Joueur> call() throws Exception {
-				List<Joueur> joueurs;
-				
+			protected Set<Joueur> call() throws Exception {
+				Set<Joueur> joueurs;
+
 				try {
 					final var data = LoadService.this.load();
 					joueurs = data.getJoueurs();
 				} catch (final SauvegardeCorrompueException e) {
 					alerteService.alert(e);
-					joueurs = new ArrayList<>();
+					joueurs = new HashSet<>();
 				}
-				
+
 				return joueurs;
 			}
 		};

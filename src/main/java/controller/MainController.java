@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -223,12 +224,12 @@ public class MainController implements Initializable {
 
 		mainContainer.prefHeightProperty().bind(stageManager.getCurrentStage().heightProperty());
 		mainContainer.prefWidthProperty().bind(stageManager.getCurrentStage().widthProperty());
-		
+
 		mainContainer.setOnMousePressed(event -> {
 			if (!MouseButton.PRIMARY.equals(event.getButton())) {
 				return;
 			}
-			
+
 			closeModal();
 		});
 
@@ -278,7 +279,7 @@ public class MainController implements Initializable {
 		scrollpane.setContent(joueursContainer);
 		scrollpane.prefWidthProperty().bind(mainContainer.prefWidthProperty());
 		joueursContainer.prefWidthProperty().bind(mainContainer.prefWidthProperty());
-		
+
 
 		scrollpane.setFitToHeight(true);
 		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
@@ -436,7 +437,7 @@ public class MainController implements Initializable {
 		eventService.trigger(new EventSortSelect(sortSelect.getValue()));
 	}
 
-	public void setJoueurs(final List<Joueur> joueurs) {
+	public void setJoueurs(final Collection<Joueur> joueurs) {
 		final var task = new Task<List<CommandeAjout>>() {
 
 			@Override

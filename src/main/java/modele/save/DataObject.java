@@ -2,8 +2,9 @@ package modele.save;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import modele.joueur.Joueur;
 
@@ -11,14 +12,14 @@ public class DataObject implements Serializable {
 
 	private static final long serialVersionUID = -2635679306318781212L;
 
-	private final List<Joueur> joueurs = new ArrayList<>();
+	private final Set<Joueur> joueurs = new HashSet<>();
 	private final Options options = new Options();
 
 	public void addJoueur(final Joueur joueur) {
 		joueurs.add(joueur);
 	}
 
-	public void addJoueurs(final List<Joueur> joueurs) {
+	public void addJoueurs(final Collection<Joueur> joueurs) {
 		this.joueurs.addAll(joueurs);
 	}
 
@@ -26,7 +27,7 @@ public class DataObject implements Serializable {
 		joueurs.remove(joueur);
 	}
 
-	public void removeJoueurs(final List<Joueur> joueurs) {
+	public void removeJoueurs(final Collection<Joueur> joueurs) {
 		this.joueurs.removeAll(joueurs);
 	}
 
@@ -34,7 +35,7 @@ public class DataObject implements Serializable {
 		options.setLolPath(file);
 	}
 
-	public List<Joueur> getJoueurs(){
+	public Set<Joueur> getJoueurs(){
 		return joueurs;
 	}
 
