@@ -1,6 +1,7 @@
 package modele.tache;
 
 import java.io.UncheckedIOException;
+import java.net.ConnectException;
 
 import modele.joueur.Joueur;
 import modele.joueur.JoueurFx;
@@ -36,13 +37,35 @@ public class TacheCharger extends Tache<JoueurFx> {
 	protected JoueurFx call() throws DataNotFoundException {
 		final var joueur = new Joueur(nom, pseudo, serveur);
 		updateMessage("chargement de " + joueur.getAppellation());
-		try {
-			final var summoner = webService.getSummonerByName(new PlayerByName(joueur.getPseudo(), joueur.getServer().getServerId())).getData();
-			setInfo(joueur, summoner);
-		} catch (DataNotFoundException | UncheckedIOException e) {
-			updateMessage("");
-			throw e;
-		}
+		var connect = true;
+		do {
+			try {
+				try {
+					final var summoner = webService.getSummonerByName(new PlayerByName(joueur.getPseudo(), joueur.getServer().getServerId())).getData();
+					setInfo(joueur, summoner);
+				} catch (DataNotFoundException | UncheckedIOException e) {
+					updateMessage("");
+					throw e;
+				} catch(final RuntimeException e) {
+					final var cause = e.getCause();
+					if(cause != null) {
+						throw cause;
+					}
+					throw e;
+				}
+				connect = true;
+			} catch(final ConnectException e) {
+				connect = false;
+				try {
+					Thread.sleep(3000);
+				} catch (final InterruptedException e1) {
+
+				}
+			} catch(final Throwable e) {
+				throw new RuntimeException(e);
+			}
+		} while(!connect);
+
 		return new JoueurFx(joueur);
 	}
 
