@@ -109,7 +109,8 @@ public class AlertFxService implements IService {
 		final var alert = new Alert(type);
 		alert.setTitle(ps.get("application_name"));
 		alert.setHeaderText(header);
-		alert.setContentText(contexte);
+		final var label = new Label(contexte);
+		alert.getDialogPane().setContent(label);
 		final var stage = (Stage) alert.getDialogPane().getScene().getWindow();
 		stage.getIcons().add(fm.getImageFromResource("images/icon.png"));
 		return alert;
