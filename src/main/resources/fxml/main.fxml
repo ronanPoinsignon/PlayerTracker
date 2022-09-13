@@ -48,7 +48,7 @@
             <Insets top="80.0" />
          </StackPane.margin>
       </ScrollPane>
-      <Button id="open_modal" fx:id="open_modal" accessibleRole="BUTTON" onMouseClicked="#openModal" styleClass="float-button" text="+">
+      <Button id="open_modal" fx:id="openModal" accessibleRole="BUTTON" onMouseClicked="#openModal" styleClass="float-button" text="+">
       </Button>
       <ProgressIndicator fx:id="loading" styleClass="loading-spinner" />
       <GridPane id="modalAdd" fx:id="modalAdd" layoutX="300.0" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" translateX="300.0" StackPane.alignment="CENTER_RIGHT">

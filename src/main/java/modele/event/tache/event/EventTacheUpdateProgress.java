@@ -10,9 +10,6 @@ import modele.event.tache.handler.EventHandlerTacheUpdateProgress;
  */
 public class EventTacheUpdateProgress extends EventTacheUpdated {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	public static final EventType<EventTacheUpdateProgress> EVENT_UPDATE_PROGRESS =
 			new EventType<>(EventTacheUpdated.EVENT_UPDATE, EventTacheUpdateProgress.class.getName());

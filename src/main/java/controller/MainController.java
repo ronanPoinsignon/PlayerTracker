@@ -74,6 +74,7 @@ import service.StageManager;
 public class MainController implements Initializable {
 
 	private static final int TRANSITION_TIME = 300;
+	private static final double SCROLL_SPEED = 10;
 
 	@FXML
 	private MenuBar menuBar;
@@ -105,7 +106,7 @@ public class MainController implements Initializable {
 	private PaneViewJoueurFx joueursContainer;
 
 	@FXML
-	private Button open_modal;
+	private Button openModal;
 
 	@FXML
 	private ProgressIndicator loading;
@@ -163,8 +164,6 @@ public class MainController implements Initializable {
 	private final DirectoryManager directoryManager = ServiceManager.getInstance(DirectoryManager.class);
 	private final SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
-	private final static double SCROLL_SPEED = 10;
-
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {
 		langageProperty.set(dictionnaire.getLangue());
@@ -209,18 +208,17 @@ public class MainController implements Initializable {
 
 		menuLeagueOfLegends.textProperty().bind(dictionnaire.getText("leagueOfLegends"));
 
-		final var selected_langage = (RadioMenuItem) menuLangue.getItems().stream()
+		final var selectedLangage = (RadioMenuItem) menuLangue.getItems().stream()
 				.filter(item -> item.getProperties().get("file_name").equals(dictionnaire.getLangue().getFileName()))
 				.findFirst()
 				.orElse(null);
 
-		if(selected_langage != null) {
-			selected_langage.setSelected(true);
+		if(selectedLangage != null) {
+			selectedLangage.setSelected(true);
 		}
 
-		langagesGroup.selectedToggleProperty().addListener((obs, oldV, newV) -> {
-			langageProperty.set(langagesManager.getLangage(newV.getProperties().get("file_name").toString()));
-		});
+		langagesGroup.selectedToggleProperty().addListener((obs, oldV, newV)
+				-> langageProperty.set(langagesManager.getLangage(newV.getProperties().get("file_name").toString())));
 
 		mainContainer.prefHeightProperty().bind(stageManager.getCurrentStage().heightProperty());
 		mainContainer.prefWidthProperty().bind(stageManager.getCurrentStage().widthProperty());
@@ -288,9 +286,7 @@ public class MainController implements Initializable {
 				evt.consume();
 			}
 		});
-		scrollpane.setOnMousePressed(event -> {
-			closeModal();
-		});
+		scrollpane.setOnMousePressed(event -> closeModal());
 		scrollpane.vbarPolicyProperty().bind(
 				Bindings.when(((Region) scrollpane.getContent()).heightProperty().greaterThan(mainContainer.prefHeightProperty()))
 				.then(ScrollBarPolicy.ALWAYS)
@@ -314,8 +310,8 @@ public class MainController implements Initializable {
 
 		// Modal
 
-		open_modal.translateYProperty().bind(mainContainer.prefHeightProperty().divide(2).add(-70));
-		open_modal.translateXProperty().bind(mainContainer.prefWidthProperty().divide(2).add(-70));
+		openModal.translateYProperty().bind(mainContainer.prefHeightProperty().divide(2).add(-70));
+		openModal.translateXProperty().bind(mainContainer.prefWidthProperty().divide(2).add(-70));
 
 		modalAdd.setVisible(false);
 		modalAdd.prefHeightProperty().bind(mainContainer.prefHeightProperty());
@@ -445,6 +441,7 @@ public class MainController implements Initializable {
 							try {
 								return tache.get();
 							} catch (InterruptedException | ExecutionException e) {
+								Thread.currentThread().interrupt();
 								return null;
 							}
 						})
@@ -454,15 +451,12 @@ public class MainController implements Initializable {
 			}
 
 		};
-		task.setOnSucceeded(evt -> {
-			Platform.runLater(() -> {
-				task.getValue().forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
 
-				gestionnaireCommandeService.viderCommandes();
-
-				mainContainer.getChildren().remove(loading);
-			});
-		});
+		task.setOnSucceeded(evt -> Platform.runLater(() -> {
+			task.getValue().forEach(commande -> gestionnaireCommandeService.addCommande(commande).executer());
+			gestionnaireCommandeService.clean();
+			mainContainer.getChildren().remove(loading);
+		}));
 
 		final var thread = new Thread(task);
 		thread.setDaemon(true);

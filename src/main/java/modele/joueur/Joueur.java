@@ -98,17 +98,14 @@ public class Joueur implements Serializable {
 		if (this == obj) {
 			return true;
 		}
-		if ((obj == null) || (getClass() != obj.getClass())) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
 		final var other = (Joueur) obj;
 		if (!Objects.equals(playerId, other.playerId)) {
 			return false;
 		}
-		if (!Objects.equals(server, other.server)) {
-			return false;
-		}
-		return true;
+		return Objects.equals(server, other.server);
 	}
 
 }

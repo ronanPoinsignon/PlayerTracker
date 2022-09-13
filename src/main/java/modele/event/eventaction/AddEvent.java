@@ -7,7 +7,6 @@ import modele.exception.JoueurDejaPresentException;
 import modele.joueur.JoueurFx;
 import modele.joueur.Serveur;
 import modele.tache.TacheCharger;
-import service.AlertFxService;
 import service.GestionnaireCommandeService;
 import service.ServiceManager;
 import service.WebRequestScheduler;
@@ -15,7 +14,6 @@ import service.WebRequestScheduler;
 public class AddEvent extends RunnableEventWithTable<JoueurFx> {
 
 	private final GestionnaireCommandeService gestionnaireCommandeService = ServiceManager.getInstance(GestionnaireCommandeService.class);
-	private final AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 
 	WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
 
@@ -45,7 +43,7 @@ public class AddEvent extends RunnableEventWithTable<JoueurFx> {
 			gestionnaireCommandeService.addCommande(new CommandeAjout(table, joueur)).executer();
 		});
 		tache.run();
-		
+
 		return null;
 	}
 }

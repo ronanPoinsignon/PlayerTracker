@@ -6,14 +6,14 @@ import modele.event.eventaction.RegarderEvent;
 import modele.joueur.JoueurFx;
 
 public class MouseEventRegarder extends MouseEventHandler {
-	
+
 	public MouseEventRegarder(final ViewElement<JoueurFx> table) {
 		super(table);
 	}
 
 	@Override
 	public void handle(final MouseEvent event) {
-		int selectedIndex = table.getSelectedIndex();
+		final var selectedIndex = table.getSelectedIndex();
 		if (selectedIndex < 0) {
 			return;
 		}
@@ -21,8 +21,7 @@ public class MouseEventRegarder extends MouseEventHandler {
 
 		final var thread = new Thread(new RegarderEvent(element));
 		thread.setDaemon(true);
-		thread.run();
-		
+		thread.start();
 	}
 
 }

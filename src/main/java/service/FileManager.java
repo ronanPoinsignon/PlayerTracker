@@ -2,7 +2,6 @@ package service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,20 +86,20 @@ public class FileManager implements IService {
 		}
 	}
 
-	public void writeInto(final File file, final String content) throws FileNotFoundException, IOException {
+	public void writeInto(final File file, final String content) throws IOException {
 		if(!file.exists()) {
 			file.createNewFile();
 		}
 		Files.write(Paths.get(file.toURI()), content.getBytes(StandardCharsets.UTF_8));
 	}
 
-	public void writeInto(final File file, final Serializable object) throws FileNotFoundException, IOException {
+	public void writeInto(final File file, final Serializable object) throws IOException {
 		try (var oos = new ObjectOutputStream(new FileOutputStream(file))) {
 			oos.writeObject(object);
 		}
 	}
 
-	public <T extends Serializable> void writeInto(final File file, final List<T> elements) throws FileNotFoundException, IOException {
+	public <T extends Serializable> void writeInto(final File file, final List<T> elements) throws IOException {
 		try (var oos = new ObjectOutputStream(new FileOutputStream(file))) {
 			oos.writeInt(elements.size());
 

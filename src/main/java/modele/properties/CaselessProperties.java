@@ -12,7 +12,7 @@ public class CaselessProperties extends Properties {
 	private static final long serialVersionUID = -1121659260302910385L;
 
 	@Override
-	public Object put(final Object key, final Object value) {
+	public synchronized Object put(final Object key, final Object value) {
 		final var lowercase = ((String) key).toLowerCase();
 		return super.put(lowercase, value);
 	}

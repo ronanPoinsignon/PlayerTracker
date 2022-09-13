@@ -144,9 +144,7 @@ public class JoueurController extends ElementController<JoueurFx> implements Ini
 			eventService.trigger(new EventEditJoueurClick(element.get()));
 		});
 
-		eventService.addListener(EventJoueurEdited.EVENT_JOUEUR_EDITED, event -> {
-			sortPaneView();
-		});
+		eventService.addListener(EventJoueurEdited.EVENT_JOUEUR_EDITED, event -> sortPaneView());
 
 		imageChampion.imageProperty().bind(imageChampionProperty);
 		statut.textProperty().bind(Bindings.when(isConnecte).then(dictionnaire.getText("online")).otherwise(dictionnaire.getText("offline")));

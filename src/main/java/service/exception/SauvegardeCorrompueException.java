@@ -12,7 +12,7 @@ public class SauvegardeCorrompueException extends AException {
 
 	private static final long serialVersionUID = 4377631700576701768L;
 
-	private final FileManager fm = ServiceManager.getInstance(FileManager.class);
+	private final transient FileManager fm = ServiceManager.getInstance(FileManager.class);
 
 	@Override
 	public String getDescription() {

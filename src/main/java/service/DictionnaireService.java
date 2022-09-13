@@ -23,19 +23,15 @@ public class DictionnaireService implements IService {
 
 	private final Map<String, SimpleStringProperty> textProperties = new HashMap<>();
 
-	public DictionnaireService() {
-
-	}
-
 	/**
 	 * Méthode permettant de mettre à jour tous les champs de l'application.
 	 * @param langue
 	 */
 	public void setLangue(final Langage langue) {
 		this.langue = langue;
-		
+
 		final var file = fm.getFileFromResources("traductions/" + langue.getFileName() + ".txt");
-		
+
 		final var properties = new CaselessProperties();
 		try(var is = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
 			properties.load(is);

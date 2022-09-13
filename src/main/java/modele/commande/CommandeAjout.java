@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import modele.affichage.ViewElement;
 import modele.joueur.JoueurFx;
-import service.SaveService;
 import service.ServiceManager;
 import service.TrayIconService;
 import service.WebRequestScheduler;
@@ -19,13 +18,12 @@ public class CommandeAjout extends CommandeListe<JoueurFx> {
 
 	private final TrayIconService trayIconService = ServiceManager.getInstance(TrayIconService.class);
 	private final WebRequestScheduler scheduler = ServiceManager.getInstance(WebRequestScheduler.class);
-	private final SaveService saveService = ServiceManager.getInstance(SaveService.class);
 
-	public CommandeAjout(ViewElement<JoueurFx> table, List<JoueurFx> listeJoueurs) {
+	public CommandeAjout(final ViewElement<JoueurFx> table, final List<JoueurFx> listeJoueurs) {
 		super(table, listeJoueurs);
 	}
 
-	public CommandeAjout(ViewElement<JoueurFx> table, JoueurFx joueur) {
+	public CommandeAjout(final ViewElement<JoueurFx> table, final JoueurFx joueur) {
 		super(table, joueur);
 	}
 

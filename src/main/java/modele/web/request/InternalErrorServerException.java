@@ -4,9 +4,6 @@ import modele.exception.ARuntimeException;
 
 public class InternalErrorServerException extends ARuntimeException {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override

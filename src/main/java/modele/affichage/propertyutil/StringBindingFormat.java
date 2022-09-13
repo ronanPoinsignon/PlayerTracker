@@ -7,7 +7,7 @@ public abstract class StringBindingFormat extends StringBinding {
 
 	private final StringProperty property;
 
-	public StringBindingFormat(final StringProperty property) {
+	protected StringBindingFormat(final StringProperty property) {
 		this.property = property;
 		bind(property);
 	}

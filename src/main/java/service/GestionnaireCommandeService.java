@@ -130,12 +130,4 @@ public class GestionnaireCommandeService implements IService {
 	public boolean canReexecuter() {
 		return !listeCommandesAReexecuteer.isEmpty();
 	}
-
-	public GestionnaireCommandeService viderCommandes() {
-		listeCommandes.clear();
-		listeCommandesAnnulees.clear();
-		listeCommandesAReexecuteer.clear();
-		listeCommandesEffectuees.clear();
-		return this;
-	}
 }

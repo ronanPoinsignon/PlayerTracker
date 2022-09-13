@@ -63,7 +63,7 @@ public class WebRequestRunnable extends RequestPlayerData {
 			try {
 				t.join();
 			} catch (final InterruptedException e1) {
-
+				Thread.currentThread().interrupt();
 			}
 		});
 		return map;

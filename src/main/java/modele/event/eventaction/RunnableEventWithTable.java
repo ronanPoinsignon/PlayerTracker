@@ -6,7 +6,7 @@ public abstract class RunnableEventWithTable<T> extends RunnableEvent {
 
 	ViewElement<T> table;
 
-	public RunnableEventWithTable(final ViewElement<T> table) {
+	protected RunnableEventWithTable(final ViewElement<T> table) {
 		this.table = table;
 	}
 }

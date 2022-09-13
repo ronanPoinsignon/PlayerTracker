@@ -59,7 +59,7 @@ public class TacheCharger extends Tache<JoueurFx> {
 				try {
 					Thread.sleep(3000);
 				} catch (final InterruptedException e1) {
-
+					Thread.currentThread().interrupt();
 				}
 			} catch(final Throwable e) {
 				throw new RuntimeException(e);

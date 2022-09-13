@@ -11,9 +11,6 @@ import modele.tache.Tache;
  */
 public abstract class EventTacheUpdated extends EventAbstrait {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	public static final EventType<EventTacheUpdated> EVENT_UPDATE = new EventType<>(Event.ANY, EventTacheUpdated.class.getName());
 

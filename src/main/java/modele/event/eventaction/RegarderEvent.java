@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import modele.event.action.exception.NoLolInstallationFound;
 import modele.event.action.exception.RegarderProcessException;
 import modele.joueur.Joueur;
-import service.AlertFxService;
 import service.DirectoryManager;
 import service.SaveService;
 import service.ServiceManager;
@@ -15,7 +14,6 @@ import service.StageManager;
 
 public class RegarderEvent extends RunnableEvent {
 
-	private final AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 	private final DirectoryManager dm = ServiceManager.getInstance(DirectoryManager.class);
 	private final StageManager sm = ServiceManager.getInstance(StageManager.class);
 	private final SaveService saveService = ServiceManager.getInstance(SaveService.class);

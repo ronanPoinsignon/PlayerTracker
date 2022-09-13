@@ -7,7 +7,7 @@ public abstract class ARuntimeException extends RuntimeException implements IExc
 
 	private static final long serialVersionUID = 3901621859288323690L;
 
-	protected DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
+	protected final transient DictionnaireService dictionnaire = ServiceManager.getInstance(DictionnaireService.class);
 
 	protected ARuntimeException() {
 

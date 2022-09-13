@@ -41,16 +41,16 @@ public abstract class PaneViewElement<T> extends FlowPane implements ViewElement
 	protected static final int HEIGHT_PADDING = 30;
 	protected static final int ELEMENTS_PER_ROW = 3;
 
-	public PaneViewElement() {
+	protected PaneViewElement() {
 		elements.addListener(this::setOnChangeEvent);
 		getChildren().addListener((ListChangeListener<? super Node>) change -> {
 			change.next();
 
 			if(change.wasAdded()) {
-				sortedPane.addAll(change.getAddedSubList().stream().map(element -> (Pane) element).collect(Collectors.toList()));
+				sortedPane.addAll(change.getAddedSubList().stream().map(Pane.class::cast).collect(Collectors.toList()));
 			}
 			else if(change.wasRemoved()) {
-				sortedPane.removeAll(change.getRemoved().stream().map(element -> (Pane) element).collect(Collectors.toList()));
+				sortedPane.removeAll(change.getRemoved().stream().map(Pane.class::cast).collect(Collectors.toList()));
 			}
 		});
 
@@ -80,10 +80,8 @@ public abstract class PaneViewElement<T> extends FlowPane implements ViewElement
 	}
 
 	public void insertValueBasedOnSort(final Pane paneElement) {
-		final var index = sort.getIndexInsertFromSort(sortedPane.stream().map(paneMap::get).collect(Collectors.toList()), paneMap.get(paneElement));
-
-		getChildren().add(index, paneElement);
-
+		final var insertIndex = sort.getIndexInsertFromSort(sortedPane.stream().map(paneMap::get).collect(Collectors.toList()), paneMap.get(paneElement));
+		getChildren().add(insertIndex, paneElement);
 		sortedPane.sort((pane1, pane2) -> sort.getComparator().compare(paneMap.get(pane1), paneMap.get(pane2)));
 	}
 
@@ -107,9 +105,6 @@ public abstract class PaneViewElement<T> extends FlowPane implements ViewElement
 	}
 
 	public void updateSort() {
-		if(sort == null) {
-			return;
-		}
 		getChildren().clear();
 		paneMap.keySet().stream().forEach(this::insertValueBasedOnSort);
 	}

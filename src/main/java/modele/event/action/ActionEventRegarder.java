@@ -16,7 +16,7 @@ public class ActionEventRegarder extends ActionEventHandler {
 	public void handle(final ActionEvent event) {
 		final var thread = new Thread(new RegarderEvent(joueur));
 		thread.setDaemon(true);
-		thread.run();
+		thread.start();
 	}
 
 }

@@ -68,14 +68,20 @@ public class WebService implements IService {
 	private <T> T getValue(final Class<T> clazz, final String url) {
 		try {
 			return getClient(clazz).get(url);
-		} catch (IOException | InterruptedException e) {
+		} catch (final IOException e) {
+			throw new RuntimeException(e);
+		} catch(final InterruptedException e) {
+			Thread.currentThread().interrupt();
 			throw new RuntimeException(e);
 		}
 	}
 	private <T> T postValue(final Class<T> clazz, final String url, final Map<Object, Object> params) {
 		try {
 			return getClient(clazz).post(url, params);
-		} catch (IOException | InterruptedException e) {
+		} catch (final IOException e) {
+			throw new RuntimeException(e);
+		} catch(final InterruptedException e) {
+			Thread.currentThread().interrupt();
 			throw new RuntimeException(e);
 		}
 	}

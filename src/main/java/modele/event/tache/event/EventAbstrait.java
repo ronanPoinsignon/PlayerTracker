@@ -10,9 +10,6 @@ import javafx.event.EventType;
  */
 public abstract class EventAbstrait extends Event {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 
 	protected EventAbstrait(final EventType<? extends Event> eventType) {

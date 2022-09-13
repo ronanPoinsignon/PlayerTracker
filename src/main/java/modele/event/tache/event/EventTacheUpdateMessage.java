@@ -10,9 +10,6 @@ import modele.event.tache.handler.EventHandlerTacheUpdateMessage;
  */
 public class EventTacheUpdateMessage extends EventTacheUpdated {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	public static final EventType<EventTacheUpdateMessage> EVENT_UPDATE_MESSAGE =
 			new EventType<>(EventTacheUpdated.EVENT_UPDATE, EventTacheUpdateMessage.class.getName());

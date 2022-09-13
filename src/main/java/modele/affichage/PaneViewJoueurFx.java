@@ -12,7 +12,7 @@ public class PaneViewJoueurFx extends PaneViewElement<JoueurFx> {
 	public PaneViewJoueurFx() {
 		setId("joueursContainer");
 
-		setSort(new NameSort<JoueurFx>());
+		setSort(new NameSort<>());
 		eventService.addListener(EventSortSelect.EVENT_SORT_SELECT, evt -> setSort(evt.getSort()));
 	}
 

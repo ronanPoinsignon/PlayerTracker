@@ -5,7 +5,7 @@ import service.ServiceManager;
 
 public abstract class RunnableEvent extends EventAction<Void> implements Runnable {
 
-	AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
+	protected final AlertFxService alerteService = ServiceManager.getInstance(AlertFxService.class);
 
 	@Override
 	public void run() {

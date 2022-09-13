@@ -12,10 +12,6 @@ public class Options implements Serializable {
 	String lolPath;
 	Langage langage;
 
-	public Options() {
-
-	}
-
 	public String getLolPath() {
 		return lolPath;
 	}

@@ -25,9 +25,9 @@ public class LangagesManager implements IService {
 		return langages;
 	}
 	
-	public Langage getLangage(String file_name) {
+	public Langage getLangage(String fileName) {
 		return langages.stream()
-				.filter(langage -> langage.getFileName().equals(file_name))
+				.filter(langage -> langage.getFileName().equals(fileName))
 				.findFirst()
 				.orElse(null);
 	}
